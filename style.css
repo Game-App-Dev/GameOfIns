@@ -1,0 +1,23 @@
+body {
+  text-align: center;
+  font-family: Helvetica;
+}
+
+main {
+  width: 80%;
+  margin: auto;
+}
+
+button {
+  background-color: white;
+  font-family: Helvetica;
+  font-size: 12pt;
+  width: 100px;
+  padding: 8px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.hidden {
+  display: none;
+}
