@@ -1,14 +1,25 @@
 body {
   text-align: center;
-  font-family: Helvetica;
+  font-family: cursive;
+  background-color: #1fcc58;
 }
 
 main {
   margin: auto;
 }
 
+header {
+  background-color: #f2f213;
+  margin-left: 25%;
+  margin-right: 25%;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
 h1 {
-  font-size: 3.1em;
+  font-size: 4.5em;
   padding: 50px;
 }
 
