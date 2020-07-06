@@ -11,8 +11,6 @@
    */
   function init() {
     id("start").addEventListener("click", startGame);
-    // id("create-room").addEventListener("click", createRoom);
-    // id("join").addEventListener("click", joinGame);
   }
 
   /**
@@ -20,7 +18,7 @@
    */
   function startGame() {
     id("start-view").classList.add("hidden");
-    id("menu-view").classList.remove("hidden");
+    id("game-view").classList.remove("hidden");
   }
 
 

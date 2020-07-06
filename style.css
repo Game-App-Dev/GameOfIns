@@ -4,8 +4,12 @@ body {
 }
 
 main {
-  width: 80%;
   margin: auto;
+}
+
+h1 {
+  font-size: 3.1em;
+  padding: 50px;
 }
 
 button {
@@ -16,6 +20,27 @@ button {
   padding: 8px;
   margin-top: 10px;
   margin-bottom: 20px;
+}
+
+.start-button {
+  margin-top: 150px;
+}
+
+#board {
+  padding-top: 2.5%;
+  padding-right: 30%;
+  height: 650px;
+}
+
+#board > img {
+  width: 90%;
+  height: 100%;
+}
+
+/*Start from here, change the position of ad and decision window*/
+#advertisement #decision-window {
+  border-color: black;
+  border-radius: 50px;
 }
 
 .hidden {

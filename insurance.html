@@ -10,22 +10,26 @@
   </head>
 
   <body>
-    <header>
-      <h1>Insurance Game</h1>
-    </header>
-
     <main>
       <section id="start-view">
-        <article>
+        <header>
+          <h1>Insurance Game</h1>
+        </header>
+        <div class="start-button">
           <button id="start">Start</button>
-        </article>
+        </div>
       </section>
 
-      <section id="menu-view" class="hidden">
-        <article>
-          <button id="create-room">Create New Room</button>
-          <button id="join">Join</button>
-        </article>
+      <section id="game-view" class="hidden">
+        <div id="board">
+          <img src="img/board.png" alt="game_board">
+        </div>
+        <div id="advertisement">
+          <p><strong>Advertisement</strong> gose here.</p>
+        </div>
+        <div id="decision-window">
+          <p>Player decision window</p>
+        </div>
       </section>
     </main>
   </body>
