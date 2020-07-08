@@ -11,6 +11,7 @@
    */
   function init() {
     id("start").addEventListener("click", startGame);
+    id("menu").addEventListener("click", backToMenu);
   }
 
   /**
@@ -19,6 +20,14 @@
   function startGame() {
     id("start-view").classList.add("hidden");
     id("game-view").classList.remove("hidden");
+  }
+
+  /**
+   * Menu button takes the user back to start page from game page.
+   */
+  function backToMenu() {
+    id("start-view").classList.remove("hidden");
+    id("game-view").classList.add("hidden");
   }
 
 

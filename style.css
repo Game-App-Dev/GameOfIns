@@ -33,25 +33,28 @@ button {
   margin-bottom: 20px;
 }
 
-.start-button {
+#start-button {
   margin-top: 150px;
 }
 
 #board {
   padding-top: 2.5%;
-  padding-right: 30%;
   height: 650px;
 }
 
 #board > img {
-  width: 90%;
+  width: 100%;
   height: 100%;
 }
 
-/*Start from here, change the position of ad and decision window*/
-#advertisement #decision-window {
-  border-color: black;
-  border-radius: 50px;
+.game {
+  display: flex;
+  justify-content: space-between;
+}
+
+#decision-window {
+  padding-top: 1%;
+  width: 50%;
 }
 
 .hidden {
