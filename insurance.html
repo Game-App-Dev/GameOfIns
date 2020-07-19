@@ -15,25 +15,29 @@
         <header>
           <h1>Game of Insurance</h1>
         </header>
-        <div id="start-button">
+        <div class="start-button">
           <button id="start">Start</button>
         </div>
       </section>
 
       <section id="game-view" class="hidden">
         <div class="game">
-          <div>
+          <div class="game-left">
             <div id="board">
-              <img src="img/board.png" alt="game_board">
+              <img id="man3" src="img/man3.png" alt="player_3">
             </div>
-            <div id="advertisement">
-              <p><strong>Advertisement</strong> gose here.</p>
+            <div id="advertisement" style="padding-top: 50px">
+              <img src="img/adv_test.png" alt="ads">
             </div>
           </div>
-          <div id="decision-window">
+          <div class="decision-window">
             <button id="menu">Menu</button>
+            <button id="info">Information</button>
             <p>Decision board</p>
           </div>
+        </div>
+        <div class="infoPopup">
+          <img id="infoPage" src="img/Information_Page.png" alt="info_page">
         </div>
       </section>
     </main>

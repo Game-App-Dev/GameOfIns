@@ -12,6 +12,7 @@
   function init() {
     id("start").addEventListener("click", startGame);
     id("menu").addEventListener("click", backToMenu);
+    id("info").addEventListener("click", showInfo);
   }
 
   /**
@@ -28,6 +29,11 @@
   function backToMenu() {
     id("start-view").classList.remove("hidden");
     id("game-view").classList.add("hidden");
+  }
+
+  /***/
+  function showInfo() {
+    id("infoPage").classList.toggle("show");
   }
 
 
