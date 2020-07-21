@@ -26,12 +26,12 @@ h1 {
 
 button {
   background-color: white;
-  font-family: Helvetica;
   font-size: 12pt;
   width: 100px;
   padding: 8px;
   margin-top: 10px;
   margin-bottom: 20px;
+  border-radius: 10px;
 }
 
 .start-button {
@@ -44,11 +44,10 @@ button {
 }
 
 .game-left {
-  width: 80%;
+  width: 70%;
 }
 
 #board {
-  padding-top: 5%;
   height: 650px;
   position: relative;
   background: url('img/BOARD_DESIGN.png') no-repeat;
@@ -63,34 +62,41 @@ button {
   overflow: hidden;
   width: 2vw;
   height: 2vw;
-  transform: translate(5vw, 0vw);
+  transform: translate(5vw, 3vw);
+}
+
+.prime-button {
+  margin-left: 325px; /* This needs to be fixed, since this is just a manual spacing.
+                         Change to auto position to right */
 }
 
 .decision-window {
-  padding-top: 1%;
-  width: 50%;
+  border: 5px outset #777;
+  border-radius: 15px;
+  width: 28vw;
+  background-color: white;
 }
 
 /* Information popup page*/
 .infoPopup {
-  position: relative;
+  position: absolute;
   display: inline-block;
   cursor: pointer;
 }
 
 .infoPopup img {
   visibility: hidden;
-  /*width: 160px;*/
+  width: 50vw;
   /*background-color: #555;*/
-  color: #fff;
+  /*color: #fff;*/
   text-align: center;
-  border-radius: 6px;
+  /*border-radius: 6px;*/
   padding: 8px 0;
   position: absolute;
-  z-index: 1;
+  /*z-index: 1;*/
   bottom: 125%;
   left: 50%;
-  margin-left: -80px;
+  margin-left: -40px;
 }
 
 /* Popup pointer (but it doesn't work)

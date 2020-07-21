@@ -4,7 +4,7 @@
 
   <head>
     <meta charset="URF-8" />
-    <title>Welcome to Insurance Simulator</title>
+    <title>Insurance Game</title>
     <link rel="stylesheet" href="style.css" />
     <script src="insurance.js"></script>
   </head>
@@ -22,18 +22,22 @@
 
       <section id="game-view" class="hidden">
         <div class="game">
-          <div class="game-left">
+          <div class="game-left" style="padding-top: 25px">
             <div id="board">
-              <img id="man3" src="img/man3.png" alt="player_3">
+              <img id="man3" src="img/man3.png" alt="player_3" style="border-radius:50%">
             </div>
             <div id="advertisement" style="padding-top: 50px">
               <img src="img/adv_test.png" alt="ads">
             </div>
           </div>
-          <div class="decision-window">
-            <button id="menu">Menu</button>
-            <button id="info">Information</button>
-            <p>Decision board</p>
+          <div class="game-right" style="padding-top: 25px">
+            <div class="prime-button">
+              <button id="info">Information</button>
+              <button id="menu">Menu</button>
+            </div>
+            <div class="decision-window">
+              <p>Decision board</p>
+            </div>
           </div>
         </div>
         <div class="infoPopup">
