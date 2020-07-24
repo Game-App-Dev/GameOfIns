@@ -1,7 +1,6 @@
 body {
   text-align: center;
   font-family: cursive;
-  background-color: #1fcc58;
   /*scrollbar: no;*/
 }
 
@@ -34,7 +33,7 @@ button {
   border-radius: 10px;
 }
 
-.start-button {
+.start-btn {
   margin-top: 150px;
 }
 
@@ -48,6 +47,7 @@ button {
 }
 
 #board {
+  padding-top: 15px;
   height: 650px;
   position: relative;
   background: url('img/BOARD_DESIGN.png') no-repeat;
@@ -65,71 +65,56 @@ button {
   transform: translate(5vw, 3vw);
 }
 
-.prime-button {
-  margin-left: 325px; /* This needs to be fixed, since this is just a manual spacing.
+/* Butons on the top right corner of the page (menu, information, rules) */
+.prime-btn {
+  margin-left: 225px; /* This needs to be fixed, since this is just a manual spacing.
                          Change to auto position to right */
 }
 
 .decision-window {
   border: 5px outset #777;
-  border-radius: 15px;
+  border-radius: 6px;
   width: 28vw;
   height: 30vw;
   background-color: white;
 }
 
-/* Information popup page*/
-.infoPopup {
-  position: absolute;
-  display: inline-block;
+/* The Popup (background) */
+.popup {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Popup Content/Box */
+.infoPopup, .rulePopup {
+  background-color: #fefefe;
+  margin: 5% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover, .close:focus {
+  color: black;
+  text-decoration: none;
   cursor: pointer;
 }
-
-.infoPopup img {
-  visibility: hidden;
-  width: 50vw;
-  /*background-color: #555;*/
-  /*color: #fff;*/
-  text-align: center;
-  /*border-radius: 6px;*/
-  padding: 8px 0;
-  position: absolute;
-  /*z-index: 1;*/
-  bottom: 125%;
-  left: 50%;
-  margin-left: -40px;
-}
-
-/* Popup pointer (but it doesn't work)
-.infoPopup img::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-}
-*/
-
-.infoPopup .show {
-  visibility: visible;
-  -webket-animation: fadeIn .5s;
-  animation: fadeIn .5s;
-}
-
-/* Add animation (fade in the popup) */
-@-webkit-keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-
-@keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity:1 ;}
-}
-/*End of information popup page*/
 
 .hidden {
   display: none;

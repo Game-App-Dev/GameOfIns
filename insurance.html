@@ -15,7 +15,7 @@
         <header>
           <h1>Game of Insurance</h1>
         </header>
-        <div class="start-button">
+        <div class="start-btn">
           <button id="start">Start</button>
         </div>
       </section>
@@ -31,18 +31,69 @@
             </div>
           </div>
           <div class="game-right" style="padding-top: 25px">
-            <div class="prime-button">
+            <div class="prime-btn">
+
               <button id="info">Information</button>
+              <div id="myInfo" class="popup">
+                <div class="infoPopup">
+                  <span class="close">&times;</span>
+                  <img id="infoPage" src="img/Information_Page.png" alt="info_page">
+                </div>
+              </div>
+
+              <button id="rules">Rules</button>
+              <div id="myRules" class="popup">
+                <div class="rulePopup">
+                  <span class="close">&times;</span>
+                  <p id="rulePage">Rules to be inserted</p>
+                </div>
+              </div>
               <button id="menu">Menu</button>
             </div>
+
+            <!-- Decision windows -->
             <div class="decision-window">
-              <p>Decision board</p>
+              <!-- Selection window for insurance type (which ever the user is on) -->
+              <div id="insurance-type">
+                <h2>Insurance Type</h2>
+                <div id="insurance-btns" style="margin-top: 20vw">
+                  <p>Do you want to invest in this plan?</p>
+                  <button id="buy-yes">Yes</button>
+                  <button id="buy-no">No</button>
+                </div>
+              </div>
+              <!-- Selection window for 4 different options of the insurance -->
+              <div id="plan-selection" class="hidden">
+                <h2>Insurance Options</h2>
+                <div id="plan-btns" style="margin-top: 20vw">
+                  <p>Which plan do you want to invest in?</p>
+                  <button id="plan-one">1</button>
+                  <button id="plan-two">2</button>
+                  <button id="plan-three">3</button>
+                  <button id="plan-four">4</button>
+                  <button id="plan-back">Back</button>
+                </div>
+              </div>
+              <!-- Selection window for saving plan -->
+              <div id="saving-plan" class="hidden">
+                <h2><strong>SAVIG PLAN BUY OPTION</strong></h2>
+                <div id="saving-btns" style="margin-top: 20vw">
+                  <p>Do you want to get back the investment in this plan?</p>
+                  <button id="save-yes">Yes</button>
+                  <button id="save-no">No</button>
+                </div>
+              </div>
+              <!-- Selection window for life event/ insurance paid-off notice/ already got insurance notice -->
+              <div id="roll-page" class="hidden">
+                <h2>Roll for next move</h2> <!-- Needs to be modified through js -->
+                <div id="roll-btn" style="margin-top: 20vw">
+                  <button id="roll-dice">Roll</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="infoPopup">
-          <img id="infoPage" src="img/Information_Page.png" alt="info_page">
-        </div>
+        
       </section>
     </main>
   </body>
