@@ -23,6 +23,10 @@ h1 {
   padding: 50px;
 }
 
+h2 {
+  margin-top: 1.5em;
+}
+
 button {
   background-color: white;
   font-size: 12pt;
@@ -33,7 +37,7 @@ button {
   border-radius: 10px;
 }
 
-.start-btn {
+.start-btns {
   margin-top: 150px;
 }
 
@@ -62,7 +66,8 @@ button {
   overflow: hidden;
   width: 2vw;
   height: 2vw;
-  transform: translate(5vw, 3vw);
+  transform: translate(100px, 50px);
+  transition-duration: .4s;
 }
 
 /* Butons on the top right corner of the page (menu, information, rules) */
@@ -77,6 +82,17 @@ button {
   width: 28vw;
   height: 30vw;
   background-color: white;
+}
+
+/* Insurance buy selection buttons from 1 to 4 */
+#num-btns {
+  display: flex;
+  justify-content: center;
+}
+
+#plan-btns button {
+  margin-top: auto;
+  margin-bottom: 5px;
 }
 
 /* The Popup (background) */
@@ -99,7 +115,7 @@ button {
   margin: 5% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 60%; /* Could be more or less, depending on screen size */
 }
 
 /* The Close Button */

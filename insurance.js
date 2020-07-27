@@ -2,6 +2,14 @@
   "use strict";
 
   let ended = false;
+  let totalStep = 7;
+  const sideRound = 3;
+
+  // Player step count
+  let stepCount = 0;
+  let sideCount = 0;
+
+
 
   /**
    * Add a function that will be called when the window is loaded.
@@ -13,13 +21,10 @@
    */
   function init() {
     id("start").addEventListener("click", startGame);
+    id("startRules").addEventListener("click", startRule);
     id("menu").addEventListener("click", backToMenu);
     id("info").addEventListener("click", showInfo);
     id("rules").addEventListener("click", showRule);
-    id("buy-yes").addEventListener("click", buyYes);
-    id("buy-no").addEventListener("click", noButton);
-    //id("save-yes").addEventListener("click", saveYes);
-    id("save-no").addEventListener("click", noButton)
   }
 
   /**
@@ -28,11 +33,18 @@
   function startGame() {
     ended = false;
     id("start-view").classList.add("hidden");
-    id("insurance-type").classList.remove("hidden");
+    id("insurance-type").classList.add("hidden");
     id("plan-selection").classList.add("hidden");
     id("saving-plan").classList.add("hidden");
-    id("roll-page").classList.add("hidden");
+    id("roll-page").classList.remove("hidden");
     id("game-view").classList.remove("hidden");
+    id("roll-dice").addEventListener("click", rollDice);
+
+
+    id("buy-yes").addEventListener("click", buyYes);
+    id("buy-no").addEventListener("click", noButton);
+    //id("save-yes").addEventListener("click", saveYes);
+    id("save-no").addEventListener("click", noButton)
   }
 
   /**
@@ -44,24 +56,35 @@
     id("game-view").classList.add("hidden");
   }
 
-  /**
-   * Display information page/window
-   */
+  function startRule() {
+    id("strtRules").style.display = "block";
+    document.getElementsByClassName("close")[0].addEventListener("click", closePop);
+  }
+
+  // Display information page/window
   function showInfo() {
     id("myInfo").style.display = "block";
-    document.getElementsByClassName("close")[0].addEventListener("click", closePop);
+    document.getElementsByClassName("close")[1].addEventListener("click", closePop);
   }
 
   function showRule() {
     id("myRules").style.display = "block";
-    document.getElementsByClassName("close")[1].addEventListener("click", closePop);
+    document.getElementsByClassName("close")[2].addEventListener("click", closePop);
   }
 
   // When the user clicks on <span> (x), close the popup
   function closePop() {
     id("myInfo").style.display = "none";
     id("myRules").style.display = "none";
+    id("strtRules").style.display = "none";
   }
+
+  // When the user clicks anywhere outside of the modal, close srtRules page
+  window.addEventListener("click", function(event) {
+    if (event.target == id("strtRules")) {
+      id("strtRules").style.display = "none";
+    }
+  });
 
   // When the user clicks anywhere outside of the modal, close myInfo page
   window.addEventListener("click", function(event) {
@@ -76,6 +99,34 @@
       id("myRules").style.display = "none";
     }
   });
+
+  /**
+   * Move the player randomly from 1 to 3 spaces.
+   */
+  function rollDice() {
+    let step = Math.floor(Math.random() * 3) + 1;
+    let element = id("man3");
+    const style = window.getComputedStyle(element, null);
+    const matrix = style.transform || style.webkitTransform || style.mozTransform;
+    const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ')
+    let x = parseInt(matrixValues[4]);
+    let y = parseInt(matrixValues[5]);
+    if (stepCount < totalStep && stepCount + step <= totalStep) {
+      x = 153 * step + x;
+    } else if (stepCount < totalStep && stepCount + step > totalStep) {
+      let xStep = totalStep - stepCount;
+      x = 153 * xStep + x;
+      let yStep = step - xStep;
+      y = 73 * yStep + y;
+      console.log(yStep);
+      console.log(y);
+    } else if (stepCount = totalStep) {
+      y = 73 * step + y;
+    }
+    stepCount += step;
+    id("man3").style.transform = "translate("+x+"px,"+y+"px)";
+    qs("#rolled-number").innerText = step;
+  }
 
   function buyYes() {
     id("insurance-type").classList.add("hidden");
