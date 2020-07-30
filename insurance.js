@@ -2,12 +2,9 @@
   "use strict";
 
   let ended = false;
-  let totalStep = 7;
-  const sideRound = 3;
-
-  // Player step count
-  let stepCount = 0;
-  let sideCount = 0;
+  let positive = true;
+  const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3];
+  let index = 0;
 
 
 
@@ -111,19 +108,58 @@
     const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ')
     let x = parseInt(matrixValues[4]);
     let y = parseInt(matrixValues[5]);
-    if (stepCount < totalStep && stepCount + step <= totalStep) {
-      x = 153 * step + x;
-    } else if (stepCount < totalStep && stepCount + step > totalStep) {
-      let xStep = totalStep - stepCount;
-      x = 153 * xStep + x;
-      let yStep = step - xStep;
-      y = 73 * yStep + y;
-      console.log(yStep);
-      console.log(y);
-    } else if (stepCount = totalStep) {
-      y = 73 * step + y;
+
+    let x_step = MAXSTEP[index];
+    let y_step = MAXSTEP[index+1];
+    if (positive) {
+      let max_x = 153 * x_step + 100;
+      let max_y = 73 * y_step + 50;
+      if (x < max_x) {
+        if ((x + 153 * step) > max_x) {
+          let extra_length = (x + 153 * step) - max_x;
+          x = max_x;
+          let extra_step = extra_length / 153;
+          y = y + 73 * extra_step;
+        } else {
+          x = x + 153 * step;
+        }
+      } else {
+        if ((y + 73 * step) > max_y) {
+          let extra_length = (y + 73 * step) - max_y;
+          y = max_y;
+          let extra_step = extra_length / 73;
+          x = max_x - (153 * extra_step);
+          positive = !positive;
+          index += 2;
+        } else {
+          y = y + 73 * step;
+        }
+      }
+    } else {
+      let max_x = 153 * x_step + 100;
+      let max_y = 73 * y_step + 50;
+      if (x > max_x) {
+        if ((x - 153 * step) < max_x) {
+          let extra_length = max_x - (x - 153 * step);
+          x = max_x;
+          let extra_step = extra_length / 153;
+          y = y - 73 * extra_step;
+        } else {
+          x = x - 153 * step;
+        }
+      } else {
+        if ((y - 73 * step) < max_y) {
+          let extra_length = max_y - (y - 73 * step);
+          y = max_y;
+          let extra_step = extra_length / 73;
+          x = max_x + (153 * extra_step);
+          positive = !positive;
+          index += 2;
+        } else {
+          y = y - 73 * step;
+        }
+      }
     }
-    stepCount += step;
     id("man3").style.transform = "translate("+x+"px,"+y+"px)";
     qs("#rolled-number").innerText = step;
   }

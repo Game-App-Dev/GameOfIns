@@ -59,6 +59,14 @@
 
             <!-- Decision windows -->
             <div class="decision-window">
+              <!-- Selection window for life event/ insurance paid-off notice/ already got insurance notice -->
+              <div id="roll-page" class="hidden">
+                <h2>Roll for next move</h2> <!-- Needs to be modified through js -->
+                <p id="rolled-number"></p>
+                <div id="roll-btn" style="margin-top: 350px">
+                  <button id="roll-dice">Roll</button>
+                </div>
+              </div>
               <!-- Selection window for insurance type (which ever the user is on) -->
               <div id="insurance-type" class="hidden">
                 <h2>Insurance Type</h2>
@@ -93,14 +101,6 @@
                   <p>Do you want to get back the investment in this plan?</p>
                   <button id="save-yes">Yes</button>
                   <button id="save-no">No</button>
-                </div>
-              </div>
-              <!-- Selection window for life event/ insurance paid-off notice/ already got insurance notice -->
-              <div id="roll-page" class="hidden">
-                <h2>Roll for next move</h2> <!-- Needs to be modified through js -->
-                <p id="rolled-number" style="font-size: 28pt; margin: 0"></p>
-                <div id="roll-btn" style="margin-top: 20vw">
-                  <button id="roll-dice">Roll</button>
                 </div>
               </div>
             </div>
