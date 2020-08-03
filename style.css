@@ -68,6 +68,10 @@ button {
   height: 2vw;
   transform: translate(100px, 50px);
   transition-duration: .4s;
+  border-radius:50%;
+  border-color: #00FFFF;
+  border-width: 2px;
+  border-style: solid;
 }
 
 /* Butons on the top right corner of the page (menu, information, rules) */
@@ -118,13 +122,23 @@ button {
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+#exit-confirm button {
+  margin: 20px;
+}
+
 /* Popup Content/Box */
-.infoPopup, .rulePopup {
+.infoPopup, .rulePopup, .exitPopup {
   background-color: #fefefe;
   margin: 5% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
-  width: 60%; /* Could be more or less, depending on screen size */
+  border-radius: 10px;
+  width: 50%; /* Could be more or less, depending on screen size */
+}
+
+.exitPopup {
+  width: 20%;
+  margin-top: 250px;
 }
 
 /* The Close Button */

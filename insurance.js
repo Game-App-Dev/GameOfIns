@@ -7,7 +7,6 @@
   let index = 0;
 
 
-
   /**
    * Add a function that will be called when the window is loaded.
    */
@@ -29,6 +28,7 @@
    */
   function startGame() {
     ended = false;
+    qs("#roll-btn button").disabled = false;
     id("start-view").classList.add("hidden");
     id("insurance-type").classList.add("hidden");
     id("plan-selection").classList.add("hidden");
@@ -36,7 +36,6 @@
     id("roll-page").classList.remove("hidden");
     id("game-view").classList.remove("hidden");
     id("roll-dice").addEventListener("click", rollDice);
-
 
     id("buy-yes").addEventListener("click", buyYes);
     id("buy-no").addEventListener("click", noButton);
@@ -48,9 +47,22 @@
    * Menu button takes the user back to start page from game page.
    */
   function backToMenu() {
+    id("exit-confirm").style.display = "block";
+    id("exit-yes").addEventListener("click", endGame);
+    id("exit-no").addEventListener("click", function() {
+      id("exit-confirm").style.display = "none";
+    });
+  }
+
+  function endGame() {
     ended = true;
+    positive = true;
+    index = 0;
+    id("man3").style.transform = "translate(100px, 50px)";
+    id("rolled-number").innerText = "";
     id("start-view").classList.remove("hidden");
     id("game-view").classList.add("hidden");
+    id("exit-confirm").style.display = "none";
   }
 
   function startRule() {
@@ -98,70 +110,70 @@
   });
 
   /**
-   * Move the player randomly from 1 to 3 spaces.
+   * Move the player randomly from 1 to 3 grid.
    */
   function rollDice() {
-    let step = Math.floor(Math.random() * 3) + 1;
+    qs("#roll-btn button").disabled = true;
     let element = id("man3");
     const style = window.getComputedStyle(element, null);
     const matrix = style.transform || style.webkitTransform || style.mozTransform;
     const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ')
     let x = parseInt(matrixValues[4]);
     let y = parseInt(matrixValues[5]);
-
     let x_step = MAXSTEP[index];
     let y_step = MAXSTEP[index+1];
+    let max_x = 153 * x_step + 100;
+    let max_y = 73 * y_step + 50;
+
+    let step = Math.floor(Math.random() * 3) + 1;
+    if (index === 10 && x === max_x && y === max_y + 2 * 73) {
+      step = Math.floor(Math.random() * 2) + 1;
+    } else if (index === 10 && y === max_y + 73) {
+      step = 1;
+    }
+
     if (positive) {
-      let max_x = 153 * x_step + 100;
-      let max_y = 73 * y_step + 50;
-      if (x < max_x) {
-        if ((x + 153 * step) > max_x) {
-          let extra_length = (x + 153 * step) - max_x;
-          x = max_x;
-          let extra_step = extra_length / 153;
-          y = y + 73 * extra_step;
-        } else {
-          x = x + 153 * step;
-        }
-      } else {
-        if ((y + 73 * step) > max_y) {
-          let extra_length = (y + 73 * step) - max_y;
-          y = max_y;
-          let extra_step = extra_length / 73;
-          x = max_x - (153 * extra_step);
-          positive = !positive;
-          index += 2;
-        } else {
-          y = y + 73 * step;
-        }
-      }
+      [x, y] = helperRoll(x, y, 1, step, max_x, max_y);
     } else {
-      let max_x = 153 * x_step + 100;
-      let max_y = 73 * y_step + 50;
-      if (x > max_x) {
-        if ((x - 153 * step) < max_x) {
-          let extra_length = max_x - (x - 153 * step);
-          x = max_x;
-          let extra_step = extra_length / 153;
-          y = y - 73 * extra_step;
-        } else {
-          x = x - 153 * step;
-        }
-      } else {
-        if ((y - 73 * step) < max_y) {
-          let extra_length = max_y - (y - 73 * step);
-          y = max_y;
-          let extra_step = extra_length / 73;
-          x = max_x + (153 * extra_step);
-          positive = !positive;
-          index += 2;
-        } else {
-          y = y - 73 * step;
-        }
-      }
+      [x, y] = helperRoll(x, y, -1, step, max_x, max_y);
     }
     id("man3").style.transform = "translate("+x+"px,"+y+"px)";
     qs("#rolled-number").innerText = step;
+  }
+
+  /**
+   * helper function for rollDice()
+   * @param  {[type]} x     position x
+   * @param  {[type]} y     position y
+   * @param  {[type]} a     if not positive, then pass in -1; otherwise, 1
+   * @param  {[type]} step  dice number rolled
+   * @param  {[type]} max_x maximum x position the chess can go
+   * @param  {[type]} max_y maximum y position the chess can go
+   * @return {[type]}       returns new x and y coordinate.
+   */
+  function helperRoll(x, y, a, step, max_x, max_y) {
+    if (a*x < a*max_x) {
+      if (a*(x + a*(153 * step)) > a*max_x) {
+        let extra_length = a*(x + a*(153 * step)) - a*max_x;
+        x = max_x;
+        let extra_step = extra_length / 153;
+        y = y + a*(73 * extra_step);
+      } else {
+        x = x + a*(153 * step);
+      }
+    } else {
+      if (a*(y + a*(73 * step)) > a*max_y) {
+        let extra_length = a*(y + a*(73 * step)) - a*max_y;
+        y = max_y;
+        let extra_step = extra_length / 73;
+        x = max_x - a*(153 * extra_step);
+        positive = !positive;
+        index += 2;
+      } else {
+        y = y + a*(73 * step);
+      }
+    }
+    return [x, y];
   }
 
   function buyYes() {
