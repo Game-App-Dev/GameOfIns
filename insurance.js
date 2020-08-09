@@ -3,8 +3,10 @@
 
   let ended = false;
   let positive = true;
-  const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3];
   let index = 0;
+  let stepCount = 0;
+  const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3];
+  const BASEURL = "insurance.php";
 
 
   /**
@@ -59,7 +61,6 @@
     positive = true;
     index = 0;
     id("man3").style.transform = "translate(100px, 50px)";
-    id("rolled-number").innerText = "";
     id("start-view").classList.remove("hidden");
     id("game-view").classList.add("hidden");
     id("exit-confirm").style.display = "none";
@@ -113,6 +114,10 @@
    * Move the player randomly from 1 to 3 grid.
    */
   function rollDice() {
+    let eimg = qs("#event-img img");
+    if (eimg != null) {
+      id("event-img").removeChild(eimg);
+    }
     qs("#roll-btn button").disabled = true;
     let element = id("man3");
     const style = window.getComputedStyle(element, null);
@@ -138,7 +143,8 @@
       [x, y] = helperRoll(x, y, -1, step, max_x, max_y);
     }
     id("man3").style.transform = "translate("+x+"px,"+y+"px)";
-    qs("#rolled-number").innerText = step;
+    stepCount += step;
+    fetchEvent();
   }
 
   /**
@@ -176,6 +182,47 @@
     return [x, y];
   }
 
+  function fetchEvent() {
+    fetch(BASEURL + "?mode=event")
+      .then(checkStatus)
+      .then(JSON.parse)
+      .then(eventDetail)
+      .catch();
+  }
+
+  function eventDetail(info) {
+    qs("#roll-btn button").disabled = false;
+    id("saving-plan").classList.add("hidden");
+    id("roll-page").classList.add("hidden");
+    id("insurance-type").classList.add("hidden");
+    let stepID = info[stepCount].id;
+    let fullName = info[stepCount].name;
+    let img = document.createElement("img");
+    img.src = "img/" + fullName + ".jpg";
+    img.alt = fullName;
+    let splitName = fullName.split("_");
+    for (let i = 0; i < splitName.length; i++) {
+      splitName[i] = splitName[i].charAt(0).toUpperCase() + splitName[i].substring(1);
+    }
+    let capName = splitName.join(" ");
+    if (stepID === "qm" || stepID === "ap" || stepID === "ci" || stepID === "li") {
+      id("insurance-type").classList.remove("hidden");
+      id("ins-img").appendChild(img);
+      qs("#insurance-type h2").innerText = capName + " Insurance";
+    } else if (stepID === "sp") {
+      id("saving-plan").classList.remove("hidden");
+      id("save-img").appendChild(img);
+    } else if (stepID === "die") {
+      id("roll-page").classList.remove("hidden");
+      qs("#roll-btn button").disabled = true;
+      qs("#roll-page h2").innerText = "You died... game has ended..."
+    } else {
+      id("roll-page").classList.remove("hidden");
+      id("event-img").appendChild(img);
+      qs("#roll-page h2").innerText = capName;
+    }
+  }
+
   function buyYes() {
     id("insurance-type").classList.add("hidden");
     id("plan-selection").classList.remove("hidden");
@@ -187,10 +234,23 @@
   }
 
   function noButton() {
+    qs("#roll-btn button").disabled = false;
     id("insurance-type").classList.add("hidden");
     id("saving-plan").classList.add("hidden");
     id("roll-page").classList.remove("hidden");
-    //id("roll-dice").addEventListener("click", rollDice);
+    qs("#roll-page h2").innerText = "Roll for next move";
+    let iimg = qs("#ins-img img");
+    let simg = qs("#save-img img");
+    let eimg = qs("#event-img img");
+    if (iimg != null) {
+      id("ins-img").removeChild(iimg);
+    }
+    if (simg != null) {
+      id("save-img").removeChild(simg);
+    }
+    if (eimg != null) {
+      id("event-img").removeChild(eimg);
+    }
   }
 
   function planBack() {
@@ -229,5 +289,30 @@
    */
   function qsa(selector) {
     return document.querySelectorAll(selector);
+  }
+
+  /**
+   * Displays the error message when the fetch did not pass successfully.
+   */
+  function displayError() {
+    id("error-text").innerText = "Something went wrong with the request. Please try again later.";
+    id("error-text").classList.remove("hidden");
+  }
+
+  /**
+  *  Function to check the status of an Ajax call, boiler plate code to include,
+  *  based on: https://developers.google.com/web/updates/2015/03/introduction-to-fetch
+  *  updated from
+  *  https://stackoverflow.com/questions/29473426/fetch-reject-promise-with-json-error-object
+  *  @param {Object} response the response text from the url call
+  *  @return {Object} did we succeed or not, so we know whether or not to continue with the
+  *  handling of this promise
+  */
+  function checkStatus(response) {
+    if (response.status >= 200 && response.status < 300) {
+      return response.text();
+    } else {
+      return Promise.reject(new Error(response.status + ": " + response.statusText));
+    }
   }
 })();

@@ -65,24 +65,27 @@
             </div>
 
             <!-- Decision windows -->
-            <div class="decision-window">
+            <article class="decision-window">
               <!-- Selection window for life event/ insurance paid-off notice/ already got insurance notice -->
               <div id="roll-page" class="hidden">
                 <h2>Roll for next move</h2> <!-- Needs to be modified through js -->
-                <p id="rolled-number"></p>
-                <div id="roll-btn" style="margin-top: 350px">
+                <div id="event-img" style="height:295px"></div>
+                <div id="roll-btn" style="margin-top: 105px">
                   <button id="roll-dice">Roll</button>
                 </div>
               </div>
+
               <!-- Selection window for insurance type (which ever the user is on) -->
               <div id="insurance-type" class="hidden">
                 <h2>Insurance Type</h2>
-                <div id="insurance-btns" style="margin-top: 20vw">
+                <div id="ins-img"></div>
+                <div id="insurance-btns" style="margin-top: 105px">
                   <p>Do you want to invest in this plan?</p>
                   <button id="buy-yes">Yes</button>
                   <button id="buy-no">No</button>
                 </div>
               </div>
+
               <!-- Selection window for 4 different options of the insurance -->
               <div id="plan-selection" class="hidden">
                 <h2>Insurance Options</h2>
@@ -101,20 +104,25 @@
                   <button id="plan-back" style="margin-top: 5px">Back</button>
                 </div>
               </div>
+
               <!-- Selection window for saving plan -->
               <div id="saving-plan" class="hidden">
-                <h2><strong>SAVIG PLAN BUY OPTION</strong></h2>
-                <div id="saving-btns" style="margin-top: 20vw">
+                <h2><strong>Saving Plan Buy Option</strong></h2>
+                <div id="save-img"></div>
+                <div id="saving-btns" style="margin-top: 105px">
                   <p>Do you want to get back the investment in this plan?</p>
                   <button id="save-yes">Yes</button>
                   <button id="save-no">No</button>
                 </div>
               </div>
-            </div>
+            </article>
           </div>
         </div>
 
       </section>
+
+      <!-- Error Message View -->
+      <h3 id="error-text" class="hidden"></h3>
     </main>
   </body>
 

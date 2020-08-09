@@ -108,6 +108,11 @@ button {
   margin-bottom: 5px;
 }
 
+#ins-img img, #save-img img, #event-img img {
+  height: 250px;
+  width: 250px;
+}
+
 /* The Popup (background) */
 .popup {
   display: none; /* Hidden by default */
