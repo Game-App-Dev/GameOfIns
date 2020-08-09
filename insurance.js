@@ -3,9 +3,9 @@
 
   let ended = false;
   let positive = true;
-  let index = 0;
+  let index = 0;                                        // index of array MAXSTEP
   let stepCount = 0;
-  const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3];
+  const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3]; // maximum steps can be made on each side (x / y).
   const BASEURL = "insurance.php";
 
 
