@@ -1,5 +1,5 @@
 step,name,id,reg_des,life_des,cri_des,sav_des,acc_des,med_des
-1,start,,Let’s Start!,,,,,
+1,start,,Let's Start!,,,,,
 2,quality_medical,qm,There is an opportunity for you to invest in this insurance plan! ,,,,,
 3,accident_protection,ap,There is an opportunity for you to invest in this insurance plan! ,,,,,
 4,critical_illness,ci,There is an opportunity for you to invest in this insurance plan! ,,,,,
@@ -47,15 +47,15 @@ step,name,id,reg_des,life_des,cri_des,sav_des,acc_des,med_des
 46,leg_broke,lb,"You broke your leg! You have to pay $120,000",,,,,You broke your leg! You claimed your insurance! You pay
 47,car_accident,ca,"You got into a car accident! You have to pay $90,000!",,,,You got into a car accident! You claimed your accident insurance! You pay,
 48,tuition_fee,tf,Your kid goes to college! You have to pay for the tuition fee!,You have paid off the life insurance! Congratulations!,,You now have a chance to take out your savings from the saving plan!,,
-49,cancer,cn,"You suffered from a serious sickness / cancer. You need to pay $1,800,000",,,You now have a chance to take out your savings from the saving plan!,,You got the insurance protected! You claimed  + xxx +! You still have to pay + yyy +!
+49,cancer,cn,"You suffered from a serious sickness / cancer. You need to pay $1,800,000",,,You now have a chance to take out your savings from the saving plan!,,You got the insurance protected! You claimed
 50,retire,ret,Congratulations! You are retired!,,,,,
 51,car_accident,ca,"You got into a car accident! You have to pay $90,000!",,,,You got into a car accident! You claimed your accident insurance! You pay,
-52,cancer,cn,"You suffered from a serious sickness / cancer. You need to pay $1,800,000",,,You now have a chance to take out your savings from the saving plan!,,You got the insurance protected! You claimed  + xxx +! You still have to pay + yyy +!
+52,cancer,cn,"You suffered from a serious sickness / cancer. You need to pay $1,800,000",,,You now have a chance to take out your savings from the saving plan!,,You got the insurance protected! You claimed
 53,stock_loss,sl,You suffered from a stock loss!,You have paid off the life insurance! Congratulations!,,You now have a chance to take out your savings from the saving plan!,,
 54,medical_treatment,mt,,,,,,
 55,travel,tra,You went to travel! You paid for it!,,,,,
 56,leg_broke,lb,"You broke your leg! You have to pay $120,000",,,,,You broke your leg! You claimed your insurance! You pay $
-57,cancer,cn,"You suffered from a serious sickness / cancer. You need to pay $1,800,000",,,You now have a chance to take out your savings from the saving plan!,,You got the insurance protected! You claimed  + xxx +! You still have to pay + yyy +!
+57,cancer,cn,"You suffered from a serious sickness / cancer. You need to pay $1,800,000",,,You now have a chance to take out your savings from the saving plan!,,You got the insurance protected! You claimed
 58,travel,tra,You went to travel! You paid for it!,,,,,
 59,car_accident,ca,"You got into a car accident! You have to pay $90,000!",,,,You got into a car accident! You claimed your accident insurance! You pay,
 60,die,die,You die!,,,,,

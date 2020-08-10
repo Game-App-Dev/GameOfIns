@@ -49,6 +49,10 @@
    * Menu button takes the user back to start page from game page.
    */
   function backToMenu() {
+    stepCount = 0;
+    index = 0;
+    ended = false;
+    positive = true;
     id("exit-confirm").style.display = "block";
     id("exit-yes").addEventListener("click", endGame);
     id("exit-no").addEventListener("click", function() {
