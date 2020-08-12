@@ -52,7 +52,7 @@ step,name,id,reg_des,life_des,cri_des,sav_des,acc_des,med_des
 51,car_accident,ca,"You got into a car accident! You have to pay $90,000!",,,,You got into a car accident! You claimed your accident insurance! You pay,
 52,cancer,cn,"You suffered from a serious sickness / cancer. You need to pay $1,800,000",,,You now have a chance to take out your savings from the saving plan!,,You got the insurance protected! You claimed
 53,stock_loss,sl,You suffered from a stock loss!,You have paid off the life insurance! Congratulations!,,You now have a chance to take out your savings from the saving plan!,,
-54,medical_treatment,mt,,,,,,
+54,medical_treatment,mt,You received a lif elong medical treatment. 5% of your wage will be deducted.,,,,,
 55,travel,tra,You went to travel! You paid for it!,,,,,
 56,leg_broke,lb,"You broke your leg! You have to pay $120,000",,,,,You broke your leg! You claimed your insurance! You pay $
 57,cancer,cn,"You suffered from a serious sickness / cancer. You need to pay $1,800,000",,,You now have a chance to take out your savings from the saving plan!,,You got the insurance protected! You claimed
