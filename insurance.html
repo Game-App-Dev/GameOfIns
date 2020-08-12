@@ -12,19 +12,20 @@
   <body>
     <main>
       <section id="start-view">
-        <header>
-          <h1>Game of Insurance</h1>
-        </header>
-        <div class="start-btns">
-          <button id="start">Start</button>
-          <button id="startRules">Rules</button>
-          <div id="strtRules" class="popup">
-            <div class="rulePopup">
-              <span class="close">&times;</span>
-              <img id="srtrule" src="img/goi_rules.jpg" alt="goi rules" style="width: 90%">
+
+            <h1>Game of Insurance</h1>
+
+          <div class="start-btns">
+            <button id="start">Start</button>
+            <button id="startRules">Rules</button>
+            <div id="strtRules" class="popup">
+              <div class="rulePopup">
+                <span class="close">&times;</span>
+                <img id="srtrule" src="img/goi_rules.jpg" alt="goi rules" style="width: 90%">
+              </div>
             </div>
           </div>
-        </div>
+
       </section>
 
       <section id="game-view" class="hidden">
@@ -33,7 +34,7 @@
             <div id="board">
               <img id="man3" src="img/man3.png" alt="player_3">
             </div>
-            <div id="advertisement" style="padding-top: 50px">
+            <div id="advertisement">
               <img src="img/adv_test.png" alt="ads">
             </div>
           </div>
@@ -65,7 +66,7 @@
             </div>
 
             <!-- Decision windows -->
-            <article class="decision-window">
+            <article class="decision-window" class="hidden">
               <!-- Selection window for life event/ insurance paid-off notice/ already got insurance notice -->
               <div id="roll-page" class="hidden">
                 <h2>Roll for next move</h2> <!-- Needs to be modified through js -->

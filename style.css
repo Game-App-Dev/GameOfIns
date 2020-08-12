@@ -1,26 +1,27 @@
 body {
+  margin: auto;
+  width: 1600px;
   text-align: center;
   font-family: cursive;
   /*scrollbar: no;*/
+  background-color: #aaa;
 }
 
 main {
+  background-color: white;
   margin: auto;
 }
 
-header {
-  background-color: #f2f213;
-  margin-left: 25%;
-  margin-right: 25%;
-  border-top-left-radius: 15px;
-  border-top-right-radius: 15px;
-  border-bottom-left-radius: 15px;
-  border-bottom-right-radius: 15px;
+#start-view, #game-view {
+  margin: auto;
+  margin-top: 60px;
+  width: 1500px;
+  height: 800px;
 }
 
 h1 {
+  padding-top: 150px;
   font-size: 4.5em;
-  padding: 50px;
 }
 
 h2 {
@@ -38,7 +39,11 @@ button {
 }
 
 .start-btns {
-  margin-top: 150px;
+  margin-top: 250px;
+}
+
+.start-btns button {
+  margin-left: 40px;
 }
 
 .game {
@@ -52,7 +57,7 @@ button {
 
 #board {
   padding-top: 15px;
-  height: 650px;
+  height: 600px;
   position: relative;
   background: url('img/BOARD_DESIGN.png') no-repeat;
   background-size: 100% 100%;
@@ -64,8 +69,8 @@ button {
   position: absolute;
   display: block;
   overflow: hidden;
-  width: 2vw;
-  height: 2vw;
+  width: 30px;
+  height: 30px;
   transform: translate(100px, 50px);
   transition-duration: .4s;
   border-radius:50%;
@@ -76,15 +81,15 @@ button {
 
 /* Butons on the top right corner of the page (menu, information, rules) */
 .prime-btn {
-  margin-left: 225px; /* This needs to be fixed, since this is just a manual spacing.
+  margin-left: 190px; /* This needs to be fixed, since this is just a manual spacing.
                          Change to auto position to right */
 }
 
 .decision-window {
   border: 5px outset #777;
   border-radius: 6px;
-  width: 28vw;
-  height: 30vw;
+  width: 500px;
+  height: 600px;
   background-color: white;
 }
 

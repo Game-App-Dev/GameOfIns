@@ -131,13 +131,16 @@
     let y = parseInt(matrixValues[5]);
     let x_step = MAXSTEP[index];
     let y_step = MAXSTEP[index+1];
-    let max_x = 153 * x_step + 100;
-    let max_y = 73 * y_step + 50;
+    let max_x = 113 * x_step + 100;
+    let max_y = 67 * y_step + 50;
 
     let step = Math.floor(Math.random() * 3) + 1;
-    if (index === 10 && x === max_x && y === max_y + 2 * 73) {
+
+    qs("h2").innerText = step;
+
+    if (index === 10 && x === max_x && y === max_y + 2 * 67) {
       step = Math.floor(Math.random() * 2) + 1;
-    } else if (index === 10 && y === max_y + 73) {
+    } else if (index === 10 && y === max_y + 67) {
       step = 1;
     }
 
@@ -163,24 +166,24 @@
    */
   function helperRoll(x, y, a, step, max_x, max_y) {
     if (a*x < a*max_x) {
-      if (a*(x + a*(153 * step)) > a*max_x) {
-        let extra_length = a*(x + a*(153 * step)) - a*max_x;
+      if (a*(x + a*(113 * step)) > a*max_x) {
+        let extra_length = a*(x + a*(113 * step)) - a*max_x;
         x = max_x;
-        let extra_step = extra_length / 153;
-        y = y + a*(73 * extra_step);
+        let extra_step = extra_length / 113;
+        y = y + a*(67 * extra_step);
       } else {
-        x = x + a*(153 * step);
+        x = x + a*(113 * step);
       }
     } else {
-      if (a*(y + a*(73 * step)) > a*max_y) {
-        let extra_length = a*(y + a*(73 * step)) - a*max_y;
+      if (a*(y + a*(67 * step)) > a*max_y) {
+        let extra_length = a*(y + a*(67 * step)) - a*max_y;
         y = max_y;
-        let extra_step = extra_length / 73;
-        x = max_x - a*(153 * extra_step);
+        let extra_step = extra_length / 67;
+        x = max_x - a*(113 * extra_step);
         positive = !positive;
         index += 2;
       } else {
-        y = y + a*(73 * step);
+        y = y + a*(67 * step);
       }
     }
     return [x, y];
@@ -307,7 +310,7 @@
   *  Function to check the status of an Ajax call, boiler plate code to include,
   *  based on: https://developers.google.com/web/updates/2015/03/introduction-to-fetch
   *  updated from
-  *  https://stackoverflow.com/questions/29473426/fetch-reject-promise-with-json-error-object
+  *  https://stackoverflow.com/questions/29467426/fetch-reject-promise-with-json-error-object
   *  @param {Object} response the response text from the url call
   *  @return {Object} did we succeed or not, so we know whether or not to continue with the
   *  handling of this promise
