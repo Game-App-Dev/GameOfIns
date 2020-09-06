@@ -40,14 +40,62 @@
           </div>
           <div class="game-right" style="padding-top: 25px">
             <div class="prime-btn">
+              <!-- Information page -->
               <button id="info">Information</button>
               <div id="myInfo" class="popup">
                 <div class="infoPopup">
                   <span class="close">&times;</span>
-                  <img id="infoPage" src="img/Information_Page.png" alt="info_page">
+                  <!-- <img id="infoPage" src="img/Information_Page.png" alt="info_page"> -->
+                  <div id="info-detail">
+                    <div id="info-left">
+                      <!-- Basic info (age & annual wage) -->
+                      <div>
+                        <p class="alignleft"><u><strong>Information</strong></u></p>
+                        <div style="clear: both;">
+                          <p class="alignleft">Age:</p>
+                          <p id="age" class="alignright">xxx</p>
+                        </div>
+                        <div style="clear: both;">
+                          <p class="alignleft">Annual Wage:</p>
+                          <p id="wage" class="alignright">xxx</p>
+                        </div>
+                      </div>
+                      <!-- Expenses -->
+                      <div>
+                        <p class="alignleft" style="clear: both;"><u><strong>Expenses</strong></u></p>
+                        <div style="clear: both;">
+                          <p class="alignleft">Insurace List:</p>
+                          <!-- <p id="ins-list" class="alignright">xxx</p> -->
+                        </div>
+                        <div style="clear: both;">
+                          <p class="alignleft">Quality Medical Care:</p>
+                          <p id="medcare-exps" class="alignright">xxx</p>
+                        </div>
+                        <div style="clear: both;">
+                          <p class="alignleft">Accident Protection:</p>
+                          <p id="axiprotection-exps" class="alignright">xxx</p>
+                        </div>
+                        <div style="clear: both;">
+                          <p class="alignleft">Critical Illness:</p>
+                          <p id="crtillness-exps" class="alignright">xxx</p>
+                        </div>
+                        <div style="clear: both;">
+                          <p class="alignleft">Life:</p>
+                          <p id="life-exps" class="alignright">xxx</p>
+                        </div>
+                        <div style="clear: both;">
+                          <p class="alignleft">Saving Plan:</p>
+                          <p id="saving-exps" class="alignright">xxx</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="info-right">
+                      <p class="alignleft">PROTECTION INDEXT</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-
+              <!-- Rule page -->
               <button id="rules">Rules</button>
               <div id="myRules" class="popup">
                 <div class="rulePopup">
@@ -55,6 +103,7 @@
                   <img id="rulePage" src="img/goi_rules.jpg" alt="goi rules" style="width:90%">
                 </div>
               </div>
+              <!-- Menu pop-up -->
               <button id="menu">Menu</button>
               <div id="exit-confirm" class="popup">
                 <div class="exitPopup">
@@ -69,9 +118,10 @@
             <article class="decision-window" class="hidden">
               <!-- Selection window for life event/ insurance paid-off notice/ already got insurance notice -->
               <div id="roll-page" class="hidden">
-                <h2>Roll for next move</h2> <!-- Needs to be modified through js -->
+                <h2>Roll for next move</h2>
                 <div id="event-img" style="height:295px"></div>
-                <div id="roll-btn" style="margin-top: 105px">
+                <div style="height:20px"><p id="roll-des"></p></div>
+                <div id="roll-btn" style="margin-top: 65px">
                   <button id="roll-dice">Roll</button>
                 </div>
               </div>
@@ -80,8 +130,9 @@
               <div id="insurance-type" class="hidden">
                 <h2>Insurance Type</h2>
                 <div id="ins-img"></div>
-                <div id="insurance-btns" style="margin-top: 105px">
-                  <p>Do you want to invest in this plan?</p>
+                <div id="insurance-btns" style="margin-top: 65px">
+                  <div style="height:20px"><p id="ins-des"></p></div>
+                  <p>Do you want to invest in this it?</p>
                   <button id="buy-yes">Yes</button>
                   <button id="buy-no">No</button>
                 </div>
@@ -90,7 +141,7 @@
               <!-- Selection window for 4 different options of the insurance -->
               <div id="plan-selection" class="hidden">
                 <h2>Insurance Options</h2>
-                <div id="plan-btns" style="margin-top: 17vw">
+                <div id="plan-btns">
                   <p>Which plan do you want to invest in?</p>
                   <div id="num-btns">
                     <div style="margin-right: 10%">
@@ -110,12 +161,15 @@
               <div id="saving-plan" class="hidden">
                 <h2><strong>Saving Plan Buy Option</strong></h2>
                 <div id="save-img"></div>
-                <div id="saving-btns" style="margin-top: 105px">
+                <div id="saving-btns" style="margin-top: 65px">
+                  <div style="height:20px"><p id="save-des"></p></div>
                   <p>Do you want to get back the investment in this plan?</p>
                   <button id="save-yes">Yes</button>
                   <button id="save-no">No</button>
                 </div>
               </div>
+
+              <!-- Next window for -->
             </article>
           </div>
         </div>

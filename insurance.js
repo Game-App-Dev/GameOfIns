@@ -41,7 +41,7 @@
 
     id("buy-yes").addEventListener("click", buyYes);
     id("buy-no").addEventListener("click", noButton);
-    //id("save-yes").addEventListener("click", saveYes);
+    // id("save-yes").addEventListener("click", saveYes);
     id("save-no").addEventListener("click", noButton)
   }
 
@@ -68,6 +68,18 @@
     id("start-view").classList.remove("hidden");
     id("game-view").classList.add("hidden");
     id("exit-confirm").style.display = "none";
+    let iimg = qs("#ins-img img");
+    let simg = qs("#save-img img");
+    let eimg = qs("#event-img img");
+    if (iimg != null) {
+      id("ins-img").removeChild(iimg);
+    }
+    if (simg != null) {
+      id("save-img").removeChild(simg);
+    }
+    if (eimg != null) {
+      id("event-img").removeChild(eimg);
+    }
   }
 
   function startRule() {
@@ -135,9 +147,6 @@
     let max_y = 67 * y_step + 50;
 
     let step = Math.floor(Math.random() * 3) + 1;
-
-    qs("h2").innerText = step;
-
     if (index === 10 && x === max_x && y === max_y + 2 * 67) {
       step = Math.floor(Math.random() * 2) + 1;
     } else if (index === 10 && y === max_y + 67) {
@@ -216,17 +225,21 @@
       id("insurance-type").classList.remove("hidden");
       id("ins-img").appendChild(img);
       qs("#insurance-type h2").innerText = capName + " Insurance";
+      id("ins-des").innerText = info[stepCount].reg_des;
     } else if (stepID === "sp") {
       id("saving-plan").classList.remove("hidden");
       id("save-img").appendChild(img);
+      id("save-des").innerText = info[stepCount].reg_des;
     } else if (stepID === "die") {
       id("roll-page").classList.remove("hidden");
       qs("#roll-btn button").disabled = true;
-      qs("#roll-page h2").innerText = "You died... game has ended..."
+      qs("#roll-page h2").innerText = "R.I.P.";
+      id("roll-des").innerText = info[stepCount].reg_des;
     } else {
       id("roll-page").classList.remove("hidden");
       id("event-img").appendChild(img);
       qs("#roll-page h2").innerText = capName;
+      id("roll-des").innerText = info[stepCount].reg_des;
     }
   }
 
@@ -246,6 +259,7 @@
     id("saving-plan").classList.add("hidden");
     id("roll-page").classList.remove("hidden");
     qs("#roll-page h2").innerText = "Roll for next move";
+    id("roll-des").innerText = "";
     let iimg = qs("#ins-img img");
     let simg = qs("#save-img img");
     let eimg = qs("#event-img img");
