@@ -121,6 +121,23 @@ button {
   width: 250px;
 }
 
+/* Protection index bar */
+.protection-index {
+  /**border: 4px solid black;*/
+  border: 4px inset goldenrod;
+  border-radius: 20px;
+}
+
+.index-bar {
+  width: 80%;
+  background-color: gold;
+  height: 20pt;
+  /**border: 4px inset goldenrod;*/
+  border-radius: 20px;
+  /** Border box to get the 4px+4px of border to be included in the 100% width */
+  box-sizing: border-box;
+}
+
 /* The Popup (background) */
 .popup {
   display: none; /* Hidden by default */
@@ -146,20 +163,40 @@ button {
   padding: 20px;
   border: 1px solid #888;
   border-radius: 10px;
-  width: 50%; /* Could be more or less, depending on screen size */
+  width: 900px; /* Could be more or less, depending on screen size */
 }
 
-#infoPage, #rulePage {
+#rulePage {
   width: 100%;
 }
 
 #info-detail {
   display: flex;
   justify-content: space-around;
+  border: 5px outset;
+  margin-top: 40px;
+  height: 650px;
 }
 
 #info-detail > div {
   margin: 15px;
+}
+
+.info-top {
+  height: 100px;
+  margin-top: 15px;
+}
+
+.info-mid {
+  height: 300px;
+}
+
+.info-but {
+  height: 200px;
+}
+
+p {
+  margin: 0;
 }
 
 #info-left, #info-right {
