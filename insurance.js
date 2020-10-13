@@ -43,6 +43,7 @@
     id("buy-no").addEventListener("click", noButton);
     // id("save-yes").addEventListener("click", saveYes);
     id("save-no").addEventListener("click", noButton)
+    fetchPlayer();
   }
 
   /**
@@ -125,6 +126,14 @@
       id("myRules").style.display = "none";
     }
   });
+
+  fetchPlayer() {
+    fetch(BASEURL + "?mode=player")
+      .then(checkStatus)
+      .then(JSON.parse)
+      .then(eventDetail)
+      .catch();
+  }
 
   /**
    * Move the player randomly from 1 to 3 grid.

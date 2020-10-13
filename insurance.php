@@ -2,23 +2,27 @@
 
   if (isset($_GET["mode"])) {
     $mode = $_GET["mode"];
-    if ($mode !== "event") {
-      display_error("Error: Please provide a mode of event.");
-    } else {
+    if ($mode !== "event" && $mode !== "player") {
+      display_error("Error: Please provide a valid mode (event, player).1");
+    } else if ($mode === "event") {
       // Set your CSV events
       $events = "data/step_event.csv";
       // Do it
       $data = csvJSON($events);
       // Print it out as JSON
       echo json_encode($data);
+    } else if ($mode === "player") {
+      $player = "data/player_wage_age/p1.csv";
+      $data = csvJSON($player);
+      echo json_encode($data);
     }
   } else {
-    display_error("Error: Please provide a mode of event.");
+    display_error("Error: Please provide a valid mode (event, player).2");
   }
 
-  function csvJSON($events) {
+  function csvJSON($data) {
     // open csv file
-    if (!($fp = fopen($events, 'r'))) {
+    if (!($fp = fopen($data, 'r'))) {
         display_error("Can't open file...");
     }
 
