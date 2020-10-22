@@ -2,8 +2,8 @@
 
   if (isset($_GET["mode"])) {
     $mode = $_GET["mode"];
-    if ($mode !== "event" && $mode !== "player") {
-      display_error("Error: Please provide a valid mode (event, player).1");
+    if ($mode !== "event" && $mode !== "player" && $mode !== "qm" && $mode !== "ap" && $mode !== "ci" && $mode !== "li") {
+      display_error("Error: Please provide a valid mode (event, player, qm/ap/ci/li).");
     } else if ($mode === "event") {
       // Set your CSV events
       $events = "data/step_event.csv";
@@ -15,9 +15,25 @@
       $player = "data/player_wage_age/p1.csv";
       $data = csvJSON($player);
       echo json_encode($data);
+    } else if ($mode === "qm") {
+      $insurance = "data/fee_data/quality_medical.csv";
+      $data = csvJSON($insurance);
+      echo json_encode($data);
+    } else if ($mode === "ap") {
+      $insurance = "data/fee_data/accident_protection.csv";
+      $data = csvJSON($insurance);
+      echo json_encode($data);
+    } else if ($mode === "ci") {
+      $insurance = "data/fee_data/critical_illness.csv";
+      $data = csvJSON($insurance);
+      echo json_encode($data);
+    } else if ($mode === "li") {
+      $insurance = "data/fee_data/life.csv";
+      $data = csvJSON($insurance);
+      echo json_encode($data);
     }
   } else {
-    display_error("Error: Please provide a valid mode (event, player).2");
+    display_error("Error: Please provide a valid mode (event, player, qm/ap/ci/li).");
   }
 
   function csvJSON($data) {

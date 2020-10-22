@@ -107,8 +107,13 @@ button {
   justify-content: center;
 }
 
+#selection-list {
+  height: 250px;
+  /* white-space: pre; */
+}
+
 #plan-btns {
-  margin-top: 300px;
+  margin-top: 50px;
 }
 
 #plan-btns button {
@@ -119,6 +124,7 @@ button {
 #ins-img img, #save-img img, #event-img img {
   height: 250px;
   width: 250px;
+  margin: 10px;
 }
 
 /* Protection index bar */

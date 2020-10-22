@@ -5,6 +5,10 @@
   let positive = true;
   let index = 0;                                        // index of array MAXSTEP
   let stepCount = 0;
+  let age = 0;
+  let wage = 0;
+  let stepID = "";
+  let fullName = "";
   const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3]; // maximum steps can be made on each side (x / y).
   const BASEURL = "insurance.php";
 
@@ -127,12 +131,21 @@
     }
   });
 
-  fetchPlayer() {
+  function fetchPlayer() {
     fetch(BASEURL + "?mode=player")
       .then(checkStatus)
       .then(JSON.parse)
-      .then(eventDetail)
+      .then(playerDetail)
       .catch();
+  }
+
+  function playerDetail(info) {
+    id("age").innerText = "";
+    id("annual-wage").innerText = "";
+    age = info[stepCount].age;
+    wage = info[stepCount].wage;
+    id("age").innerText = age;
+    id("annual-wage").innerText = wage;
   }
 
   /**
@@ -170,6 +183,7 @@
     id("man3").style.transform = "translate("+x+"px,"+y+"px)";
     stepCount += step;
     fetchEvent();
+    fetchPlayer();
   }
 
   /**
@@ -220,8 +234,8 @@
     id("saving-plan").classList.add("hidden");
     id("roll-page").classList.add("hidden");
     id("insurance-type").classList.add("hidden");
-    let stepID = info[stepCount].id;
-    let fullName = info[stepCount].name;
+    stepID = info[stepCount].id;
+    fullName = info[stepCount].name;
     let img = document.createElement("img");
     img.src = "img/" + fullName + ".jpg";
     img.alt = fullName;
@@ -260,6 +274,60 @@
     // id("plan-three").addEventListener("click", planThree);
     // id("plan-four").addEventListener("click", planFour);
     id("plan-back").addEventListener("click", planBack);
+    /* need to fetch choice & coverage info (maybe fetch in this function directly)*/
+    if (stepID === "qm") {
+      fetchQuality();
+    } else if (stepID === "ap") {
+      fetchAccident();
+    } else if (stepID === "ci") {
+      fetchCritical();
+    } else {
+      fetchLife();
+    }
+  }
+
+  function fetchQuality() {
+    fetch(BASEURL + "?mode=qm")
+      .then(checkStatus)
+      .then(JSON.parse)
+      .then(qualityDetail)
+      .catch();
+  }
+
+  // function fetchAccident() {
+  //   fetch(BASEURL + "?mode=ap")
+  //     .then(checkStatus)
+  //     .then(JSON.parse)
+  //     .then(accidentDetail)
+  //     .catch();
+  // }
+  //
+  // function fetchCritical() {
+  //   fetch(BASEURL + "?mode=ci")
+  //     .then(checkStatus)
+  //     .then(JSON.parse)
+  //     .then(criticalDetail)
+  //     .catch();
+  // }
+  //
+  // function fetchLife() {
+  //   fetch(BASEURL + "?mode=li")
+  //     .then(checkStatus)
+  //     .then(JSON.parse)
+  //     .then(lifeDetail)
+  //     .catch();
+  // }
+
+  function qualityDetail(info) {
+    id("s1").innerText = "Choice1: $" + info[age-20].choice_1 + "     Coverage: " + info[age-20].coverage_1;
+    id("s2").innerText = "Choice2: $" + info[age-20].choice_2 + "     Coverage: " + info[age-20].coverage_2;
+    id("s3").innerText = "Choice3: $" + info[age-20].choice_3 + "     Coverage: " + info[age-20].coverage_3;
+    id("s4").innerText = "Choice4: $" + info[age-20].choice_4 + "     Coverage: " + info[age-20].coverage_4;
+  }
+
+  function planBack() {
+    id("insurance-type").classList.remove("hidden");
+    id("plan-selection").classList.add("hidden");
   }
 
   function noButton() {
@@ -281,11 +349,6 @@
     if (eimg != null) {
       id("event-img").removeChild(eimg);
     }
-  }
-
-  function planBack() {
-    id("insurance-type").classList.remove("hidden");
-    id("plan-selection").classList.add("hidden");
   }
 
 
