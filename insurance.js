@@ -3,6 +3,7 @@
 
   let ended = false;
   let positive = true;
+  let rolled = false;
   let index = 0;                                        // index of array MAXSTEP
   let stepCount = 0;
   let age = 0;
@@ -10,7 +11,7 @@
   let firstSave = 0;    // first time buying saving plan
   let stepID = "";
   let fullName = "";
-  let choices = new Array(4);
+  let choices = new Array(20).fill(0);
   const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3]; // maximum steps can be made on each side (x / y).
   const BASEURL = "insurance.php";
 
@@ -158,6 +159,7 @@
    * Move the player randomly from 1 to 3 grid.
    */
   function rollDice() {
+    rolled = true;
     let eimg = qs("#event-img img");
     if (eimg != null) {
       id("event-img").removeChild(eimg);
@@ -278,9 +280,9 @@
     }
     id("plan-selection").classList.remove("hidden");
     id("plan-one").addEventListener("click", planOne);
-    // id("plan-two").addEventListener("click", planTwo);
-    // id("plan-three").addEventListener("click", planThree);
-    // id("plan-four").addEventListener("click", planFour);
+    id("plan-two").addEventListener("click", planTwo);
+    id("plan-three").addEventListener("click", planThree);
+    id("plan-four").addEventListener("click", planFour);
     id("plan-back").addEventListener("click", planBack);
     fetchChoice(stepID);
   }
@@ -291,9 +293,9 @@
     }
     id("save-selection").classList.remove("hidden");
     id("s-one").addEventListener("click", planOne);
-    // id("plan-two").addEventListener("click", planTwo);
-    // id("plan-three").addEventListener("click", planThree);
-    // id("plan-four").addEventListener("click", planFour);
+    id("s-two").addEventListener("click", planTwo);
+    id("s-three").addEventListener("click", planThree);
+    id("s-four").addEventListener("click", planFour);
     id("save-back").addEventListener("click", saveBack);
     if (firstSave === 0) {
       firstSave = stepCount;
@@ -302,8 +304,57 @@
   }
 
   function planOne() {
-    id("plan-selection").classList.add("hidden");
-    id(stepID + "-exps").innerText = choices[1];
+    hideSelection();
+    id("roll-page").classList.remove("hidden");
+    var index = setIndex(0);
+    id(stepID + "-exps").innerText = choices[index];
+    removeImg();
+  }
+
+  function planTwo() {
+    hideSelection();
+    id("roll-page").classList.remove("hidden");
+    var index = setIndex(1);
+    id(stepID + "-exps").innerText = choices[index];
+    removeImg();
+  }
+
+  function planThree() {
+    hideSelection();
+    id("roll-page").classList.remove("hidden");
+    var index = setIndex(2);
+    id(stepID + "-exps").innerText = choices[index];
+    removeImg();
+  }
+
+  function planFour() {
+    hideSelection();
+    id("roll-page").classList.remove("hidden");
+    var index = setIndex(3);
+    id(stepID + "-exps").innerText = choices[index];
+    removeImg();
+  }
+
+  function setIndex(i) {
+    if (stepID === 'ap') {
+      i += 4;
+    } else if (stepID === 'ci') {
+      i += 8;
+    } else if (stepID === 'li') {
+      i += 12;
+    } else if (stepID === 'sp') {
+      i += 16;
+    }
+    return i;
+  }
+
+  function hideSelection() {
+    if (!id("save-selection").classList.contains("hidden")) {
+      id("save-selection").classList.add("hidden");
+    }
+    if (!id("plan-selection").classList.contains("hidden")) {
+      id("plan-selection").classList.add("hidden");
+    }
   }
 
   function fetchChoice(id) {
@@ -316,17 +367,36 @@
 
   function choiceDetail(info) {
     if (stepID != "sp") {
-      for (var i = 1; i <= 4; i++) {
-        choices[i] = info[age-20]["choice_"+i];
+      if (rolled) {
+        var iStart = 1;
+        if (stepID === 'ap') {
+          iStart = 5;
+        } else if (stepID === 'ci') {
+          iStart = 9;
+        } else if (stepID === 'li') {
+          iStart = 13;
+        } else if (stepID === 'sp') {
+          iStart = 17;
+        }
+        var iStop = iStart + 3;
+        var num = 1;
+        for (var i = iStart; i <= iStop; i++) {
+          choices[i-1] += parseInt(info[age-20]["choice_"+num]);
+          num++;
+        }
+        rolled = false;
       }
       // id("i1").innerText = "Choice1: $" + info[age-20].choice_1 + " Coverage: " + info[age-20].coverage_1;
-      id("i1").innerText = "Choice1: $" + choices[1] + " Coverage: " + info[age-20].coverage_1;
-      id("i2").innerText = "Choice2: $" + choices[2] + " Coverage: " + info[age-20].coverage_2;
-      id("i3").innerText = "Choice3: $" + choices[3] + " Coverage: " + info[age-20].coverage_3;
-      id("i4").innerText = "Choice4: $" + choices[4] + " Coverage: " + info[age-20].coverage_4;
+      id("i1").innerText = "Choice1: $" + info[age-20].choice_1 + " Coverage: " + info[age-20].coverage_1;
+      id("i2").innerText = "Choice2: $" + info[age-20].choice_2 + " Coverage: " + info[age-20].coverage_2;
+      id("i3").innerText = "Choice3: $" + info[age-20].choice_3 + " Coverage: " + info[age-20].coverage_3;
+      id("i4").innerText = "Choice4: $" + info[age-20].choice_4 + " Coverage: " + info[age-20].coverage_4;
     } else {
-      for (var i = 1; i <= 4; i++) {
-        choices[i] = info[stepCount - firstSave]["choice_"+i];
+      if (rolled) {
+        for (var i = 1; i <= 4; i++) {
+          choices[i-1] += parseInt(info[stepCount - firstSave]["choice_"+i]);
+        }
+        rolled = false;
       }
       id("s1").innerText = "Choice1: $" + info[stepCount - firstSave].choice_1;
       id("s2").innerText = "Choice2: $" + info[stepCount - firstSave].choice_2;
@@ -352,6 +422,10 @@
     id("roll-page").classList.remove("hidden");
     qs("#roll-page h2").innerText = "Roll for next move";
     id("roll-des").innerText = "";
+    removeImg();
+  }
+
+  function removeImg() {
     let iimg = qs("#ins-img img");
     let simg = qs("#save-img img");
     let eimg = qs("#event-img img");
