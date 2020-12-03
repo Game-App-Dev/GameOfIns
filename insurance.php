@@ -2,8 +2,8 @@
 
   if (isset($_GET["mode"])) {
     $mode = $_GET["mode"];
-    if ($mode !== "event" && $mode !== "player" && $mode !== "qm" && $mode !== "ap" && $mode !== "ci" && $mode !== "li") {
-      display_error("Error: Please provide a valid mode (event, player, qm/ap/ci/li).");
+    if ($mode !== "event" && $mode !== "player" && $mode !== "qm" && $mode !== "ap" && $mode !== "ci" && $mode !== "li" && $mode !== "sp") {
+      display_error("Error: Please provide a valid mode (event, player, qm/ap/ci/li/sp).");
     } else if ($mode === "event") {
       // Set your CSV events
       $events = "data/step_event.csv";
@@ -29,6 +29,10 @@
       echo json_encode($data);
     } else if ($mode === "li") {
       $insurance = "data/fee_data/life.csv";
+      $data = csvJSON($insurance);
+      echo json_encode($data);
+    } else if ($mode === "sp") {
+      $insurance = "data/fee_data/saving.csv";
       $data = csvJSON($insurance);
       echo json_encode($data);
     }
