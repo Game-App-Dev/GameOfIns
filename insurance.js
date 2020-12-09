@@ -12,7 +12,7 @@
   let stepID = "";
   let fullName = "";
   let choices = new Array(20).fill(0);
-  let purchased = new Array(4).fill(0);
+  let purchased = new Array(20).fill(0);
   const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3]; // maximum steps can be made on each side (x / y).
   const BASEURL = "insurance.php";
 
@@ -279,12 +279,26 @@
     if (!id("insurance-type").classList.contains("hidden")) {
       id("insurance-type").classList.add("hidden");
     }
+    id("plan-one").disabled = false;
+    id("plan-two").disabled = false;
+    id("plan-three").disabled = false;
+    id("plan-four").disabled = false;
     id("plan-selection").classList.remove("hidden");
     id("plan-one").addEventListener("click", planOne);
     id("plan-two").addEventListener("click", planTwo);
     id("plan-three").addEventListener("click", planThree);
     id("plan-four").addEventListener("click", planFour);
     id("plan-back").addEventListener("click", planBack);
+    let index = setIndex(0);
+    for (let i = index; i < index+4; i++) {
+      if (purchased[i] != 0) {
+        id("plan-one").disabled = true;
+        id("plan-two").disabled = true;
+        id("plan-three").disabled = true;
+        id("plan-four").disabled = true;
+        end;
+      }
+    }
     fetchChoice(stepID);
   }
 
@@ -292,14 +306,28 @@
     if (!id("saving-plan").classList.contains("hidden")) {
       id("saving-plan").classList.add("hidden");
     }
+    id("save-one").disabled = false;
+    id("save-two").disabled = false;
+    id("save-three").disabled = false;
+    id("save-four").disabled = false;
     id("save-selection").classList.remove("hidden");
-    id("s-one").addEventListener("click", planOne);
-    id("s-two").addEventListener("click", planTwo);
-    id("s-three").addEventListener("click", planThree);
-    id("s-four").addEventListener("click", planFour);
+    id("save-one").addEventListener("click", planOne);
+    id("save-two").addEventListener("click", planTwo);
+    id("save-three").addEventListener("click", planThree);
+    id("save-four").addEventListener("click", planFour);
     id("save-back").addEventListener("click", saveBack);
     if (firstSave === 0) {
       firstSave = stepCount;
+    }
+    let index = setIndex(0);
+    for (let i = index; i < index+4; i++) {
+      if (purchased[i] != 0) {
+        id("save-one").disabled = true;
+        id("save-two").disabled = true;
+        id("save-three").disabled = true;
+        id("save-four").disabled = true;
+        end;
+      }
     }
     fetchChoice(stepID);
   }
@@ -308,12 +336,10 @@
     hideSelection();
     id("roll-page").classList.remove("hidden");
     var index = setIndex(0);
-    if (purchased[0] === 0) {
-      purchased[0] = choices[index];
-    } else {
-
+    if (purchased[index] === 0) {
+      purchased[index] = choices[index];
     }
-    id(stepID + "-exps").innerText = purchased[0];
+    id(stepID + "-exps").innerText = purchased[index];
     removeImg();
   }
 
@@ -321,6 +347,9 @@
     hideSelection();
     id("roll-page").classList.remove("hidden");
     var index = setIndex(1);
+    if (purchased[index] === 0) {
+      purchased[index] = choices[index];
+    }
     id(stepID + "-exps").innerText = choices[index];
     removeImg();
   }
@@ -329,6 +358,9 @@
     hideSelection();
     id("roll-page").classList.remove("hidden");
     var index = setIndex(2);
+    if (purchased[index] === 0) {
+      purchased[index] = choices[index];
+    }
     id(stepID + "-exps").innerText = choices[index];
     removeImg();
   }
@@ -337,6 +369,9 @@
     hideSelection();
     id("roll-page").classList.remove("hidden");
     var index = setIndex(3);
+    if (purchased[index] === 0) {
+      purchased[index] = choices[index];
+    }
     id(stepID + "-exps").innerText = choices[index];
     removeImg();
   }
@@ -374,16 +409,16 @@
   function choiceDetail(info) {
     if (stepID != "sp") {
       if (rolled) {
-        var iStart = 1;
-        if (stepID === 'ap') {
-          iStart = 5;
-        } else if (stepID === 'ci') {
-          iStart = 9;
-        } else if (stepID === 'li') {
-          iStart = 13;
-        } else if (stepID === 'sp') {
-          iStart = 17;
-        }
+        var iStart = setIndex(1);
+        // if (stepID === 'ap') {
+        //   iStart = 5;
+        // } else if (stepID === 'ci') {
+        //   iStart = 9;
+        // } else if (stepID === 'li') {
+        //   iStart = 13;
+        // } else if (stepID === 'sp') {
+        //   iStart = 17;
+        // }
         var iStop = iStart + 3;
         var num = 1;
         for (var i = iStart; i <= iStop; i++) {
