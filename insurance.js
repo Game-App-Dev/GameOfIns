@@ -12,6 +12,7 @@
   let stepID = "";
   let fullName = "";
   let choices = new Array(20).fill(0);
+  let purchased = new Array(4).fill(0);
   const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3]; // maximum steps can be made on each side (x / y).
   const BASEURL = "insurance.php";
 
@@ -307,7 +308,12 @@
     hideSelection();
     id("roll-page").classList.remove("hidden");
     var index = setIndex(0);
-    id(stepID + "-exps").innerText = choices[index];
+    if (purchased[0] === 0) {
+      purchased[0] = choices[index];
+    } else {
+
+    }
+    id(stepID + "-exps").innerText = purchased[0];
     removeImg();
   }
 
