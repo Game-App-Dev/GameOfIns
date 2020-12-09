@@ -410,15 +410,6 @@
     if (stepID != "sp") {
       if (rolled) {
         var iStart = setIndex(1);
-        // if (stepID === 'ap') {
-        //   iStart = 5;
-        // } else if (stepID === 'ci') {
-        //   iStart = 9;
-        // } else if (stepID === 'li') {
-        //   iStart = 13;
-        // } else if (stepID === 'sp') {
-        //   iStart = 17;
-        // }
         var iStop = iStart + 3;
         var num = 1;
         for (var i = iStart; i <= iStop; i++) {
@@ -427,15 +418,18 @@
         }
         rolled = false;
       }
-      // id("i1").innerText = "Choice1: $" + info[age-20].choice_1 + " Coverage: " + info[age-20].coverage_1;
       id("i1").innerText = "Choice1: $" + info[age-20].choice_1 + " Coverage: " + info[age-20].coverage_1;
       id("i2").innerText = "Choice2: $" + info[age-20].choice_2 + " Coverage: " + info[age-20].coverage_2;
       id("i3").innerText = "Choice3: $" + info[age-20].choice_3 + " Coverage: " + info[age-20].coverage_3;
       id("i4").innerText = "Choice4: $" + info[age-20].choice_4 + " Coverage: " + info[age-20].coverage_4;
     } else {
       if (rolled) {
-        for (var i = 1; i <= 4; i++) {
-          choices[i-1] += parseInt(info[stepCount - firstSave]["choice_"+i]);
+        var iStart = setIndex(1);
+        var iStop = iStart + 3;
+        var num = 1;
+        for (var i = iStart; i <= iStop; i++) {
+          choices[i-1] += parseInt(info[stepCount - firstSave]["choice_"+num]);
+          num++;
         }
         rolled = false;
       }
