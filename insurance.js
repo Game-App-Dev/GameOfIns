@@ -42,11 +42,11 @@
     id("start-view").classList.add("hidden");
     id("insurance-type").classList.add("hidden");
     id("plan-selection").classList.add("hidden");
+    id("save-selection").classList.add("hidden");
     id("saving-plan").classList.add("hidden");
     id("roll-page").classList.remove("hidden");
     id("game-view").classList.remove("hidden");
     id("roll-dice").addEventListener("click", rollDice);
-
     id("buy-yes").addEventListener("click", buyYes);
     id("buy-no").addEventListener("click", noButton);
     id("save-yes").addEventListener("click", saveYes);
@@ -81,6 +81,20 @@
     id("s2").innerText = "";
     id("s3").innerText = "";
     id("s4").innerText = "";
+    id("i1").innerText = "";
+    id("i2").innerText = "";
+    id("i3").innerText = "";
+    id("i4").innerText = "";
+    id("qm-exps").innerText = "";
+    id("ap-exps").innerText = "";
+    id("ci-exps").innerText = "";
+    id("li-exps").innerText = "";
+    id("sp-exps").innerText = "";
+    id("other-exps").innerText = "";
+    id("wage").innerText = "xxx";
+    id("exps-amount").innerText = "xxx";
+    id("net-cash-flow").innerText = "xxx";
+    id("cash-on-hand").innerText = "xxx";
     let iimg = qs("#ins-img img");
     let simg = qs("#save-img img");
     let eimg = qs("#event-img img");
@@ -92,6 +106,10 @@
     }
     if (eimg != null) {
       id("event-img").removeChild(eimg);
+    }
+    for(let i = 0; i < 20; i++) {
+      choices[i] = 0;
+      purchased[i] = 0;
     }
   }
 
@@ -318,16 +336,6 @@
     id("save-back").addEventListener("click", saveBack);
     if (firstSave === 0) {
       firstSave = stepCount;
-    }
-    let index = setIndex(0);
-    for (let i = index; i < index+4; i++) {
-      if (purchased[i] != 0) {
-        id("save-one").disabled = true;
-        id("save-two").disabled = true;
-        id("save-three").disabled = true;
-        id("save-four").disabled = true;
-        end;
-      }
     }
     fetchChoice(stepID);
   }
