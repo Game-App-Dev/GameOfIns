@@ -9,8 +9,9 @@
   let age = 0;
   let wage = 0;
   let firstSave = 0;    // first time buying saving plan
+  let spAsset = 0;
   let stepID = "";
-  let fullName = "";
+  let capName = "";
   let choices = new Array(20).fill(0);
   let purchased = new Array(20).fill(0);
   const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3]; // maximum steps can be made on each side (x / y).
@@ -168,10 +169,12 @@
   function playerDetail(info) {
     id("age").innerText = "";
     id("annual-wage").innerText = "";
+    id("wage").innerText = "";
     age = info[stepCount].age;
     wage = info[stepCount].wage;
     id("age").innerText = age;
     id("annual-wage").innerText = wage;
+    id("wage").innerText = wage;
   }
 
   /**
@@ -262,7 +265,7 @@
     id("roll-page").classList.add("hidden");
     id("insurance-type").classList.add("hidden");
     stepID = info[stepCount].id;
-    fullName = info[stepCount].name;
+    let fullName = info[stepCount].name;
     let img = document.createElement("img");
     img.src = "img/" + fullName + ".jpg";
     img.alt = fullName;
@@ -270,7 +273,7 @@
     for (let i = 0; i < splitName.length; i++) {
       splitName[i] = splitName[i].charAt(0).toUpperCase() + splitName[i].substring(1);
     }
-    let capName = splitName.join(" ");
+    capName = splitName.join(" ");
     if (stepID === "qm" || stepID === "ap" || stepID === "ci" || stepID === "li") {
       id("insurance-type").classList.remove("hidden");
       id("ins-img").appendChild(img);
@@ -314,7 +317,7 @@
         id("plan-two").disabled = true;
         id("plan-three").disabled = true;
         id("plan-four").disabled = true;
-        end;
+        break;
       }
     }
     fetchChoice(stepID);
@@ -344,8 +347,14 @@
     hideSelection();
     id("roll-page").classList.remove("hidden");
     var index = setIndex(0);
-    if (purchased[index] === 0) {
-      purchased[index] = choices[index];
+    purchased[index] += choices[index];
+    if (stepID === 'sp') {
+      spAsset = choices[index];
+      if (!id(capName)) {
+        addAsset(spAsset);
+      } else {
+        id(capName).innerText = spAsset;
+      }
     }
     id(stepID + "-exps").innerText = purchased[index];
     removeImg();
@@ -355,21 +364,33 @@
     hideSelection();
     id("roll-page").classList.remove("hidden");
     var index = setIndex(1);
-    if (purchased[index] === 0) {
-      purchased[index] = choices[index];
+    purchased[index] += choices[index];
+    if (stepID === 'sp') {
+      spAsset = choices[index];
+      if (!id(capName)) {
+        addAsset(spAsset);
+      } else {
+        id(capName).innerText = spAsset;
+      }
     }
-    id(stepID + "-exps").innerText = choices[index];
+    id(stepID + "-exps").innerText = purchased[index];
     removeImg();
   }
 
   function planThree() {
-    hideSelection();
+    hideSelection();purchased[index]
     id("roll-page").classList.remove("hidden");
     var index = setIndex(2);
-    if (purchased[index] === 0) {
-      purchased[index] = choices[index];
+    purchased[index] += choices[index];
+    if (stepID === 'sp') {
+      spAsset = choices[index];
+      if (!id(capName)) {
+        addAsset(spAsset);
+      } else {
+        id(capName).innerText = spAsset;
+      }
     }
-    id(stepID + "-exps").innerText = choices[index];
+    id(stepID + "-exps").innerText = purchased[index];
     removeImg();
   }
 
@@ -377,10 +398,16 @@
     hideSelection();
     id("roll-page").classList.remove("hidden");
     var index = setIndex(3);
-    if (purchased[index] === 0) {
-      purchased[index] = choices[index];
+    purchased[index] += choices[index];
+    if (stepID === 'sp') {
+      spAsset = choices[index];
+      if (!id(capName)) {
+        addAsset(spAsset);
+      } else {
+        id(capName).innerText = spAsset;
+      }
     }
-    id(stepID + "-exps").innerText = choices[index];
+    id(stepID + "-exps").innerText = purchased[index];
     removeImg();
   }
 
@@ -406,6 +433,21 @@
     }
   }
 
+  function addAsset(amount) {
+    let div = document.createElement("div");
+    let pType = document.createElement("p");
+    let pAmount = document.createElement("p");
+    div.style.clear = "both";
+    pType.classList.add("alignleft");
+    pAmount.classList.add("alignright");
+    pType.innerText = capName;
+    pAmount.innerText = amount;
+    pAmount.setAttribute('id', capName);
+    div.appendChild(pType);
+    div.appendChild(pAmount);
+    id("asset-list").appendChild(div);
+  }
+
   function fetchChoice(id) {
     fetch(BASEURL + "?mode=" + id)
     .then(checkStatus)
@@ -417,11 +459,11 @@
   function choiceDetail(info) {
     if (stepID != "sp") {
       if (rolled) {
-        var iStart = setIndex(1);
-        var iStop = iStart + 3;
+        var iStart = setIndex(0);
+        var iStop = iStart + 4;
         var num = 1;
-        for (var i = iStart; i <= iStop; i++) {
-          choices[i-1] += parseInt(info[age-20]["choice_"+num]);
+        for (var i = iStart; i < iStop; i++) {
+          choices[i] = parseInt(info[age-20]["choice_"+num]);
           num++;
         }
         rolled = false;
@@ -432,19 +474,19 @@
       id("i4").innerText = "Choice4: $" + info[age-20].choice_4 + " Coverage: " + info[age-20].coverage_4;
     } else {
       if (rolled) {
-        var iStart = setIndex(1);
-        var iStop = iStart + 3;
+        var iStart = setIndex(0);
+        var iStop = iStart + 4;
         var num = 1;
-        for (var i = iStart; i <= iStop; i++) {
-          choices[i-1] += parseInt(info[stepCount - firstSave]["choice_"+num]);
+        for (var i = iStart; i < iStop; i++) {
+          choices[i] = parseInt(info[stepCount - firstSave]["choice_"+num]);
           num++;
         }
         rolled = false;
       }
-      id("s1").innerText = "Choice1: $" + info[stepCount - firstSave].choice_1;
-      id("s2").innerText = "Choice2: $" + info[stepCount - firstSave].choice_2;
-      id("s3").innerText = "Choice3: $" + info[stepCount - firstSave].choice_3;
-      id("s4").innerText = "Choice4: $" + info[stepCount - firstSave].choice_4;
+      id("s1").innerText = "Choice1: $12000";
+      id("s2").innerText = "Choice2: $18000";
+      id("s3").innerText = "Choice3: $24000";
+      id("s4").innerText = "Choice4: $30000";
     }
   }
 
