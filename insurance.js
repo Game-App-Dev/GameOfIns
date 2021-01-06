@@ -14,7 +14,7 @@
   let stepID = "";
   let capName = "";
   let choices = new Array(20).fill(0);
-  let purchased = new Array(20).fill(0);
+  let purchased = new Array(17).fill(0);
   const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3]; // maximum steps can be made on each side (x / y).
   const BASEURL = "insurance.php";
 
@@ -109,8 +109,10 @@
     if (eimg != null) {
       id("event-img").removeChild(eimg);
     }
-    for(let i = 0; i < 20; i++) {
+    for (let i = 0; i < 20; i++) {
       choices[i] = 0;
+    }
+    for (let i = 0; i < 17; i++) {
       purchased[i] = 0;
     }
   }
@@ -344,143 +346,143 @@
   function planOne() {
     hideSelection();
     id("roll-page").classList.remove("hidden");
-    var index = setIndex(0);
+    // var index = setIndex(0);
     // purchased[index] += choices[index];
     if (firstSave[0] === 0) {
       firstSave[0] = stepCount;
     }
+    // id(stepID + "-exps").innerText = purchased[index];
     planNum = 0;
-    fetchSaving(stepID);
-    purchased[index] += choices[index];
-    if (stepID === 'sp') {
-      spAsset = choices[index];
-      if (!id(capName)) {
-        addAsset(spAsset);
-      } else {
-        if (firstSave[1] != 0) {
-          spAsset += choices[index + 1];
-        }
-        if (firstSave[2] != 0) {
-          spAsset += choices[index + 2];
-        }
-        if (firstSave[3] != 0) {
-          spAsset += choices[index + 3];
-        }
-        id(capName).innerText = spAsset;
-      }
-    }
-    id(stepID + "-exps").innerText = purchased[index];
-    removeImg();
+    fetchSaving();
+    // if (stepID === 'sp') {
+    //   spAsset = choices[index];
+    //   if (!id(capName)) {
+    //     addAsset(spAsset);
+    //   } else {
+    //     if (firstSave[1] != 0) {
+    //       spAsset += choices[index + 1];
+    //     }
+    //     if (firstSave[2] != 0) {
+    //       spAsset += choices[index + 2];
+    //     }
+    //     if (firstSave[3] != 0) {
+    //       spAsset += choices[index + 3];
+    //     }
+    //     id(capName).innerText = spAsset;
+    //   }
+    // }
+    // removeImg();
   }
 
   function planTwo() {
     hideSelection();
     id("roll-page").classList.remove("hidden");
-    var index = setIndex(1);
-    purchased[index] += choices[index];
     if (firstSave[1] === 0) {
       firstSave[1] = stepCount;
     }
     planNum = 1;
-    fetchSaving(stepID);
-    // choices[index] =  parseInt(info[stepCount - firstSave[1]]["choice_2"]);
-    if (stepID === 'sp') {
-      spAsset = choices[index];
-      if (!id(capName)) {
-        addAsset(spAsset);
-      } else {
-        if (firstSave[0] != 0) {
-          spAsset += choices[index - 1];
-        }
-        if (firstSave[2] != 0) {
-          spAsset += choices[index + 1];
-        }
-        if (firstSave[3] != 0) {
-          spAsset += choices[index + 2];
-        }
-        id(capName).innerText = spAsset;
-      }
-    }
-    id(stepID + "-exps").innerText = purchased[index];
-    removeImg();
+    fetchSaving();
   }
 
   function planThree() {
-    hideSelection();purchased[index]
+    hideSelection();
     id("roll-page").classList.remove("hidden");
-    var index = setIndex(2);
-    purchased[index] += choices[index];
     if (firstSave[2] === 0) {
       firstSave[2] = stepCount;
     }
     planNum = 2;
-    fetchSaving(stepID);
-    // choices[index] = parseInt(info[stepCount - firstSave[2]]["choice_3"]);
-    if (stepID === 'sp') {
-      spAsset = choices[index];
-      if (!id(capName)) {
-        addAsset(spAsset);
-      } else {
-        if (firstSave[0] != 0) {
-          spAsset += choices[index - 2];
-        }
-        if (firstSave[1] != 0) {
-          spAsset += choices[index - 3];
-        }
-        if (firstSave[3] != 0) {
-          spAsset += choices[index + 1];
-        }
-        id(capName).innerText = spAsset;
-      }
-    }
-    id(stepID + "-exps").innerText = purchased[index];
-    removeImg();
+    fetchSaving();
   }
 
   function planFour() {
     hideSelection();
     id("roll-page").classList.remove("hidden");
-    var index = setIndex(3);
-    purchased[index] += choices[index];
     if (firstSave[3] === 0) {
       firstSave[3] = stepCount;
     }
     planNum = 3;
-    fetchSaving(stepID);
-    // choices[index] = parseInt(info[stepCount - firstSave[3]]["choice_4"]);
-    if (stepID === 'sp') {
-      spAsset = choices[index];
-      if (!id(capName)) {
-        addAsset(spAsset);
-      } else {
-        if (firstSave[0] != 0) {
-          spAsset += choices[index - 3];
-        }
-        if (firstSave[1] != 0) {
-          spAsset += choices[index - 2];
-        }
-        if (firstSave[2] != 0) {
-          spAsset += choices[index - 1];
-        }
-        id(capName).innerText = spAsset;
-      }
-    }
-    id(stepID + "-exps").innerText = purchased[index];
-    removeImg();
+    fetchSaving();
   }
 
   // update saving amount for each choices.
-  function fetchSaving(id) {
-    fetch(BASEURL + "?mode=" + id)
+  function fetchSaving() {
+    fetch(BASEURL + "?mode=" + stepID)
     .then(checkStatus)
     .then(JSON.parse)
     .then(updateSaving)
-    .catch();
+    .catch(displayError);
   }
 
   function updateSaving(info) {
     var index = setIndex(planNum);
-    choices[index] = parseInt(info[stepCount - firstSave[planNum]]["choice_"+(planNum+1)]);
+    if (stepID === 'sp') {
+      choices[index] = parseInt(info[stepCount - firstSave[planNum]]["choice_" + (planNum+1)]);
+      spAsset += choices[index];
+      if (!id(capName)) {
+        addAsset(spAsset);
+      } else {
+        if (planNum === 0) {
+          if (firstSave[1] != 0) {
+            choices[index + 1] = parseInt(info[stepCount - firstSave[1]]["choice_2"]);
+            spAsset += choices[index + 1];
+          }
+          if (firstSave[2] != 0) {
+            choices[index + 2] = parseInt(info[stepCount - firstSave[2]]["choice_3"]);
+            spAsset += choices[index + 2];
+          }
+          if (firstSave[3] != 0) {
+            choices[index + 3] = parseInt(info[stepCount - firstSave[3]]["choice_4"]);
+            spAsset += choices[index + 3];
+          }
+        } else if (planNum === 1) {
+          if (firstSave[0] != 0) {
+            choices[index - 1] = parseInt(info[stepCount - firstSave[0]]["choice_1"]);
+            spAsset += choices[index - 1];
+          }
+          if (firstSave[2] != 0) {
+            choices[index + 1] = parseInt(info[stepCount - firstSave[2]]["choice_3"]);
+            spAsset += choices[index + 1];
+          }
+          if (firstSave[3] != 0) {
+            choices[index + 2] = parseInt(info[stepCount - firstSave[3]]["choice_4"]);
+            spAsset += choices[index + 2];
+          }
+        } else if (planNum === 2) {
+          if (firstSave[0] != 0) {
+            choices[index - 2] = parseInt(info[stepCount - firstSave[0]]["choice_1"]);
+            spAsset += choices[index - 2];
+          }
+          if (firstSave[1] != 0) {
+            choices[index - 3] = parseInt(info[stepCount - firstSave[1]]["choice_2"]);
+            spAsset += choices[index - 3];
+          }
+          if (firstSave[3] != 0) {
+            choices[index + 1] = parseInt(info[stepCount - firstSave[3]]["choice_4"]);
+            spAsset += choices[index + 1];
+          }
+        } else {
+          if (firstSave[0] != 0) {
+            choices[index - 3] = parseInt(info[stepCount - firstSave[0]]["choice_1"]);
+            spAsset += choices[index - 3];
+          }
+          if (firstSave[1] != 0) {
+            choices[index - 2] = parseInt(info[stepCount - firstSave[1]]["choice_2"]);
+            spAsset += choices[index - 2];
+          }
+          if (firstSave[2] != 0) {
+            choices[index - 1] = parseInt(info[stepCount - firstSave[2]]["choice_3"]);
+            spAsset += choices[index - 1];
+          }
+        }
+      }
+      id(capName).innerText = spAsset;
+      index = 16;  // All saving expenses are added in index 16 instead of 4 indexes like others
+      purchased[index] += parseInt(info[0]["choice_" + (planNum+1)]);
+    } else {
+      purchased[index] += choices[index];
+    }
+    id(stepID + "-exps").innerText = purchased[index];
+    removeImg();
   }
 
   function setIndex(i) {
@@ -545,18 +547,7 @@
       id("i3").innerText = "Choice3: $" + info[age-20].choice_3 + " Coverage: " + info[age-20].coverage_3;
       id("i4").innerText = "Choice4: $" + info[age-20].choice_4 + " Coverage: " + info[age-20].coverage_4;
     } else {
-      if (rolled) {
-        // var iStart = setIndex(0);
-        // var iStop = iStart + 4;
-        // var num = 1;
-        // for (var i = iStart; i < iStop; i++) {
-        //   if (firstSave[num-1] != 0) {
-        //     choices[i] = parseInt(info[stepCount - firstSave[i]]["choice_"+num]);
-        //   }
-        //   num++;
-        // }
-        rolled = false;
-      }
+      if (rolled) rolled = false;
       id("s1").innerText = "Choice1: $12000";
       id("s2").innerText = "Choice2: $18000";
       id("s3").innerText = "Choice3: $24000";
