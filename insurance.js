@@ -4,18 +4,18 @@
   let ended = false;
   let positive = true;
   let rolled = false;
-  let index = 0;                                        // index of array MAXSTEP
+  let index = 0;                                              // index of array MAXSTEP
   let stepCount = 0;
   let age = 0;
   let wage = 0;
-  let firstSave = new Array(4).fill(0);    // first time buying saving plan
+  let firstSave = [[],[],[],[]];                             // first time buying saving plan
   let spAsset = 0;
   let planNum = 0;
   let stepID = "";
   let capName = "";
   let choices = new Array(20).fill(0);
   let purchased = new Array(17).fill(0);
-  const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3]; // maximum steps can be made on each side (x / y).
+  const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3];      // maximum steps can be made on each side (x / y).
   const BASEURL = "insurance.php";
 
 
@@ -217,6 +217,8 @@
     stepCount += step;
     fetchEvent();
     fetchPlayer();
+    if (firstSave[0].length !== 0 || firstSave[1].length !== 0 ||
+        firstSave[2].length !== 0 || firstSave[3].length !== 0) fetchSaving("sp");
   }
 
   /**
@@ -346,143 +348,88 @@
   function planOne() {
     hideSelection();
     id("roll-page").classList.remove("hidden");
-    // var index = setIndex(0);
-    // purchased[index] += choices[index];
-    if (firstSave[0] === 0) {
-      firstSave[0] = stepCount;
-    }
-    // id(stepID + "-exps").innerText = purchased[index];
     planNum = 0;
-    fetchSaving();
-    // if (stepID === 'sp') {
-    //   spAsset = choices[index];
-    //   if (!id(capName)) {
-    //     addAsset(spAsset);
-    //   } else {
-    //     if (firstSave[1] != 0) {
-    //       spAsset += choices[index + 1];
-    //     }
-    //     if (firstSave[2] != 0) {
-    //       spAsset += choices[index + 2];
-    //     }
-    //     if (firstSave[3] != 0) {
-    //       spAsset += choices[index + 3];
-    //     }
-    //     id(capName).innerText = spAsset;
-    //   }
-    // }
-    // removeImg();
+    updateExpenses(planNum);
+    if (stepID === 'sp') {
+      firstSave[0].push(stepCount);
+      fetchSaving(stepID);
+    }
+    removeImg();
   }
 
   function planTwo() {
     hideSelection();
     id("roll-page").classList.remove("hidden");
-    if (firstSave[1] === 0) {
-      firstSave[1] = stepCount;
-    }
     planNum = 1;
-    fetchSaving();
+    updateExpenses(planNum);
+    if (stepID === 'sp') {
+      firstSave[1].push(stepCount);
+      fetchSaving(stepID);
+    }
+    removeImg();
   }
 
   function planThree() {
     hideSelection();
     id("roll-page").classList.remove("hidden");
-    if (firstSave[2] === 0) {
-      firstSave[2] = stepCount;
-    }
     planNum = 2;
-    fetchSaving();
+    updateExpenses(planNum);
+    if (stepID === 'sp') {
+      firstSave[2].push(stepCount);
+      fetchSaving(stepID);
+    }
+    removeImg();
   }
 
   function planFour() {
     hideSelection();
     id("roll-page").classList.remove("hidden");
-    if (firstSave[3] === 0) {
-      firstSave[3] = stepCount;
-    }
     planNum = 3;
-    fetchSaving();
+    updateExpenses(planNum);
+    if (stepID === 'sp') {
+      firstSave[3].push(stepCount);
+      fetchSaving(stepID);
+    }
+    removeImg();
+  }
+
+  function updateExpenses(planNum) {
+    let index = setIndex(planNum);
+    if (stepID !== 'sp') {
+      purchased[index] += choices[index];
+    }
+    id(stepID + "-exps").innerText = purchased[index];
   }
 
   // update saving amount for each choices.
-  function fetchSaving() {
-    fetch(BASEURL + "?mode=" + stepID)
+  function fetchSaving(id) {
+    fetch(BASEURL + "?mode=" + id)
     .then(checkStatus)
     .then(JSON.parse)
     .then(updateSaving)
     .catch(displayError);
   }
 
+  // Saving asset amount can be updated every step and be shown on info page. (not yet can consider after it reached the max
+  // steps of 25).
+  // Calculation is correct for buying multiple saving plans.
   function updateSaving(info) {
-    var index = setIndex(planNum);
-    if (stepID === 'sp') {
-      choices[index] = parseInt(info[stepCount - firstSave[planNum]]["choice_" + (planNum+1)]);
-      spAsset += choices[index];
-      if (!id(capName)) {
-        addAsset(spAsset);
-      } else {
-        if (planNum === 0) {
-          if (firstSave[1] != 0) {
-            choices[index + 1] = parseInt(info[stepCount - firstSave[1]]["choice_2"]);
-            spAsset += choices[index + 1];
-          }
-          if (firstSave[2] != 0) {
-            choices[index + 2] = parseInt(info[stepCount - firstSave[2]]["choice_3"]);
-            spAsset += choices[index + 2];
-          }
-          if (firstSave[3] != 0) {
-            choices[index + 3] = parseInt(info[stepCount - firstSave[3]]["choice_4"]);
-            spAsset += choices[index + 3];
-          }
-        } else if (planNum === 1) {
-          if (firstSave[0] != 0) {
-            choices[index - 1] = parseInt(info[stepCount - firstSave[0]]["choice_1"]);
-            spAsset += choices[index - 1];
-          }
-          if (firstSave[2] != 0) {
-            choices[index + 1] = parseInt(info[stepCount - firstSave[2]]["choice_3"]);
-            spAsset += choices[index + 1];
-          }
-          if (firstSave[3] != 0) {
-            choices[index + 2] = parseInt(info[stepCount - firstSave[3]]["choice_4"]);
-            spAsset += choices[index + 2];
-          }
-        } else if (planNum === 2) {
-          if (firstSave[0] != 0) {
-            choices[index - 2] = parseInt(info[stepCount - firstSave[0]]["choice_1"]);
-            spAsset += choices[index - 2];
-          }
-          if (firstSave[1] != 0) {
-            choices[index - 3] = parseInt(info[stepCount - firstSave[1]]["choice_2"]);
-            spAsset += choices[index - 3];
-          }
-          if (firstSave[3] != 0) {
-            choices[index + 1] = parseInt(info[stepCount - firstSave[3]]["choice_4"]);
-            spAsset += choices[index + 1];
-          }
-        } else {
-          if (firstSave[0] != 0) {
-            choices[index - 3] = parseInt(info[stepCount - firstSave[0]]["choice_1"]);
-            spAsset += choices[index - 3];
-          }
-          if (firstSave[1] != 0) {
-            choices[index - 2] = parseInt(info[stepCount - firstSave[1]]["choice_2"]);
-            spAsset += choices[index - 2];
-          }
-          if (firstSave[2] != 0) {
-            choices[index - 1] = parseInt(info[stepCount - firstSave[2]]["choice_3"]);
-            spAsset += choices[index - 1];
-          }
+    if (!id(capName) && capName === "Saving") {
+      spAsset += parseInt(info[stepCount - firstSave[planNum][firstSave[planNum].length-1]]["choice_" + (planNum+1)]);
+      addAsset(spAsset);
+    } else {
+      spAsset = 0;
+      for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < firstSave[i].length; j++) {
+          spAsset += parseInt(info[stepCount - firstSave[i][j]]["choice_" + (i + 1)]);
         }
       }
-      id(capName).innerText = spAsset;
-      index = 16;  // All saving expenses are added in index 16 instead of 4 indexes like others
-      purchased[index] += parseInt(info[0]["choice_" + (planNum+1)]);
-    } else {
-      purchased[index] += choices[index];
     }
-    id(stepID + "-exps").innerText = purchased[index];
-    removeImg();
+    id("Saving").innerText = spAsset;
+    if (stepID === "sp") {
+      purchased[16] += parseInt(info[0]["choice_" + (planNum+1)]);
+      id(stepID + "-exps").innerText = purchased[16];
+    }
   }
 
   function setIndex(i) {
