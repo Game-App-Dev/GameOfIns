@@ -432,7 +432,11 @@
       spAsset = 0;
       for (let i = 0; i < 4; i++) {
         for (let j = 0; j < firstSave[i].length; j++) {
-          spAsset += parseInt(info[stepCount - firstSave[i][j]]["choice_" + (i + 1)]);
+          let spStep = stepCount - firstSave[i][j];
+          if (spStep > 24) {
+            spStep = 24;
+          }
+          spAsset += parseInt(info[spStep]["choice_" + (i + 1)]);
         }
       }
     }
