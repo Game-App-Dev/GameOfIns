@@ -4,6 +4,7 @@
   let ended = false;
   let positive = true;
   let rolled = false;
+  let onSP = false;
   let index = 0;                                              // index of array MAXSTEP
   let stepCount = 0;
   let age = 0;
@@ -217,8 +218,10 @@
     stepCount += step;
     fetchEvent();
     fetchPlayer();
-    if (firstSave[0].length !== 0 || firstSave[1].length !== 0 ||
-        firstSave[2].length !== 0 || firstSave[3].length !== 0) fetchSaving("sp");
+    if (onSP === false && (firstSave[0].length !== 0 || firstSave[1].length !== 0 ||
+                           firstSave[2].length !== 0 || firstSave[3].length !== 0)) {
+      fetchSaving("sp");
+    }
   }
 
   /**
@@ -349,10 +352,14 @@
     hideSelection();
     id("roll-page").classList.remove("hidden");
     planNum = 0;
-    updateExpenses(planNum);
     if (stepID === 'sp') {
+      onSP = true;
       firstSave[0].push(stepCount);
       fetchSaving(stepID);
+    } else {
+      let index = setIndex(planNum);
+      purchased[index] += choices[index];
+      id(stepID + "-exps").innerText = purchased[index];
     }
     removeImg();
   }
@@ -361,10 +368,14 @@
     hideSelection();
     id("roll-page").classList.remove("hidden");
     planNum = 1;
-    updateExpenses(planNum);
     if (stepID === 'sp') {
+      onSP = true;
       firstSave[1].push(stepCount);
       fetchSaving(stepID);
+    } else {
+      let index = setIndex(planNum);
+      purchased[index] += choices[index];
+      id(stepID + "-exps").innerText = purchased[index];
     }
     removeImg();
   }
@@ -373,10 +384,14 @@
     hideSelection();
     id("roll-page").classList.remove("hidden");
     planNum = 2;
-    updateExpenses(planNum);
     if (stepID === 'sp') {
+      onSP = true;
       firstSave[2].push(stepCount);
       fetchSaving(stepID);
+    } else {
+      let index = setIndex(planNum);
+      purchased[index] += choices[index];
+      id(stepID + "-exps").innerText = purchased[index];
     }
     removeImg();
   }
@@ -385,20 +400,16 @@
     hideSelection();
     id("roll-page").classList.remove("hidden");
     planNum = 3;
-    updateExpenses(planNum);
     if (stepID === 'sp') {
+      onSP = true;
       firstSave[3].push(stepCount);
       fetchSaving(stepID);
+    } else {
+      let index = setIndex(planNum);
+      purchased[index] += choices[index];
+      id(stepID + "-exps").innerText = purchased[index];
     }
     removeImg();
-  }
-
-  function updateExpenses(planNum) {
-    let index = setIndex(planNum);
-    if (stepID !== 'sp') {
-      purchased[index] += choices[index];
-    }
-    id(stepID + "-exps").innerText = purchased[index];
   }
 
   // update saving amount for each choices.
@@ -426,9 +437,10 @@
       }
     }
     id("Saving").innerText = spAsset;
-    if (stepID === "sp") {
+    if (stepID === "sp" && onSP === true) {
       purchased[16] += parseInt(info[0]["choice_" + (planNum+1)]);
       id(stepID + "-exps").innerText = purchased[16];
+      onSP = false;
     }
   }
 
