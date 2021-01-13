@@ -15,7 +15,7 @@
   let stepID = "";
   let capName = "";
   let choices = new Array(20).fill(0);
-  let purchased = new Array(17).fill(0);
+  let expenses = new Array(17).fill(0);
   const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3];      // maximum steps can be made on each side (x / y).
   const BASEURL = "insurance.php";
 
@@ -114,7 +114,7 @@
       choices[i] = 0;
     }
     for (let i = 0; i < 17; i++) {
-      purchased[i] = 0;
+      expenses[i] = 0;
     }
   }
 
@@ -218,8 +218,8 @@
     stepCount += step;
     fetchEvent();
     fetchPlayer();
-    if (onSP === false && (firstSave[0].length !== 0 || firstSave[1].length !== 0 ||
-                           firstSave[2].length !== 0 || firstSave[3].length !== 0)) {
+    if (/*onSP === false && (*/firstSave[0].length !== 0 || firstSave[1].length !== 0 ||
+                           firstSave[2].length !== 0 || firstSave[3].length !== 0/*)*/) {
       fetchSaving("sp");
     }
   }
@@ -320,7 +320,7 @@
     id("plan-back").addEventListener("click", planBack);
     let index = setIndex(0);
     for (let i = index; i < index+4; i++) {
-      if (purchased[i] != 0) {
+      if (expenses[i] != 0) {
         id("plan-one").disabled = true;
         id("plan-two").disabled = true;
         id("plan-three").disabled = true;
@@ -358,8 +358,8 @@
       fetchSaving(stepID);
     } else {
       let index = setIndex(planNum);
-      purchased[index] += choices[index];
-      id(stepID + "-exps").innerText = purchased[index];
+      expenses[index] += choices[index];
+      id(stepID + "-exps").innerText = expenses[index];
     }
     removeImg();
   }
@@ -374,8 +374,8 @@
       fetchSaving(stepID);
     } else {
       let index = setIndex(planNum);
-      purchased[index] += choices[index];
-      id(stepID + "-exps").innerText = purchased[index];
+      expenses[index] += choices[index];
+      id(stepID + "-exps").innerText = expenses[index];
     }
     removeImg();
   }
@@ -390,8 +390,8 @@
       fetchSaving(stepID);
     } else {
       let index = setIndex(planNum);
-      purchased[index] += choices[index];
-      id(stepID + "-exps").innerText = purchased[index];
+      expenses[index] += choices[index];
+      id(stepID + "-exps").innerText = expenses[index];
     }
     removeImg();
   }
@@ -406,8 +406,8 @@
       fetchSaving(stepID);
     } else {
       let index = setIndex(planNum);
-      purchased[index] += choices[index];
-      id(stepID + "-exps").innerText = purchased[index];
+      expenses[index] += choices[index];
+      id(stepID + "-exps").innerText = expenses[index];
     }
     removeImg();
   }
@@ -421,31 +421,33 @@
     .catch(displayError);
   }
 
-  // Saving asset amount can be updated every step and be shown on info page. (not yet can consider after it reached the max
-  // steps of 25).
-  // Calculation is correct for buying multiple saving plans.
+  /**
+   * Updates the saving expense and asset. Expense would be subtracted when reached 25 steps.
+   * @param  {[type]} info Fetched information from csv file.
+   */
   function updateSaving(info) {
     if (!id(capName) && capName === "Saving") {
       spAsset += parseInt(info[stepCount - firstSave[planNum][firstSave[planNum].length-1]]["choice_" + (planNum+1)]);
+      expenses[16] += parseInt(info[0]["choice_" + (planNum+1)]);
       addAsset(spAsset);
     } else {
       spAsset = 0;
+      expenses[16] = 0;
       for (let i = 0; i < 4; i++) {
         for (let j = 0; j < firstSave[i].length; j++) {
           let spStep = stepCount - firstSave[i][j];
+          let n = 1;
           if (spStep > 24) {
             spStep = 24;
+            n = 0;
           }
+          expenses[16] += parseInt(info[0]["choice_" + (i + 1)]) * n;
           spAsset += parseInt(info[spStep]["choice_" + (i + 1)]);
         }
       }
     }
     id("Saving").innerText = spAsset;
-    if (stepID === "sp" && onSP === true) {
-      purchased[16] += parseInt(info[0]["choice_" + (planNum+1)]);
-      id(stepID + "-exps").innerText = purchased[16];
-      onSP = false;
-    }
+    id("sp-exps").innerText = expenses[16];
   }
 
   function setIndex(i) {
