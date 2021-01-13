@@ -4,7 +4,6 @@
   let ended = false;
   let positive = true;
   let rolled = false;
-  let onSP = false;
   let index = 0;                                              // index of array MAXSTEP
   let stepCount = 0;
   let age = 0;
@@ -80,24 +79,16 @@
     id("start-view").classList.remove("hidden");
     id("game-view").classList.add("hidden");
     id("exit-confirm").style.display = "none";
-    id("s1").innerText = "";
-    id("s2").innerText = "";
-    id("s3").innerText = "";
-    id("s4").innerText = "";
-    id("i1").innerText = "";
-    id("i2").innerText = "";
-    id("i3").innerText = "";
-    id("i4").innerText = "";
-    id("qm-exps").innerText = "";
-    id("ap-exps").innerText = "";
-    id("ci-exps").innerText = "";
-    id("li-exps").innerText = "";
-    id("sp-exps").innerText = "";
+    id("qm-exps").innerText = "0";
+    id("ap-exps").innerText = "0";
+    id("ci-exps").innerText = "0";
+    id("li-exps").innerText = "0";
+    id("sp-exps").innerText = "0";
     id("other-exps").innerText = "";
-    id("wage").innerText = "xxx";
-    id("exps-amount").innerText = "xxx";
-    id("net-cash-flow").innerText = "xxx";
-    id("cash-on-hand").innerText = "xxx";
+    id("exps-amount").innerText = "0";
+    id("net-cash-flow").innerText = "0";
+    id("cash-on-hand").innerText = "0";
+    qs(".index-bar").style.width = "0%";
     let iimg = qs("#ins-img img");
     let simg = qs("#save-img img");
     let eimg = qs("#event-img img");
@@ -218,8 +209,8 @@
     stepCount += step;
     fetchEvent();
     fetchPlayer();
-    if (/*onSP === false && (*/firstSave[0].length !== 0 || firstSave[1].length !== 0 ||
-                           firstSave[2].length !== 0 || firstSave[3].length !== 0/*)*/) {
+    if (firstSave[0].length !== 0 || firstSave[1].length !== 0 ||
+                           firstSave[2].length !== 0 || firstSave[3].length !== 0) {
       fetchSaving("sp");
     }
   }
@@ -325,6 +316,7 @@
         id("plan-two").disabled = true;
         id("plan-three").disabled = true;
         id("plan-four").disabled = true;
+        // qs("index-bar").style.width = indexBar + "%";
         break;
       }
     }
@@ -353,13 +345,10 @@
     id("roll-page").classList.remove("hidden");
     planNum = 0;
     if (stepID === 'sp') {
-      onSP = true;
       firstSave[0].push(stepCount);
       fetchSaving(stepID);
     } else {
-      let index = setIndex(planNum);
-      expenses[index] += choices[index];
-      id(stepID + "-exps").innerText = expenses[index];
+      nonSPexpense();
     }
     removeImg();
   }
@@ -369,13 +358,10 @@
     id("roll-page").classList.remove("hidden");
     planNum = 1;
     if (stepID === 'sp') {
-      onSP = true;
       firstSave[1].push(stepCount);
       fetchSaving(stepID);
     } else {
-      let index = setIndex(planNum);
-      expenses[index] += choices[index];
-      id(stepID + "-exps").innerText = expenses[index];
+      nonSPexpense();
     }
     removeImg();
   }
@@ -385,13 +371,10 @@
     id("roll-page").classList.remove("hidden");
     planNum = 2;
     if (stepID === 'sp') {
-      onSP = true;
       firstSave[2].push(stepCount);
       fetchSaving(stepID);
     } else {
-      let index = setIndex(planNum);
-      expenses[index] += choices[index];
-      id(stepID + "-exps").innerText = expenses[index];
+      nonSPexpense();
     }
     removeImg();
   }
@@ -401,15 +384,23 @@
     id("roll-page").classList.remove("hidden");
     planNum = 3;
     if (stepID === 'sp') {
-      onSP = true;
       firstSave[3].push(stepCount);
       fetchSaving(stepID);
     } else {
-      let index = setIndex(planNum);
-      expenses[index] += choices[index];
-      id(stepID + "-exps").innerText = expenses[index];
+      nonSPexpense();
     }
     removeImg();
+  }
+
+  function nonSPexpense() {
+    let index = setIndex(planNum);
+    expenses[index] += choices[index];
+    id(stepID + "-exps").innerText = expenses[index];
+    let indexBar = 0;
+    for (let i = 0; i < expenses.length - 2; i++) {
+      if (expenses[i] > 0) indexBar += 25;
+    }
+    qs(".index-bar").style.width = indexBar + "%";
   }
 
   // update saving amount for each choices.

@@ -135,7 +135,7 @@ button {
 }
 
 .index-bar {
-  width: 80%;
+  width: 0%;
   background-color: gold;
   height: 20pt;
   /**border: 4px inset goldenrod;*/
