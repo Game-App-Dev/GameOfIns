@@ -310,13 +310,12 @@
     id("plan-four").addEventListener("click", planFour);
     id("plan-back").addEventListener("click", planBack);
     let index = setIndex(0);
-    for (let i = index; i < index+4; i++) {
+    for (let i = index; i < index + 4; i++) {
       if (expenses[i] != 0) {
         id("plan-one").disabled = true;
         id("plan-two").disabled = true;
         id("plan-three").disabled = true;
         id("plan-four").disabled = true;
-        // qs("index-bar").style.width = indexBar + "%";
         break;
       }
     }
@@ -392,6 +391,9 @@
     removeImg();
   }
 
+  /**
+   * Updates expense display on information page for Insurance other than Saving Plan.
+   */
   function nonSPexpense() {
     let index = setIndex(planNum);
     expenses[index] += choices[index];
