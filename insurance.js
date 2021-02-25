@@ -292,6 +292,7 @@
       id("event-img").appendChild(img);
       qs("#roll-page h2").innerText = capName;
       id("roll-des").innerText = info[stepCount].reg_des;
+      if (stepID === "nk" || stepID === "nc" || stepID === "tf" || stepID === "nh" || stepID === "tra") eExps();
     }
   }
 
@@ -405,6 +406,23 @@
     qs(".index-bar").style.width = indexBar + "%";
   }
 
+  function eExps() {
+    let div = document.createElement("div");
+    let pn = document.createElement("p");
+    let pa = document.createElement("p");
+    div.style.cleare = "both";
+    pn.classList.add("alignleft");
+    pa.classList.add("alignright");
+    pn.innerText = capName;
+    if (stepID === "nk") {
+      pa.innerText = parseInt(wage * 0.1, 10);
+    }
+    pa.setAttribute('id', capName);
+    div.appendChild(pn);
+    div.appendChild(pa);
+    id("ins-list").appendChild(div);
+  }
+
   // update saving amount for each choices.
   function fetchSaving(id) {
     fetch(BASEURL + "?mode=" + id)
@@ -494,6 +512,7 @@
         var iStart = setIndex(0);
         var iStop = iStart + 4;
         var num = 1;
+        // var startSmoke =
         for (var i = iStart; i < iStop; i++) {
           choices[i] = parseInt(info[age-20]["choice_"+num]);
           num++;
