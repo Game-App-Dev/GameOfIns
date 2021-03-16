@@ -451,7 +451,6 @@
   function updateSaving(info) {
     if (!id(capName) && capName === "Saving") {
       spAsset += parseInt(info[stepCount - firstSave[planNum][firstSave[planNum].length-1]]["choice_" + (planNum+1)]);
-      totalExpense += parseInt(info[0]["choice_" + (planNum+1)]);
       expenses[16] += parseInt(info[0]["choice_" + (planNum+1)]);
       addAsset(spAsset);
     } else {
@@ -469,11 +468,9 @@
           spAsset += parseInt(info[spStep]["choice_" + (i + 1)]);
         }
       }
-      totalExpense += parseInt(info[0]["choice_" + (planNum+1)]);
     }
     id("Saving").innerText = spAsset;
     id("sp-exps").innerText = expenses[16];
-    id("exps-amount").innerText = totalExpense;
   }
 
   function setIndex(i) {
