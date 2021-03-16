@@ -8,6 +8,7 @@
   let stepCount = 0;
   let age = 0;
   let wage = 0;
+  let total_expense = 0;
   let firstSave = [[],[],[],[]];                             // first time buying saving plan
   let spAsset = 0;
   let planNum = 0;
@@ -107,6 +108,7 @@
     for (let i = 0; i < 17; i++) {
       expenses[i] = 0;
     }
+    total_expense = 0;
   }
 
   function startRule() {
@@ -398,7 +400,9 @@
   function nonSPexpense() {
     let index = setIndex(planNum);
     expenses[index] += choices[index];
+    total_expense += expenses[index];
     id(stepID + "-exps").innerText = expenses[index];
+    id("exps-amount").innerText = total_expense;
     let indexBar = 0;
     for (let i = 0; i < expenses.length - 2; i++) {
       if (expenses[i] > 0) indexBar += 25;
@@ -407,6 +411,7 @@
   }
 
   function eExps() {
+    let expense_amount = 0;
     let div = document.createElement("div");
     let pn = document.createElement("p");
     let pa = document.createElement("p");
@@ -415,12 +420,15 @@
     pa.classList.add("alignright");
     pn.innerText = capName;
     if (stepID === "nk") {
-      pa.innerText = parseInt(wage * 0.1, 10);
+      expense_amount = wage * 0.1, 10;
+      pa.innerText = parseInt(expense_amount);
     }
+    total_expense += parseInt(expense_amount, 10);
     pa.setAttribute('id', capName);
     div.appendChild(pn);
     div.appendChild(pa);
     id("ins-list").appendChild(div);
+    id("exps-amount").innerText = total_expense;
   }
 
   // update saving amount for each choices.
