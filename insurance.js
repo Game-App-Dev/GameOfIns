@@ -12,7 +12,6 @@
   let firstSave = [[],[],[],[]];                             // first time buying saving plan
   let spAsset = 0;
   let planNum = 0;
-  let totalExpense = 0;
   let stepID = "";
   let capName = "";
   let choices = new Array(20).fill(0);
@@ -90,7 +89,6 @@
     id("exps-amount").innerText = "0";
     id("net-cash-flow").innerText = "0";
     id("cash-on-hand").innerText = "0";
-    id("exps-amount").innerText = "0";
     qs(".index-bar").style.width = "0%";
     let iimg = qs("#ins-img img");
     let simg = qs("#save-img img");
@@ -296,7 +294,7 @@
       id("event-img").appendChild(img);
       qs("#roll-page h2").innerText = capName;
       id("roll-des").innerText = info[stepCount].reg_des;
-      if (stepID === "nk" || stepID === "nc" || stepID === "tf" || stepID === "nh" || stepID === "tra") eventExpenses();
+      if (stepID === "nk" || stepID === "nc" || stepID === "tf" || stepID === "nh" || stepID === "tra") eExps();
     }
   }
 
@@ -398,7 +396,6 @@
 
   /**
    * Updates expense display on information page for Insurance other than Saving Plan.
-   * Also updates the index bar by 25% of length when one of the insurance other than Saving plan in purchased.
    */
   function nonSPexpense() {
     let index = setIndex(planNum);
@@ -406,18 +403,21 @@
     total_expense += expenses[index];
     id(stepID + "-exps").innerText = expenses[index];
 <<<<<<< HEAD
+<<<<<<< HEAD
     id("exps-amount").innerText = total_expense;
 =======
     totalExpense += expenses[index];
 >>>>>>> 9053ad3d0fe98389ac9b570e0fbb404da28be6d1
+=======
+>>>>>>> parent of 9053ad3 (working on total expense, currently returning fetch error after purchasing saving)
     let indexBar = 0;
     for (let i = 0; i < expenses.length - 2; i++) {
       if (expenses[i] > 0) indexBar += 25;
     }
     qs(".index-bar").style.width = indexBar + "%";
-    id("exps-amount").innerText = totalExpense;
   }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   function eExps() {
     let expense_amount = 0;
@@ -428,6 +428,9 @@
    */
   function eventExpenses() {
 >>>>>>> 9053ad3d0fe98389ac9b570e0fbb404da28be6d1
+=======
+  function eExps() {
+>>>>>>> parent of 9053ad3 (working on total expense, currently returning fetch error after purchasing saving)
     let div = document.createElement("div");
     let pn = document.createElement("p");
     let pa = document.createElement("p");
@@ -437,6 +440,7 @@
     pn.innerText = capName;
     if (stepID === "nk") {
 <<<<<<< HEAD
+<<<<<<< HEAD
       expense_amount = wage * 0.1, 10;
       pa.innerText = parseInt(expense_amount);
 =======
@@ -444,6 +448,9 @@
       pa.innerText = n;
       totalExpense += n;
 >>>>>>> 9053ad3d0fe98389ac9b570e0fbb404da28be6d1
+=======
+      pa.innerText = parseInt(wage * 0.1, 10);
+>>>>>>> parent of 9053ad3 (working on total expense, currently returning fetch error after purchasing saving)
     }
     total_expense += parseInt(expense_amount, 10);
     pa.setAttribute('id', capName);
@@ -451,10 +458,13 @@
     div.appendChild(pa);
     id("ins-list").appendChild(div);
 <<<<<<< HEAD
+<<<<<<< HEAD
     id("exps-amount").innerText = total_expense;
 =======
     id("exps-amount").innerText = totalExpense;
 >>>>>>> 9053ad3d0fe98389ac9b570e0fbb404da28be6d1
+=======
+>>>>>>> parent of 9053ad3 (working on total expense, currently returning fetch error after purchasing saving)
   }
 
   // update saving amount for each choices.
@@ -473,7 +483,6 @@
   function updateSaving(info) {
     if (!id(capName) && capName === "Saving") {
       spAsset += parseInt(info[stepCount - firstSave[planNum][firstSave[planNum].length-1]]["choice_" + (planNum+1)]);
-      totalExpense += parseInt(info[0]["choice_" + (planNum+1)]);
       expenses[16] += parseInt(info[0]["choice_" + (planNum+1)]);
       addAsset(spAsset);
     } else {
@@ -491,11 +500,9 @@
           spAsset += parseInt(info[spStep]["choice_" + (i + 1)]);
         }
       }
-      totalExpense += parseInt(info[0]["choice_" + (planNum+1)]);
     }
     id("Saving").innerText = spAsset;
     id("sp-exps").innerText = expenses[16];
-    id("exps-amount").innerText = totalExpense;
   }
 
   function setIndex(i) {
@@ -520,10 +527,6 @@
     }
   }
 
-  /**
-   * Updates the asset section
-   * @param {INTEGER} amount amount of the asset
-   */
   function addAsset(amount) {
     let div = document.createElement("div");
     let pType = document.createElement("p");
