@@ -8,6 +8,7 @@
   let stepCount = 0;
   let age = 0;
   let wage = 0;
+  let smokeRisk = 0;
   let firstSave = [[],[],[],[]];                             // first time buying saving plan
   let spAsset = 0;
   let planNum = 0;
@@ -294,7 +295,9 @@
       id("event-img").appendChild(img);
       qs("#roll-page h2").innerText = capName;
       id("roll-des").innerText = info[stepCount].reg_des;
-      if (stepID === "nk" || stepID === "nc" || stepID === "tf" || stepID === "nh" || stepID === "tra") eventExpenses();
+      if (stepID === "smk" || stepID === "ca" || stepID === "nk" || stepID === "lb" ||
+          stepID === "ue" || stepID === "tf" || stepID === "nc" || stepID === "nh" ||
+          stepID === "tra" || stepID === "div" || stepID === "sl") eventExpenses();
     }
   }
 
@@ -400,7 +403,7 @@
    */
   function nonSPexpense() {
     let index = setIndex(planNum);
-    expenses[index] += choices[index];
+    expenses[index] += Math.ceil(choices[index] * (1 + smokeRisk));
     id(stepID + "-exps").innerText = expenses[index];
     totalExpense += expenses[index];
     let indexBar = 0;
@@ -423,8 +426,11 @@
     pn.classList.add("alignleft");
     pa.classList.add("alignright");
     pn.innerText = capName;
-    if (stepID === "nk") {
-      let n = parseInt(wage * 0.1, 10);
+    if (stepID === "smk") { // smoking
+      smokeRisk = 0.2;
+    }
+    if (stepID === "nk") { // new kid
+      let n = Math.ceil(wage * 0.1, 10);
       pa.innerText = n;
       totalExpense += n;
     }
@@ -528,17 +534,16 @@
         var iStart = setIndex(0);
         var iStop = iStart + 4;
         var num = 1;
-        // var startSmoke =
         for (var i = iStart; i < iStop; i++) {
           choices[i] = parseInt(info[age-20]["choice_"+num]);
           num++;
         }
         rolled = false;
       }
-      id("i1").innerText = "Choice1: $" + info[age-20].choice_1 + " Coverage: " + info[age-20].coverage_1;
-      id("i2").innerText = "Choice2: $" + info[age-20].choice_2 + " Coverage: " + info[age-20].coverage_2;
-      id("i3").innerText = "Choice3: $" + info[age-20].choice_3 + " Coverage: " + info[age-20].coverage_3;
-      id("i4").innerText = "Choice4: $" + info[age-20].choice_4 + " Coverage: " + info[age-20].coverage_4;
+      id("i1").innerText = "Choice1: $" + Math.ceil(info[age-20].choice_1 * (1 + smokeRisk)) + " Coverage: " + info[age-20].coverage_1;
+      id("i2").innerText = "Choice2: $" + Math.ceil(info[age-20].choice_2 * (1 + smokeRisk)) + " Coverage: " + info[age-20].coverage_2;
+      id("i3").innerText = "Choice3: $" + Math.ceil(info[age-20].choice_3 * (1 + smokeRisk)) + " Coverage: " + info[age-20].coverage_3;
+      id("i4").innerText = "Choice4: $" + Math.ceil(info[age-20].choice_4 * (1 + smokeRisk)) + " Coverage: " + info[age-20].coverage_4;
     } else {
       if (rolled) rolled = false;
       id("s1").innerText = "Choice1: $12000";
