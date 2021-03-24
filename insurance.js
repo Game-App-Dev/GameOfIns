@@ -16,7 +16,7 @@
   let stepID = "";
   let capName = "";
   let choices = new Array(20).fill(0);
-  let expenses = new Array(17).fill(0);
+  let expenses = new Array(5).fill(0);
   const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3];      // maximum steps can be made on each side (x / y).
   const BASEURL = "insurance.php";
 
@@ -107,7 +107,7 @@
     for (let i = 0; i < 20; i++) {
       choices[i] = 0;
     }
-    for (let i = 0; i < 17; i++) {
+    for (let i = 0; i < 5; i++) {
       expenses[i] = 0;
     }
   }
@@ -315,15 +315,12 @@
     id("plan-three").addEventListener("click", planThree);
     id("plan-four").addEventListener("click", planFour);
     id("plan-back").addEventListener("click", planBack);
-    let index = setIndex(0);
-    for (let i = index; i < index + 4; i++) {
-      if (expenses[i] != 0) {
-        id("plan-one").disabled = true;
-        id("plan-two").disabled = true;
-        id("plan-three").disabled = true;
-        id("plan-four").disabled = true;
-        break;
-      }
+    let index = setIndex(0, false);
+    if (expenses[index] != 0) {
+      id("plan-one").disabled = true;
+      id("plan-two").disabled = true;
+      id("plan-three").disabled = true;
+      id("plan-four").disabled = true;
     }
     fetchChoice(stepID);
   }
@@ -402,12 +399,13 @@
    * Also updates the index bar by 25% of length when one of the insurance other than Saving plan in purchased.
    */
   function nonSPexpense() {
-    let index = setIndex(planNum);
-    expenses[index] += Math.ceil(choices[index] * (1 + smokeRisk));
-    id(stepID + "-exps").innerText = expenses[index];
-    totalExpense += expenses[index];
+    let c_index = setIndex(planNum, true);
+    let e_index = setIndex(0, false);
+    expenses[e_index] += Math.ceil(choices[c_index] * (1 + smokeRisk));
+    id(stepID + "-exps").innerText = expenses[e_index];
+    totalExpense += expenses[e_index];
     let indexBar = 0;
-    for (let i = 0; i < expenses.length - 2; i++) {
+    for (let i = 0; i < 4; i++) {
       if (expenses[i] > 0) indexBar += 25;
     }
     qs(".index-bar").style.width = indexBar + "%";
@@ -428,6 +426,10 @@
     pn.innerText = capName;
     if (stepID === "smk") { // smoking
       smokeRisk = 0.2;
+      return;
+    }
+    if (stepID === "ca") {
+
     }
     if (stepID === "nk") { // new kid
       let n = Math.ceil(wage * 0.1, 10);
@@ -457,11 +459,11 @@
   function updateSaving(info) {
     if (!id(capName) && capName === "Saving") {
       spAsset += parseInt(info[stepCount - firstSave[planNum][firstSave[planNum].length-1]]["choice_" + (planNum+1)]);
-      expenses[16] += parseInt(info[0]["choice_" + (planNum+1)]);
+      expenses[4] += parseInt(info[0]["choice_" + (planNum+1)]);
       addAsset(spAsset);
     } else {
       spAsset = 0;
-      expenses[16] = 0;
+      expenses[4] = 0;
       for (let i = 0; i < 4; i++) {
         for (let j = 0; j < firstSave[i].length; j++) {
           let spStep = stepCount - firstSave[i][j];
@@ -470,24 +472,36 @@
             spStep = 24;
             n = 0;
           }
-          expenses[16] += parseInt(info[0]["choice_" + (i + 1)]) * n;
+          expenses[4] += parseInt(info[0]["choice_" + (i + 1)]) * n;
           spAsset += parseInt(info[spStep]["choice_" + (i + 1)]);
         }
       }
     }
     id("Saving").innerText = spAsset;
-    id("sp-exps").innerText = expenses[16];
+    id("sp-exps").innerText = expenses[4];
   }
 
-  function setIndex(i) {
-    if (stepID === 'ap') {
-      i += 4;
-    } else if (stepID === 'ci') {
-      i += 8;
-    } else if (stepID === 'li') {
-      i += 12;
-    } else if (stepID === 'sp') {
-      i += 16;
+  function setIndex(i, isChoices) {
+    if (isChoices) {
+      if (stepID === 'ap') {
+        i += 4;
+      } else if (stepID === 'ci') {
+        i += 8;
+      } else if (stepID === 'li') {
+        i += 12;
+      } else if (stepID === 'sp') {
+        i += 16;
+      }
+    } else {
+      if (stepID === 'ap') {
+        i = 1;
+      } else if (stepID === 'ci') {
+        i = 2;
+      } else if (stepID === 'li') {
+        i = 3;
+      } else if (stepID === 'sp') {
+        i = 4;
+      }
     }
     return i;
   }
@@ -531,7 +545,7 @@
   function choiceDetail(info) {
     if (stepID != "sp") {
       if (rolled) {
-        var iStart = setIndex(0);
+        var iStart = setIndex(0, true);
         var iStop = iStart + 4;
         var num = 1;
         for (var i = iStart; i < iStop; i++) {
