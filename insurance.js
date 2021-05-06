@@ -1,3 +1,4 @@
+// version 1.0
 (function() {
   "use strict";
 
@@ -13,10 +14,15 @@
   let spAsset = 0;
   let planNum = 0;
   let totalExpense = 0;
+  let totalCashOnHand = 0;
   let stepID = "";
   let capName = "";
   let choices = new Array(20).fill(0);
+
+  // expenses & expPlanNum & coverage could be combined into one array of objects {{exp, plan#, covrage}, {exp, plan#, coverage}, ...}
   let expenses = new Array(5).fill(0);
+  let expPlanNum = new Array(5).fill(0);
+  let coverages = [250000, 500000, 750000, 1000000];
   const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3];      // maximum steps can be made on each side (x / y).
   const BASEURL = "insurance.php";
 
@@ -401,7 +407,10 @@
   function nonSPexpense() {
     let c_index = setIndex(planNum, true);
     let e_index = setIndex(0, false);
+
     expenses[e_index] += Math.ceil(choices[c_index] * (1 + smokeRisk));
+    expPlanNum[e_index] = planNum;
+
     id(stepID + "-exps").innerText = expenses[e_index];
     totalExpense += expenses[e_index];
     let indexBar = 0;
@@ -410,6 +419,9 @@
     }
     qs(".index-bar").style.width = indexBar + "%";
     id("exps-amount").innerText = totalExpense;
+    id("net-cash-flow").innerText = wage - totalExpense;
+    totalCashOnHand += wage - totalExpense;
+    id("cash-on-hand").innerText = totalCashOnHand;
   }
 
   /**
@@ -429,7 +441,20 @@
       return;
     }
     if (stepID === "ca") {
-
+      let payment = 90000;
+      if (expenses[1] != 0) {
+        payment -= coverages[expPlanNum[1]];
+        if (payment > 0) {
+          totalCashOnHand -= payment;
+          id("roll-msg").innerText = "Yay! The insurance got you covered. You only need to pay $" + payment + "!";
+        } else {
+          id("roll-msg").innerText = "Yay! The insurance got full coverage for you! No payment needed!";
+        }
+      } else {
+        id("roll-msg").innerText = "Unfortunately, you don't have any insurance coverage. You have to pay full amount...";
+        totalCashOnHand -= payment;
+      }
+      id("cash-on-hand").innerText = totalCashOnHand;
     }
     if (stepID === "nk") { // new kid
       let n = Math.ceil(wage * 0.1, 10);
@@ -441,6 +466,9 @@
     div.appendChild(pa);
     id("ins-list").appendChild(div);
     id("exps-amount").innerText = totalExpense;
+    id("net-cash-flow").innerText = wage - totalExpense;
+    totalCashOnHand += wage - totalExpense;
+    id("cash-on-hand").innerText = totalCashOnHand;
   }
 
   // update saving amount for each choices.
