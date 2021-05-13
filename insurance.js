@@ -1,4 +1,4 @@
-// version 1.0
+// version 1.0.0
 (function() {
   "use strict";
 
@@ -186,6 +186,7 @@
    */
   function rollDice() {
     rolled = true;
+    id("roll-msg").innerText = "";
     let eimg = qs("#event-img img");
     if (eimg != null) {
       id("event-img").removeChild(eimg);
@@ -418,10 +419,7 @@
       if (expenses[i] > 0) indexBar += 25;
     }
     qs(".index-bar").style.width = indexBar + "%";
-    id("exps-amount").innerText = totalExpense;
-    id("net-cash-flow").innerText = wage - totalExpense;
-    totalCashOnHand += wage - totalExpense;
-    id("cash-on-hand").innerText = totalCashOnHand;
+    updateCashFlow();
   }
 
   /**
@@ -432,7 +430,7 @@
     let div = document.createElement("div");
     let pn = document.createElement("p");
     let pa = document.createElement("p");
-    div.style.cleare = "both";
+    div.style.clear = "both";
     pn.classList.add("alignleft");
     pa.classList.add("alignright");
     pn.innerText = capName;
@@ -445,30 +443,31 @@
       if (expenses[1] != 0) {
         payment -= coverages[expPlanNum[1]];
         if (payment > 0) {
-          totalCashOnHand -= payment;
           id("roll-msg").innerText = "Yay! The insurance got you covered. You only need to pay $" + payment + "!";
         } else {
           id("roll-msg").innerText = "Yay! The insurance got full coverage for you! No payment needed!";
+          return;
         }
       } else {
         id("roll-msg").innerText = "Unfortunately, you don't have any insurance coverage. You have to pay full amount...";
-        totalCashOnHand -= payment;
       }
-      id("cash-on-hand").innerText = totalCashOnHand;
+      pa.innerText = payment;
+      totalExpense += payment;
     }
     if (stepID === "nk") { // new kid
       let n = Math.ceil(wage * 0.1, 10);
       pa.innerText = n;
       totalExpense += n;
     }
+    if (stepID === "lb") {
+      let payment = 120000;
+
+    }
     pa.setAttribute('id', capName);
     div.appendChild(pn);
     div.appendChild(pa);
-    id("ins-list").appendChild(div);
-    id("exps-amount").innerText = totalExpense;
-    id("net-cash-flow").innerText = wage - totalExpense;
-    totalCashOnHand += wage - totalExpense;
-    id("cash-on-hand").innerText = totalCashOnHand;
+    id("other-exps").appendChild(div);
+    updateCashFlow();
   }
 
   // update saving amount for each choices.
@@ -491,6 +490,7 @@
       addAsset(spAsset);
     } else {
       spAsset = 0;
+      totalExpense -= expenses[4];
       expenses[4] = 0;
       for (let i = 0; i < 4; i++) {
         for (let j = 0; j < firstSave[i].length; j++) {
@@ -505,8 +505,17 @@
         }
       }
     }
+    totalExpense += expenses[4];
     id("Saving").innerText = spAsset;
     id("sp-exps").innerText = expenses[4];
+    updateCashFlow();
+  }
+
+  function updateCashFlow() {
+    id("exps-amount").innerText = totalExpense;
+    id("net-cash-flow").innerText = wage - totalExpense;
+    totalCashOnHand += wage - totalExpense;
+    id("cash-on-hand").innerText = totalCashOnHand;
   }
 
   function setIndex(i, isChoices) {
