@@ -10,6 +10,7 @@
   let age = 0;
   let wage = 0;
   let smokeRisk = 0;
+  let unemployed = 0;
   let firstSave = [[],[],[],[]];                             // first time buying saving plan
   let spAsset = 0;
   let planNum = 0;
@@ -175,7 +176,11 @@
     id("annual-wage").innerText = "";
     id("wage").innerText = "";
     age = info[stepCount].age;
-    wage = info[stepCount].wage;
+    if (unemployed <= 1) {
+      wage = info[stepCount].wage;
+    } else {
+      wage = 0;
+    }
     id("age").innerText = age;
     id("annual-wage").innerText = wage;
     id("wage").innerText = wage;
@@ -217,6 +222,7 @@
     }
     id("man3").style.transform = "translate("+x+"px,"+y+"px)";
     stepCount += step;
+    unemployed -= step;
     fetchEvent();
     fetchPlayer();
     if (firstSave[0].length !== 0 || firstSave[1].length !== 0 ||
@@ -434,16 +440,75 @@
     pn.classList.add("alignleft");
     pa.classList.add("alignright");
     pn.innerText = capName;
-    if (stepID === "smk") { // smoking
+
+    if (stepID === "smk") { // Smoking
       smokeRisk = 0.2;
       return;
     }
-    if (stepID === "ca") {
-      let payment = 90000;
+    if (stepID === "ue") { // Unemployed
+      unemployed = 6;
+      return;
+    }
+    if (stepID === "div") { // Divorce
+      totalCashOnHand /= 2;
+      return;
+    }
+    if (stepID === "sl") { // Stock Loss
+      totalCashOnHand *= 0.8;
+      return;
+    }
+
+    let payment;
+    if (stepID === "nk") { // New Kid
+      payment = Math.ceil(wage * 0.1, 10);
+    }
+    if (stepID === "tf") { // Tuition Fee
+      payment = 1000000;
+    }
+    if (stepID === "nc") { // New Car
+      payment = 300000;
+    }
+    if (stepID === "nh") { // New House
+      payment = 2000000;
+    }
+    if (stepID === "tra") { // Travel
+      payment = 300000;
+    }
+
+    if (stepID === "ca") { // Car Accident
+      payment = 90000;
+      if (expenses[0] != 0) { // Quality Medical
+        let qmCoverage;
+        if (expPlanNum[0] === 0) {
+          qmCoverage = 0.4;
+        } else if (expPlanNum[0] === 1) {
+          qmCoverage = 0.6;
+        } else if (expPlanNum[0] === 2) {
+          qmCoverage = 0.8;
+        } else {
+          qmCoverage = 1;
+        }
+        payment *= (1 - qmCoverage);
+      }
+      if (expenses[1] != 0 && payment > 0) { // Accident Protection
+        payment -= coverages[expPlanNum[1]];
+      }
+      if (payment === 90000) {
+        id("roll-msg").innerText = "Unfortunately, you don't have any insurance coverage. You have to pay full amount...";
+      } else if (payment > 0) {
+        id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment + "!";
+      } else {
+        id("roll-msg").innerText = "Yay! The insurance got full coverage for you! No payment needed!";
+        return;
+      }
+    }
+
+    if (stepID === "lb") { // Leg Broke
+      payment = 120000;
       if (expenses[1] != 0) {
         payment -= coverages[expPlanNum[1]];
         if (payment > 0) {
-          id("roll-msg").innerText = "Yay! The insurance got you covered. You only need to pay $" + payment + "!";
+          id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment + "!";
         } else {
           id("roll-msg").innerText = "Yay! The insurance got full coverage for you! No payment needed!";
           return;
@@ -451,18 +516,71 @@
       } else {
         id("roll-msg").innerText = "Unfortunately, you don't have any insurance coverage. You have to pay full amount...";
       }
-      pa.innerText = payment;
-      totalExpense += payment;
     }
-    if (stepID === "nk") { // new kid
-      let n = Math.ceil(wage * 0.1, 10);
-      pa.innerText = n;
-      totalExpense += n;
-    }
-    if (stepID === "lb") {
-      let payment = 120000;
 
+    if (stepID === "mt") { // Medical Treatment
+      payment = wage * 0.05;
+      if (expenses[0] != 0) { // Quality Medical
+        let qmCoverage;
+        if (expPlanNum[0] === 0) {
+          qmCoverage = 0.4;
+        } else if (expPlanNum[0] === 1) {
+          qmCoverage = 0.6;
+        } else if (expPlanNum[0] === 2) {
+          qmCoverage = 0.8;
+        } else {
+          qmCoverage = 1;
+        }
+        payment *= (1 - qmCoverage);
+        if (payment > 0) {
+          id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment + "!";
+        } else {
+          id("roll-msg").innerText = "Yay! The insurance got full coverage for you! No payment needed!";
+          return;
+        }
+      } else {
+        id("roll-msg").innerText = "Unfortunately, you don't have any insurance coverage. You have to pay full amount...";
+      }
     }
+
+    if (stepID === "cn") { // Serious Sickness or Cancer
+      payment = 1800000;
+      if (expenses[0] != 0) { // Quality Medical
+        let qmCoverage;
+        if (expPlanNum[0] === 0) {
+          qmCoverage = 0.4;
+        } else if (expPlanNum[0] === 1) {
+          qmCoverage = 0.6;
+        } else if (expPlanNum[0] === 2) {
+          qmCoverage = 0.8;
+        } else {
+          qmCoverage = 1;
+        }
+        payment *= (1 - qmCoverage);
+      }
+      if (expenses[2] != 0 && payment > 0) { // Critical Illness
+        payment -= coverages[expPlanNum[2]];
+      }
+      if (payment > totalCashOnHand) {
+        id("roll-page").classList.remove("hidden");
+        qs("#roll-btn button").disabled = true;
+        qs("#roll-page h2").innerText = "R.I.P.";
+        id("roll-des").innerText = "I'm sorry, you don't have enough money for the treatment. You died from a serious illness/cancer.";
+        endGame();
+        return;
+      }
+      if (payment === 1800000) {
+        id("roll-msg").innerText = "Unfortunately, you don't have any insurance coverage. You have to pay full amount...";
+      } else if (payment > 0) {
+        id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment + "!";
+      } else {
+        id("roll-msg").innerText = "Yay! The insurance got full coverage for you! No payment needed!";
+        return;
+      }
+    }
+
+    pa.innerText = payment;
+    totalExpense += payment;
     pa.setAttribute('id', capName);
     div.appendChild(pn);
     div.appendChild(pa);
