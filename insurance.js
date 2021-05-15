@@ -84,21 +84,25 @@
     ended = true;
     positive = true;
     index = 0;
+    totalExpense = 0;
+    totalCashOnHand = 0;
     id("man3").style.transform = "translate(100px, 50px)";
     id("start-view").classList.remove("hidden");
     id("game-view").classList.add("hidden");
     id("exit-confirm").style.display = "none";
+    id("roll-msg").innerText = "";
+    id("roll-des").innerText = "";
     id("qm-exps").innerText = "0";
     id("ap-exps").innerText = "0";
     id("ci-exps").innerText = "0";
     id("li-exps").innerText = "0";
     id("sp-exps").innerText = "0";
-    id("other-exps").innerText = "";
     id("exps-amount").innerText = "0";
     id("net-cash-flow").innerText = "0";
     id("cash-on-hand").innerText = "0";
     id("exps-amount").innerText = "0";
     qs(".index-bar").style.width = "0%";
+    qs("#roll-page h2").innerText = "Roll for next move";
     let iimg = qs("#ins-img img");
     let simg = qs("#save-img img");
     let eimg = qs("#event-img img");
@@ -111,11 +115,16 @@
     if (eimg != null) {
       id("event-img").removeChild(eimg);
     }
+    var divs = qsa("#other-exps > div");
+    for (var i = 0; i < divs.length; i++) {
+      id("other-exps").removeChild(divs[i]);
+    }
     for (let i = 0; i < 20; i++) {
       choices[i] = 0;
     }
     for (let i = 0; i < 5; i++) {
       expenses[i] = 0;
+      expPlanNum[i] = 0;
     }
   }
 
@@ -561,14 +570,6 @@
       if (expenses[2] != 0 && payment > 0) { // Critical Illness
         payment -= coverages[expPlanNum[2]];
       }
-      if (payment > totalCashOnHand) {
-        id("roll-page").classList.remove("hidden");
-        qs("#roll-btn button").disabled = true;
-        qs("#roll-page h2").innerText = "R.I.P.";
-        id("roll-des").innerText = "I'm sorry, you don't have enough money for the treatment. You died from a serious illness/cancer.";
-        endGame();
-        return;
-      }
       if (payment === 1800000) {
         id("roll-msg").innerText = "Unfortunately, you don't have any insurance coverage. You have to pay full amount...";
       } else if (payment > 0) {
@@ -634,6 +635,12 @@
     id("net-cash-flow").innerText = wage - totalExpense;
     totalCashOnHand += wage - totalExpense;
     id("cash-on-hand").innerText = totalCashOnHand;
+    if (totalCashOnHand < 0) {
+      qs("#roll-btn button").disabled = true;
+      id("roll-page").classList.remove("hidden");
+      qs("#roll-page h2").innerText = "R.I.P.";
+      id("roll-msg").innerText = "I'm sorry, you have a negative cash flow. You died from debt.";
+    }
   }
 
   function setIndex(i, isChoices) {
