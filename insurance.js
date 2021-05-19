@@ -119,6 +119,10 @@
     for (var i = 0; i < divs.length; i++) {
       id("other-exps").removeChild(divs[i]);
     }
+    var as_divs = qsa("#asset-list > div");
+    for (var i = 0; i < as_divs.length; i++) {
+      id("asset-list").removeChild(as_divs[i]);
+    }
     for (let i = 0; i < 20; i++) {
       choices[i] = 0;
     }
@@ -126,6 +130,7 @@
       expenses[i] = 0;
       expPlanNum[i] = 0;
     }
+    firstSave = [[],[],[],[]];
   }
 
   function startRule() {
@@ -181,9 +186,6 @@
   }
 
   function playerDetail(info) {
-    id("age").innerText = "";
-    id("annual-wage").innerText = "";
-    id("wage").innerText = "";
     age = info[stepCount].age;
     if (unemployed <= 1) {
       wage = info[stepCount].wage;
@@ -193,6 +195,8 @@
     id("age").innerText = age;
     id("annual-wage").innerText = wage;
     id("wage").innerText = wage;
+    totalCashOnHand += wage - totalExpense;
+    id("cash-on-hand").innerText = totalCashOnHand;
   }
 
   /**
@@ -801,7 +805,7 @@
    * Displays the error message when the fetch did not pass successfully.
    */
   function displayError() {
-    id("error-text").innerText = "Something went wrong with the request. Please try again later.";
+    id("error-text").innerText = "Something went wrong with the Saving request. Please try again later.";
     id("error-text").classList.remove("hidden");
   }
 
