@@ -195,6 +195,8 @@
     id("age").innerText = age;
     id("annual-wage").innerText = wage;
     id("wage").innerText = wage;
+    id("exps-amount").innerText = totalExpense;
+    id("net-cash-flow").innerText = wage - totalExpense;
     totalCashOnHand += wage - totalExpense;
     id("cash-on-hand").innerText = totalCashOnHand;
   }
@@ -433,6 +435,7 @@
 
     id(stepID + "-exps").innerText = expenses[e_index];
     totalExpense += expenses[e_index];
+    totalCashOnHand -= Math.ceil(choices[c_index] * (1 + smokeRisk));
     let indexBar = 0;
     for (let i = 0; i < 4; i++) {
       if (expenses[i] > 0) indexBar += 25;
@@ -586,6 +589,7 @@
 
     pa.innerText = payment;
     totalExpense += payment;
+    totalCashOnHand -= payment;
     pa.setAttribute('id', capName);
     div.appendChild(pn);
     div.appendChild(pa);
@@ -614,6 +618,7 @@
     } else {
       spAsset = 0;
       totalExpense -= expenses[4];
+      totalCashOnHand += expenses[4];
       expenses[4] = 0;
       for (let i = 0; i < 4; i++) {
         for (let j = 0; j < firstSave[i].length; j++) {
@@ -629,6 +634,7 @@
       }
     }
     totalExpense += expenses[4];
+    totalCashOnHand -= expenses[4];
     id("Saving").innerText = spAsset;
     id("sp-exps").innerText = expenses[4];
     updateCashFlow();
@@ -637,7 +643,6 @@
   function updateCashFlow() {
     id("exps-amount").innerText = totalExpense;
     id("net-cash-flow").innerText = wage - totalExpense;
-    totalCashOnHand += wage - totalExpense;
     id("cash-on-hand").innerText = totalCashOnHand;
     if (totalCashOnHand < 0) {
       qs("#roll-btn button").disabled = true;
