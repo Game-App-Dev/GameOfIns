@@ -163,13 +163,22 @@ button {
 }
 
 /* Popup Content/Box */
-.infoPopup, .rulePopup, .exitPopup, .endPopup {
+.infoPopup, .rulePopup, .exitPopup {
   background-color: #fefefe;
   margin: 5% auto; /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
   border-radius: 10px;
   width: 900px; /* Could be more or less, depending on screen size */
+}
+
+.endPopup {
+  background-color: #fefefe;
+  margin: 10% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 10px;
+  width: 500px; /* Could be more or less, depending on screen size */
 }
 
 #rulePage {
@@ -184,9 +193,9 @@ button {
   height: 650px;
 }
 
-#end-detail {
+#result-detail {
   border: 5px outset;
-  margin-top: 40px;
+  margin-top: 20px;
   height: 350px;
 }
 
@@ -194,8 +203,16 @@ button {
   margin: 15px;
 }
 
-#end-detail > div {
-  margin: 50px;
+#result-detail > div {
+  margin: 25px;
+}
+
+.endPopup > p {
+  font-size: 1.5em;
+}
+
+#result-detail p {
+  margin-bottom: 10px;
 }
 
 .info-top {
@@ -225,14 +242,14 @@ p {
 }
 
 /* The Close Button */
-.close {
+.close, .resultClose {
   color: #aaa;
   float: right;
   font-size: 28px;
   font-weight: bold;
 }
 
-.close:hover, .close:focus {
+.close:hover, .close:focus, .resultClose:hover, .resultClose:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;

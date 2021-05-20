@@ -319,6 +319,7 @@
       qs("#roll-btn button").disabled = true;
       qs("#roll-page h2").innerText = "R.I.P.";
       id("roll-des").innerText = info[stepCount].reg_des;
+      showResult();
     } else {
       id("roll-page").classList.remove("hidden");
       id("event-img").appendChild(img);
@@ -650,7 +651,22 @@
       id("roll-page").classList.remove("hidden");
       qs("#roll-page h2").innerText = "R.I.P.";
       id("roll-msg").innerText = "I'm sorry, you have a negative cash flow. You died from debt.";
+      showResult();
     }
+  }
+
+  function showResult() {
+    id("endResult").style.display = "block";
+    document.getElementsByClassName("resultClose")[0].addEventListener("click", closePop);
+    id("death_age").innerText = age;
+    // id("total_wage_earned").innerText = ;
+    // id("claimed_amount").innerText = ;
+    // id("total_ins").innerText = ;
+    // id("amount_saved").innerText = ;
+    id("cash_left").innerText = totalCashOnHand;
+    // id("life_ins").innerText = ;
+    // id("cash").innerText = ;
+    // id("end_total").innerText = ;
   }
 
   function setIndex(i, isChoices) {
