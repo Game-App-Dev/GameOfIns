@@ -196,7 +196,7 @@ button {
 #result-detail {
   border: 5px outset;
   margin-top: 20px;
-  height: 350px;
+  height: 300px;
 }
 
 #info-detail > div {
@@ -208,7 +208,7 @@ button {
 }
 
 .endPopup > p {
-  font-size: 1.5em;
+  font-size: 2em;
 }
 
 #result-detail p {

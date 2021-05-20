@@ -9,6 +9,7 @@
   let stepCount = 0;
   let age = 0;
   let wage = 0;
+  let totalWage = 0;
   let smokeRisk = 0;
   let unemployed = 0;
   let firstSave = [[],[],[],[]];                             // first time buying saving plan
@@ -16,6 +17,7 @@
   let planNum = 0;
   let totalExpense = 0;
   let totalCashOnHand = 0;
+  let totalInsurance = 0;
   let stepID = "";
   let capName = "";
   let choices = new Array(20).fill(0);
@@ -131,6 +133,15 @@
       expPlanNum[i] = 0;
     }
     firstSave = [[],[],[],[]];
+
+    id("death_age").innerText = "0";
+    id("total_wage_earned").innerText = "0";
+    id("claimed_amount").innerText = "0";
+    id("total_ins").innerText = "0";
+    id("amount_saved").innerText = "0";
+    id("cash_left").innerText = "0";
+    id("life_ins").innerText = "0";
+    id("end_total").innerText = "0";
   }
 
   function startRule() {
@@ -189,16 +200,17 @@
   function playerDetail(info) {
     age = info[stepCount].age;
     if (unemployed <= 1) {
-      wage = info[stepCount].wage;
+      wage = parseInt(info[stepCount].wage);
     } else {
       wage = 0;
     }
+    totalWage += wage;
+    totalCashOnHand += wage - totalExpense;
     id("age").innerText = age;
     id("annual-wage").innerText = wage;
     id("wage").innerText = wage;
     id("exps-amount").innerText = totalExpense;
     id("net-cash-flow").innerText = wage - totalExpense;
-    totalCashOnHand += wage - totalExpense;
     id("cash-on-hand").innerText = totalCashOnHand;
   }
 
@@ -431,13 +443,15 @@
   function nonSPexpense() {
     let c_index = setIndex(planNum, true);
     let e_index = setIndex(0, false);
+    let new_exp = Math.ceil(choices[c_index] * (1 + smokeRisk));
 
-    expenses[e_index] += Math.ceil(choices[c_index] * (1 + smokeRisk));
+    expenses[e_index] += new_exp;
     expPlanNum[e_index] = planNum;
+    totalInsurance += new_exp;
 
     id(stepID + "-exps").innerText = expenses[e_index];
     totalExpense += expenses[e_index];
-    totalCashOnHand -= Math.ceil(choices[c_index] * (1 + smokeRisk));
+    totalCashOnHand -= new_exp;
     let indexBar = 0;
     for (let i = 0; i < 4; i++) {
       if (expenses[i] > 0) indexBar += 25;
@@ -616,12 +630,15 @@
     if (!id(capName) && capName === "Saving") {
       spAsset += parseInt(info[stepCount - firstSave[planNum][firstSave[planNum].length-1]]["choice_" + (planNum+1)]);
       expenses[4] += parseInt(info[0]["choice_" + (planNum+1)]);
+      totalExpense += expenses[4];
       addAsset(spAsset);
     } else {
       spAsset = 0;
       totalExpense -= expenses[4];
       totalCashOnHand += expenses[4];
+      totalInsurance -= expenses[4];
       expenses[4] = 0;
+      let expired = 0;
       for (let i = 0; i < 4; i++) {
         for (let j = 0; j < firstSave[i].length; j++) {
           let spStep = stepCount - firstSave[i][j];
@@ -629,14 +646,16 @@
           if (spStep > 24) {
             spStep = 24;
             n = 0;
+            expired += parseInt(info[0]["choice_" + (i + 1)]);
           }
           expenses[4] += parseInt(info[0]["choice_" + (i + 1)]) * n;
           spAsset += parseInt(info[spStep]["choice_" + (i + 1)]);
         }
       }
+      totalInsurance += expenses[4] + expired;
     }
-    totalExpense += expenses[4];
     totalCashOnHand -= expenses[4];
+    totalInsurance += expenses[4];
     id("Saving").innerText = spAsset;
     id("sp-exps").innerText = expenses[4];
     updateCashFlow();
@@ -658,15 +677,16 @@
   function showResult() {
     id("endResult").style.display = "block";
     document.getElementsByClassName("resultClose")[0].addEventListener("click", closePop);
+    let lifeInsurance = 0;
+    if (expenses[3] != 0) lifeInsurance = coverages[expPlanNum[3]];
     id("death_age").innerText = age;
-    // id("total_wage_earned").innerText = ;
-    // id("claimed_amount").innerText = ;
-    // id("total_ins").innerText = ;
-    // id("amount_saved").innerText = ;
+    id("total_wage_earned").innerText = totalWage;
+    id("claimed_amount").innerText = 0;
+    id("total_ins").innerText = totalInsurance;
+    id("amount_saved").innerText = 0;
     id("cash_left").innerText = totalCashOnHand;
-    // id("life_ins").innerText = ;
-    // id("cash").innerText = ;
-    // id("end_total").innerText = ;
+    id("life_ins").innerText = lifeInsurance;
+    id("end_total").innerText = totalCashOnHand + lifeInsurance;
   }
 
   function setIndex(i, isChoices) {
