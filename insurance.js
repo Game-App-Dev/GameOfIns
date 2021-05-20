@@ -154,6 +154,7 @@
     id("myInfo").style.display = "none";
     id("myRules").style.display = "none";
     id("strtRules").style.display = "none";
+    id("endResult").style.display = "none";
   }
 
   // When the user clicks anywhere outside of the modal, close srtRules page

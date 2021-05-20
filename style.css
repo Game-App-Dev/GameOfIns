@@ -163,7 +163,7 @@ button {
 }
 
 /* Popup Content/Box */
-.infoPopup, .rulePopup, .exitPopup {
+.infoPopup, .rulePopup, .exitPopup, .endPopup {
   background-color: #fefefe;
   margin: 5% auto; /* 15% from the top and centered */
   padding: 20px;
@@ -184,8 +184,18 @@ button {
   height: 650px;
 }
 
+#end-detail {
+  border: 5px outset;
+  margin-top: 40px;
+  height: 350px;
+}
+
 #info-detail > div {
   margin: 15px;
+}
+
+#end-detail > div {
+  margin: 50px;
 }
 
 .info-top {
