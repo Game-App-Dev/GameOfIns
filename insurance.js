@@ -18,6 +18,7 @@
   let totalExpense = 0;
   let totalCashOnHand = 0;
   let totalInsurance = 0;
+  let totalSaving = 0;
   let stepID = "";
   let capName = "";
   let choices = new Array(20).fill(0);
@@ -44,6 +45,7 @@
     id("menu").addEventListener("click", backToMenu);
     id("info").addEventListener("click", showInfo);
     id("rules").addEventListener("click", showRule);
+    id("result").addEventListener("click", showResult);
   }
 
   /**
@@ -631,14 +633,16 @@
       spAsset += parseInt(info[stepCount - firstSave[planNum][firstSave[planNum].length-1]]["choice_" + (planNum+1)]);
       expenses[4] += parseInt(info[0]["choice_" + (planNum+1)]);
       totalExpense += expenses[4];
+      totalInsurance += expenses[4];
+      totalSaving += expenses[4];
       addAsset(spAsset);
     } else {
       spAsset = 0;
       totalExpense -= expenses[4];
       totalCashOnHand += expenses[4];
-      totalInsurance -= expenses[4];
+      totalInsurance -= totalSaving;
       expenses[4] = 0;
-      let expired = 0;
+      totalSaving = 0;
       for (let i = 0; i < 4; i++) {
         for (let j = 0; j < firstSave[i].length; j++) {
           let spStep = stepCount - firstSave[i][j];
@@ -646,16 +650,15 @@
           if (spStep > 24) {
             spStep = 24;
             n = 0;
-            expired += parseInt(info[0]["choice_" + (i + 1)]);
           }
+          totalSaving += parseInt(info[0]["choice_" + (i + 1)]);
           expenses[4] += parseInt(info[0]["choice_" + (i + 1)]) * n;
           spAsset += parseInt(info[spStep]["choice_" + (i + 1)]);
         }
+        totalInsurance += totalSaving;
       }
-      totalInsurance += expenses[4] + expired;
     }
     totalCashOnHand -= expenses[4];
-    totalInsurance += expenses[4];
     id("Saving").innerText = spAsset;
     id("sp-exps").innerText = expenses[4];
     updateCashFlow();
