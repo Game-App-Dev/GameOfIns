@@ -695,7 +695,7 @@
     id("total_wage_earned").innerText = totalWage;
     id("claimed_amount").innerText = claimedAmount;
     id("total_ins").innerText = totalInsurance;
-    id("amount_saved").innerText = 0;
+    id("amount_saved").innerText = claimedAmount - totalInsurance;
     id("cash_left").innerText = totalCashOnHand;
     id("life_ins").innerText = lifeInsurance;
     id("end_total").innerText = totalCashOnHand + lifeInsurance;
