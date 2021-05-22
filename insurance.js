@@ -90,6 +90,9 @@
     index = 0;
     totalExpense = 0;
     totalCashOnHand = 0;
+    totalSaving = 0;
+    totalWage = 0;
+    totalInsurance = 0;
     id("man3").style.transform = "translate(100px, 50px)";
     id("start-view").classList.remove("hidden");
     id("game-view").classList.add("hidden");
@@ -655,8 +658,8 @@
           expenses[4] += parseInt(info[0]["choice_" + (i + 1)]) * n;
           spAsset += parseInt(info[spStep]["choice_" + (i + 1)]);
         }
-        totalInsurance += totalSaving;
       }
+      totalInsurance += totalSaving;
     }
     totalCashOnHand -= expenses[4];
     id("Saving").innerText = spAsset;
