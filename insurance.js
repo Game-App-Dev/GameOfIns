@@ -54,11 +54,13 @@
    */
   function startGame() {
     ended = false;
+    qs(".prime-btn").style.marginLeft = "170px";
     qs("#roll-btn button").disabled = false;
     id("start-view").classList.add("hidden");
     id("insurance-type").classList.add("hidden");
     id("plan-selection").classList.add("hidden");
     id("save-selection").classList.add("hidden");
+    id("result").classList.add("hidden");
     id("saving-plan").classList.add("hidden");
     id("roll-page").classList.remove("hidden");
     id("game-view").classList.remove("hidden");
@@ -687,6 +689,8 @@
   }
 
   function showResult() {
+    id("result").classList.remove("hidden");
+    qs(".prime-btn").style.marginLeft = "50px";
     id("endResult").style.display = "block";
     document.getElementsByClassName("resultClose")[0].addEventListener("click", closePop);
     let lifeInsurance = 0;
