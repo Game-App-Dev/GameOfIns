@@ -19,6 +19,7 @@
   let totalCashOnHand = 0;
   let totalInsurance = 0;
   let totalSaving = 0;
+  let claimedAmount = 0;
   let stepID = "";
   let capName = "";
   let choices = new Array(20).fill(0);
@@ -73,10 +74,7 @@
    * Menu button takes the user back to start page from game page.
    */
   function backToMenu() {
-    stepCount = 0;
-    index = 0;
     ended = false;
-    positive = true;
     id("exit-confirm").style.display = "block";
     id("exit-yes").addEventListener("click", endGame);
     id("exit-no").addEventListener("click", function() {
@@ -87,12 +85,14 @@
   function endGame() {
     ended = true;
     positive = true;
+    stepCount = 0;
     index = 0;
     totalExpense = 0;
     totalCashOnHand = 0;
     totalSaving = 0;
     totalWage = 0;
     totalInsurance = 0;
+    claimedAmount = 0;
     id("man3").style.transform = "translate(100px, 50px)";
     id("start-view").classList.remove("hidden");
     id("game-view").classList.add("hidden");
@@ -526,9 +526,11 @@
           qmCoverage = 1;
         }
         payment *= (1 - qmCoverage);
+        claimedAmount += payment * qmCoverage;
       }
       if (expenses[1] != 0 && payment > 0) { // Accident Protection
         payment -= coverages[expPlanNum[1]];
+        claimedAmount += coverages[expPlanNum[1]];
       }
       if (payment === 90000) {
         id("roll-msg").innerText = "Unfortunately, you don't have any insurance coverage. You have to pay full amount...";
@@ -544,6 +546,7 @@
       payment = 120000;
       if (expenses[1] != 0) {
         payment -= coverages[expPlanNum[1]];
+        claimedAmount += coverages[expPlanNum[1]];
         if (payment > 0) {
           id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment + "!";
         } else {
@@ -569,6 +572,7 @@
           qmCoverage = 1;
         }
         payment *= (1 - qmCoverage);
+        claimedAmount += payment * qmCoverage;
         if (payment > 0) {
           id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment + "!";
         } else {
@@ -594,9 +598,11 @@
           qmCoverage = 1;
         }
         payment *= (1 - qmCoverage);
+        claimedAmount += payment * qmCoverage;
       }
       if (expenses[2] != 0 && payment > 0) { // Critical Illness
         payment -= coverages[expPlanNum[2]];
+        claimedAmount += coverages[expPlanNum[2]];
       }
       if (payment === 1800000) {
         id("roll-msg").innerText = "Unfortunately, you don't have any insurance coverage. You have to pay full amount...";
@@ -687,7 +693,7 @@
     if (expenses[3] != 0) lifeInsurance = coverages[expPlanNum[3]];
     id("death_age").innerText = age;
     id("total_wage_earned").innerText = totalWage;
-    id("claimed_amount").innerText = 0;
+    id("claimed_amount").innerText = claimedAmount;
     id("total_ins").innerText = totalInsurance;
     id("amount_saved").innerText = 0;
     id("cash_left").innerText = totalCashOnHand;
