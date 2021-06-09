@@ -218,7 +218,7 @@
     id("wage").innerText = wage;
     id("exps-amount").innerText = totalExpense;
     id("net-cash-flow").innerText = wage - totalExpense;
-    id("cash-on-hand").innerText = totalCashOnHand;
+    id("cash-on-hand").innerText = totalCashOnHand.toFixed(0);
   }
 
   /**
@@ -667,6 +667,7 @@
           spAsset += parseInt(info[spStep]["choice_" + (i + 1)]);
         }
       }
+      totalExpense += expenses[4];
       totalInsurance += totalSaving;
     }
     totalCashOnHand -= expenses[4];
@@ -678,7 +679,7 @@
   function updateCashFlow() {
     id("exps-amount").innerText = totalExpense;
     id("net-cash-flow").innerText = wage - totalExpense;
-    id("cash-on-hand").innerText = totalCashOnHand;
+    id("cash-on-hand").innerText = totalCashOnHand.toFixed(0);
     if (totalCashOnHand < 0) {
       qs("#roll-btn button").disabled = true;
       id("roll-page").classList.remove("hidden");
@@ -700,9 +701,9 @@
     id("claimed_amount").innerText = claimedAmount;
     id("total_ins").innerText = totalInsurance;
     id("amount_saved").innerText = claimedAmount - totalInsurance;
-    id("cash_left").innerText = totalCashOnHand;
+    id("cash_left").innerText = totalCashOnHand.toFixed(0);
     id("life_ins").innerText = lifeInsurance;
-    id("end_total").innerText = totalCashOnHand + lifeInsurance;
+    id("end_total").innerText = parseInt(totalCashOnHand.toFixed(0)) + lifeInsurance;
   }
 
   function setIndex(i, isChoices) {
