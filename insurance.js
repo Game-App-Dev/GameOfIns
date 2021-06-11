@@ -1,4 +1,4 @@
-// version 1.0.0
+// version 1.0.1
 (function() {
   "use strict";
 
@@ -225,6 +225,7 @@
    * Move the player randomly from 1 to 3 grid.
    */
   function rollDice() {
+    clearOneTimeEvent();
     rolled = true;
     id("roll-msg").innerText = "";
     let eimg = qs("#event-img img");
@@ -299,6 +300,32 @@
       }
     }
     return [x, y];
+  }
+
+  /**
+   * Clears Car Accident, Leg Broke, New Car, New House, Travel events from 'Other Exenpses'
+   */
+  function clearOneTimeEvent() {
+    if (id("ca")) {
+      totalExpense -= 90000;
+      id("other-exps").removeChild(id("ca"));
+    }
+    if (id("lb")) {
+      totalExpense -= 120000;
+      id("other-exps").removeChild(id("lb"));
+    }
+    if (id("nc")) { // New Car
+      totalExpense -= 300000;
+      id("other-exps").removeChild(id("nc"));
+    }
+    if (id("nh")) { // New House
+      totalExpense -= 2000000;
+      id("other-exps").removeChild(id("nh"));
+    }
+    if (id("tra")) { // Travel
+      totalExpense -= 300000;
+      id("other-exps").removeChild(id("tra"));
+    }
   }
 
   function fetchEvent() {
@@ -537,7 +564,7 @@
       if (payment === 90000) {
         id("roll-msg").innerText = "Unfortunately, you don't have any insurance coverage. You have to pay full amount...";
       } else if (payment > 0) {
-        id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment + "!";
+        id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment.toLocaleString('en-US') + "!";
       } else {
         id("roll-msg").innerText = "Yay! The insurance got full coverage for you! No payment needed!";
         return;
@@ -550,7 +577,7 @@
         payment -= coverages[expPlanNum[1]];
         claimedAmount += coverages[expPlanNum[1]];
         if (payment > 0) {
-          id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment + "!";
+          id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment.toLocaleString('en-US') + "!";
         } else {
           id("roll-msg").innerText = "Yay! The insurance got full coverage for you! No payment needed!";
           return;
@@ -576,7 +603,7 @@
         payment *= (1 - qmCoverage);
         claimedAmount += payment * qmCoverage;
         if (payment > 0) {
-          id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment + "!";
+          id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment.toLocaleString('en-US') + "!";
         } else {
           id("roll-msg").innerText = "Yay! The insurance got full coverage for you! No payment needed!";
           return;
@@ -609,7 +636,7 @@
       if (payment === 1800000) {
         id("roll-msg").innerText = "Unfortunately, you don't have any insurance coverage. You have to pay full amount...";
       } else if (payment > 0) {
-        id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment + "!";
+        id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment.toLocaleString('en-US') + "!";
       } else {
         id("roll-msg").innerText = "Yay! The insurance got full coverage for you! No payment needed!";
         return;
@@ -619,6 +646,7 @@
     pa.innerText = payment;
     totalExpense += payment;
     totalCashOnHand -= payment;
+    div.setAttribute('id', stepID);
     pa.setAttribute('id', capName);
     div.appendChild(pn);
     div.appendChild(pa);
@@ -779,16 +807,26 @@
         }
         rolled = false;
       }
-      id("i1").innerText = "Choice1: $" + Math.ceil(info[age-20].choice_1 * (1 + smokeRisk)) + " Coverage: " + info[age-20].coverage_1;
-      id("i2").innerText = "Choice2: $" + Math.ceil(info[age-20].choice_2 * (1 + smokeRisk)) + " Coverage: " + info[age-20].coverage_2;
-      id("i3").innerText = "Choice3: $" + Math.ceil(info[age-20].choice_3 * (1 + smokeRisk)) + " Coverage: " + info[age-20].coverage_3;
-      id("i4").innerText = "Choice4: $" + Math.ceil(info[age-20].choice_4 * (1 + smokeRisk)) + " Coverage: " + info[age-20].coverage_4;
+      let cov1 = info[age-20].coverage_1;
+      let cov2 = info[age-20].coverage_2;
+      let cov3 = info[age-20].coverage_3;
+      let cov4 = info[age-20].coverage_4;
+      if (stepID != "qm") {
+        parseInt(cov1).toLocaleString('en-US');
+        parseInt(cov2).toLocaleString('en-US');
+        parseInt(cov3).toLocaleString('en-US');
+        parseInt(cov4).toLocaleString('en-US');
+      }
+      id("i1").innerText = "Choice1: $" + Math.ceil(info[age-20].choice_1 * (1 + smokeRisk)).toLocaleString('en-US') + " Coverage: " + cov1;
+      id("i2").innerText = "Choice2: $" + Math.ceil(info[age-20].choice_2 * (1 + smokeRisk)).toLocaleString('en-US') + " Coverage: " + cov2;
+      id("i3").innerText = "Choice3: $" + Math.ceil(info[age-20].choice_3 * (1 + smokeRisk)).toLocaleString('en-US') + " Coverage: " + cov3;
+      id("i4").innerText = "Choice4: $" + Math.ceil(info[age-20].choice_4 * (1 + smokeRisk)).toLocaleString('en-US') + " Coverage: " + cov4;
     } else {
       if (rolled) rolled = false;
-      id("s1").innerText = "Choice1: $12000";
-      id("s2").innerText = "Choice2: $18000";
-      id("s3").innerText = "Choice3: $24000";
-      id("s4").innerText = "Choice4: $30000";
+      id("s1").innerText = "Choice1: $12,000";
+      id("s2").innerText = "Choice2: $18,000";
+      id("s3").innerText = "Choice3: $24,000";
+      id("s4").innerText = "Choice4: $30,000";
     }
   }
 
