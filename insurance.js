@@ -306,11 +306,11 @@
    * Clears Car Accident, Leg Broke, New Car, New House, Travel events from 'Other Exenpses'
    */
   function clearOneTimeEvent() {
-    if (id("ca")) {
+    if (id("ca")) { // Car Accident
       totalExpense -= 90000;
       id("other-exps").removeChild(id("ca"));
     }
-    if (id("lb")) {
+    if (id("lb")) { // Leg Broke
       totalExpense -= 120000;
       id("other-exps").removeChild(id("lb"));
     }
@@ -325,6 +325,10 @@
     if (id("tra")) { // Travel
       totalExpense -= 300000;
       id("other-exps").removeChild(id("tra"));
+    }
+    if (id("tf")) { // Kid Tuition fee
+      totalExpense -= 1000000;
+      id("other-exps").removeChild(id("tf"));
     }
   }
 
