@@ -427,7 +427,7 @@
     id("roll-page").classList.remove("hidden");
     planNum = 0;
     if (stepID === 'sp') {
-      firstSave[0].push(stepCount);
+      firstSave[0].unshift(stepCount);
       fetchSaving(stepID);
     } else {
       nonSPexpense();
@@ -440,7 +440,7 @@
     id("roll-page").classList.remove("hidden");
     planNum = 1;
     if (stepID === 'sp') {
-      firstSave[1].push(stepCount);
+      firstSave[1].unshift(stepCount);
       fetchSaving(stepID);
     } else {
       nonSPexpense();
@@ -453,7 +453,7 @@
     id("roll-page").classList.remove("hidden");
     planNum = 2;
     if (stepID === 'sp') {
-      firstSave[2].push(stepCount);
+      firstSave[2].unshift(stepCount);
       fetchSaving(stepID);
     } else {
       nonSPexpense();
@@ -466,7 +466,7 @@
     id("roll-page").classList.remove("hidden");
     planNum = 3;
     if (stepID === 'sp') {
-      firstSave[3].push(stepCount);
+      firstSave[3].unshift(stepCount);
       fetchSaving(stepID);
     } else {
       nonSPexpense();
@@ -672,6 +672,13 @@
    * @param  {[type]} info Fetched information from csv file.
    */
   function updateSaving(info) {
+    // spAsset += parseInt(info[stepCount - firstSave[planNum][firstSave[planNum].length-1]]["choice_" + (planNum+1)]);
+    // expenses[4] += parseInt(info[0]["choice_" + (planNum+1)]);
+    // totalExpense += expenses[4];
+    // totalInsurance += expenses[4];
+    // totalSaving += expenses[4];
+
+
     if (!id(capName) && capName === "Saving") {
       spAsset += parseInt(info[stepCount - firstSave[planNum][firstSave[planNum].length-1]]["choice_" + (planNum+1)]);
       expenses[4] += parseInt(info[0]["choice_" + (planNum+1)]);
