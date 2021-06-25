@@ -427,7 +427,7 @@
     id("roll-page").classList.remove("hidden");
     planNum = 0;
     if (stepID === 'sp') {
-      firstSave[0].unshift(stepCount);
+      firstSave[0].push(stepCount);
       fetchSaving(stepID);
     } else {
       nonSPexpense();
@@ -440,7 +440,7 @@
     id("roll-page").classList.remove("hidden");
     planNum = 1;
     if (stepID === 'sp') {
-      firstSave[1].unshift(stepCount);
+      firstSave[1].push(stepCount);
       fetchSaving(stepID);
     } else {
       nonSPexpense();
@@ -453,7 +453,7 @@
     id("roll-page").classList.remove("hidden");
     planNum = 2;
     if (stepID === 'sp') {
-      firstSave[2].unshift(stepCount);
+      firstSave[2].push(stepCount);
       fetchSaving(stepID);
     } else {
       nonSPexpense();
@@ -466,7 +466,7 @@
     id("roll-page").classList.remove("hidden");
     planNum = 3;
     if (stepID === 'sp') {
-      firstSave[3].unshift(stepCount);
+      firstSave[3].push(stepCount);
       fetchSaving(stepID);
     } else {
       nonSPexpense();
