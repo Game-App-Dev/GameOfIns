@@ -9,6 +9,8 @@
   let stepCount = 0;
   let age = 0;
   let wage = 0;
+  let step = 0;
+  let original_wage = 0;
   let totalWage = 0;
   let smokeRisk = 0;
   let unemployed = 0;
@@ -31,6 +33,11 @@
   const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3];      // maximum steps can be made on each side (x / y).
   const BASEURL = "insurance.php";
 
+  //////////////////////////
+  // Testing purpose only //
+  //////////////////////////
+  let randomDice = true;
+
 
   /**
    * Add a function that will be called when the window is loaded.
@@ -47,6 +54,27 @@
     id("info").addEventListener("click", showInfo);
     id("rules").addEventListener("click", showRule);
     id("result").addEventListener("click", showResult);
+
+    //////////////////////////
+    // Testing purpose only //
+    //////////////////////////
+    id("diceNumber").addEventListener("click", changeDice);
+    id("diceNumber2").addEventListener("click", changeDice);
+  }
+
+  //////////////////////////
+  // Testing purpose only //
+  //////////////////////////
+  function changeDice() {
+    if (randomDice) {
+      randomDice = false;
+      id("diceNumber").innerText = "Single";
+      id("diceNumber2").innerText = "Single";
+    } else {
+      randomDice = true;
+      id("diceNumber").innerText = "Random";
+      id("diceNumber2").innerText = "Random";
+    }
   }
 
   /**
@@ -206,16 +234,40 @@
 
   function playerDetail(info) {
     age = info[stepCount].age;
-    if (unemployed <= 1) {
-      wage = parseInt(info[stepCount].wage);
-    } else {
+    wage = parseInt(info[stepCount].wage); // current wage
+    original_wage = wage;
+    if (unemployed > 1) {
       wage = 0;
     }
     totalWage += wage;
-    totalCashOnHand += wage - totalExpense;
+    totalCashOnHand += wage;
+
+    // adds wages from previous steps if rolled higher than 1
+    for (let i = 1; i < step; i++) {
+      totalWage += parseInt(info[stepCount - i].wage);
+      totalCashOnHand += parseInt(info[stepCount - i].wage) - totalExpense;
+      // checks if saving has ended in previous steps
+      for (let k = 0; k < 4; k++) {
+        for (let j = 0; j < firstSave[k].length; j++) {
+          let spStep = (stepCount - i) - firstSave[k][j];
+          if (spStep === 25) {
+            if (k === 0) {
+              totalCashOnHand += 12000;
+            } else if (k === 1) {
+              totalCashOnHand += 18000;
+            } else if (k === 2) {
+              totalCashOnHand += 24000;
+            } else {
+              totalCashOnHand += 30000;
+            }
+          }
+        }
+      }
+    }
+
     id("age").innerText = age;
     id("annual-wage").innerText = wage;
-    id("wage").innerText = wage;
+    id("wage").innerText = wage; // used to be wage
     id("exps-amount").innerText = totalExpense;
     id("net-cash-flow").innerText = wage - totalExpense;
     id("cash-on-hand").innerText = totalCashOnHand.toFixed(0);
@@ -244,10 +296,15 @@
     let max_x = 113 * x_step + 100;
     let max_y = 67 * y_step + 50;
 
-    let step = Math.floor(Math.random() * 3) + 1;
-    if (index === 10 && x === max_x && y === max_y + 2 * 67) {
-      step = Math.floor(Math.random() * 2) + 1;
-    } else if (index === 10 && y === max_y + 67) {
+    // Testing purpose only (delete if statement and save only the random step)
+    if (randomDice) {
+      step = Math.floor(Math.random() * 3) + 1;
+      if (index === 10 && x === max_x && y === max_y + 2 * 67) {
+        step = Math.floor(Math.random() * 2) + 1;
+      } else if (index === 10 && y === max_y + 67) {
+        step = 1;
+      }
+    } else {
       step = 1;
     }
 
@@ -530,7 +587,7 @@
 
     let payment;
     if (stepID === "nk") { // New Kid
-      payment = Math.ceil(wage * 0.1, 10);
+      payment = Math.ceil(original_wage * 0.1, 10);
     }
     if (stepID === "tf") { // Tuition Fee
       payment = 1000000;
@@ -672,13 +729,6 @@
    * @param  {[type]} info Fetched information from csv file.
    */
   function updateSaving(info) {
-    // spAsset += parseInt(info[stepCount - firstSave[planNum][firstSave[planNum].length-1]]["choice_" + (planNum+1)]);
-    // expenses[4] += parseInt(info[0]["choice_" + (planNum+1)]);
-    // totalExpense += expenses[4];
-    // totalInsurance += expenses[4];
-    // totalSaving += expenses[4];
-
-
     if (!id(capName) && capName === "Saving") {
       spAsset += parseInt(info[stepCount - firstSave[planNum][firstSave[planNum].length-1]]["choice_" + (planNum+1)]);
       expenses[4] += parseInt(info[0]["choice_" + (planNum+1)]);
@@ -697,7 +747,17 @@
         for (let j = 0; j < firstSave[i].length; j++) {
           let spStep = stepCount - firstSave[i][j];
           let n = 1;
-          if (spStep > 24) {
+          if (spStep === 15) {
+
+          }
+          if (spStep === 20) {
+
+          }
+          if (spStep === 25) {
+            spStep = 24;
+            n = 0;
+            totalCashOnHand += parseInt(info[spStep]["choice_" + (i + 1)]);
+          } else if (spStep > 25) {
             spStep = 24;
             n = 0;
           }
