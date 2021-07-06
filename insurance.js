@@ -260,7 +260,17 @@
             } else {
               totalCashOnHand += 30000;
             }
-          }
+          } //else if (spStep < 25) {
+          //   if (k === 0) {
+          //     totalCashOnHand += 12000;
+          //   } else if (k === 1) {
+          //     totalCashOnHand += 18000;
+          //   } else if (k === 2) {
+          //     totalCashOnHand += 24000;
+          //   } else {
+          //     totalCashOnHand += 30000;
+          //   }
+          // }
         }
       }
     }
