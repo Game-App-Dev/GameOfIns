@@ -235,6 +235,7 @@
   function playerDetail(info) {
     age = info[stepCount].age;
     wage = parseInt(info[stepCount].wage); // current wage
+    console.log(stepCount);
     original_wage = wage;
     if (unemployed > 1) {
       wage = 0;
@@ -260,17 +261,17 @@
             } else {
               totalCashOnHand += 30000;
             }
-          } //else if (spStep < 25) {
-          //   if (k === 0) {
-          //     totalCashOnHand += 12000;
-          //   } else if (k === 1) {
-          //     totalCashOnHand += 18000;
-          //   } else if (k === 2) {
-          //     totalCashOnHand += 24000;
-          //   } else {
-          //     totalCashOnHand += 30000;
-          //   }
-          // }
+          } else if (spStep < 25) {
+            if (k === 0) {
+              totalCashOnHand += 12000;
+            } else if (k === 1) {
+              totalCashOnHand += 18000;
+            } else if (k === 2) {
+              totalCashOnHand += 24000;
+            } else {
+              totalCashOnHand += 30000;
+            }
+          }
         }
       }
     }
