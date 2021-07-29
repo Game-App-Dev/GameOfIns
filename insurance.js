@@ -116,6 +116,7 @@
     ended = true;
     positive = true;
     stepCount = 0;
+    step = 0;
     index = 0;
     totalExpense = 0;
     totalCashOnHand = 0;
@@ -235,7 +236,7 @@
   function playerDetail(info) {
     age = info[stepCount].age;
     wage = parseInt(info[stepCount].wage); // current wage
-    console.log(stepCount);
+    // console.log(stepCount);
     original_wage = wage;
     if (unemployed > 1) {
       wage = 0;
@@ -248,20 +249,11 @@
       totalWage += parseInt(info[stepCount - i].wage);
       totalCashOnHand += parseInt(info[stepCount - i].wage) - totalExpense;
       // checks if saving has ended in previous steps
+      // adds expenses from previous steps
       for (let k = 0; k < 4; k++) {
         for (let j = 0; j < firstSave[k].length; j++) {
           let spStep = (stepCount - i) - firstSave[k][j];
-          if (spStep === 25) {
-            if (k === 0) {
-              totalCashOnHand += 12000;
-            } else if (k === 1) {
-              totalCashOnHand += 18000;
-            } else if (k === 2) {
-              totalCashOnHand += 24000;
-            } else {
-              totalCashOnHand += 30000;
-            }
-          } else if (spStep < 25) {
+          if (spStep <= 25) {
             if (k === 0) {
               totalCashOnHand += 12000;
             } else if (k === 1) {
@@ -596,7 +588,7 @@
       return;
     }
 
-    let payment;
+    let payment = 0;
     if (stepID === "nk") { // New Kid
       payment = Math.ceil(original_wage * 0.1, 10);
     }
@@ -612,9 +604,10 @@
     if (stepID === "tra") { // Travel
       payment = 300000;
     }
-
+    console.log("before ca");
     if (stepID === "ca") { // Car Accident
       payment = 90000;
+      console.log("car accident");
       if (expenses[0] != 0) { // Quality Medical
         let qmCoverage;
         if (expPlanNum[0] === 0) {
@@ -626,8 +619,12 @@
         } else {
           qmCoverage = 1;
         }
-        payment *= (1 - qmCoverage);
+        // console.log("payment: ", payment);
+        // console.log("qmCoverage: ", qmCoverage);
+        // console.log("claimedAmount: ", payment * qmCoverage);
         claimedAmount += payment * qmCoverage;
+        payment *= (1 - qmCoverage);
+        // console.log("claimedAmount var: ", claimedAmount);
       }
       if (expenses[1] != 0 && payment > 0) { // Accident Protection
         payment -= coverages[expPlanNum[1]];
@@ -672,8 +669,8 @@
         } else {
           qmCoverage = 1;
         }
-        payment *= (1 - qmCoverage);
         claimedAmount += payment * qmCoverage;
+        payment *= (1 - qmCoverage);
         if (payment > 0) {
           id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment.toLocaleString('en-US') + "!";
         } else {
@@ -698,8 +695,8 @@
         } else {
           qmCoverage = 1;
         }
-        payment *= (1 - qmCoverage);
         claimedAmount += payment * qmCoverage;
+        payment *= (1 - qmCoverage);
       }
       if (expenses[2] != 0 && payment > 0) { // Critical Illness
         payment -= coverages[expPlanNum[2]];
