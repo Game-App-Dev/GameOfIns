@@ -299,7 +299,7 @@
     let max_x = 113 * x_step + 100;
     let max_y = 67 * y_step + 50;
 
-    // Testing purpose only (delete if statement and save only the random step)
+    // Testing purpose only (delete randomDice if statement and save only the random step)
     if (randomDice) {
       step = Math.floor(Math.random() * 3) + 1;
       if (index === 10 && x === max_x && y === max_y + 2 * 67) {
@@ -320,6 +320,19 @@
     stepCount += step;
     unemployed -= step;
     fetchEvent();
+
+    ////////////////////////////////////////////////////////////////////////////
+    // console.log("nonSPexpense1: ", totalCashOnHand);
+    // totalCashOnHand -= totalExpense; // changed new_exp to totalExpense
+
+    // console.log("nonSPexpense2: ", totalCashOnHand);
+    // updateCashFlow();
+    for (let i = 0; i <= 4; i++) {
+      totalCashOnHand -= expenses[i];
+      console.log(i, ": ", expenses[i]);
+    }
+    ////////////////////////////////////////////////////////////////////////////
+
     fetchPlayer();
     if (firstSave[0].length !== 0 || firstSave[1].length !== 0 ||
                            firstSave[2].length !== 0 || firstSave[3].length !== 0) {
@@ -549,18 +562,27 @@
 
     id(stepID + "-exps").innerText = expenses[e_index];
     totalExpense += expenses[e_index];
-    totalCashOnHand -= new_exp;
+    totalCashOnHand -= new_exp; ///////
+
+    // for (let i = 0; i <= 4; i++) {
+    //   totalCashOnHand -= expenses[i];
+    //   console.log(i, ": ", expenses[i]);
+    // }
+
+    // totalCashOnHand -= expenses[e_index];
+    // console.log(expenses[e_index]);
+
     let indexBar = 0;
     for (let i = 0; i < 4; i++) {
       if (expenses[i] > 0) indexBar += 25;
     }
     qs(".index-bar").style.width = indexBar + "%";
-    updateCashFlow();
+    updateCashFlow(); ///////
   }
 
   /**
    * Updates the expenses for events.
-   * Also updates the Cash Flor section
+   * Also updates the Cash Flow section
    */
   function eventExpenses() {
     let div = document.createElement("div");
