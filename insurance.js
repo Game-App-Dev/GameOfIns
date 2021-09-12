@@ -236,7 +236,6 @@
   function playerDetail(info) {
     age = info[stepCount].age;
     wage = parseInt(info[stepCount].wage); // current wage
-    // console.log(stepCount);
     original_wage = wage;
     if (unemployed > 1) {
       wage = 0;
@@ -320,19 +319,6 @@
     stepCount += step;
     unemployed -= step;
     fetchEvent();
-
-    ////////////////////////////////////////////////////////////////////////////
-    // console.log("nonSPexpense1: ", totalCashOnHand);
-    // totalCashOnHand -= totalExpense; // changed new_exp to totalExpense
-
-    // console.log("nonSPexpense2: ", totalCashOnHand);
-    // updateCashFlow();
-    for (let i = 0; i <= 4; i++) {
-      totalCashOnHand -= expenses[i];
-      console.log(i, ": ", expenses[i]);
-    }
-    ////////////////////////////////////////////////////////////////////////////
-
     fetchPlayer();
     if (firstSave[0].length !== 0 || firstSave[1].length !== 0 ||
                            firstSave[2].length !== 0 || firstSave[3].length !== 0) {
@@ -562,22 +548,14 @@
 
     id(stepID + "-exps").innerText = expenses[e_index];
     totalExpense += expenses[e_index];
-    totalCashOnHand -= new_exp; ///////
-
-    // for (let i = 0; i <= 4; i++) {
-    //   totalCashOnHand -= expenses[i];
-    //   console.log(i, ": ", expenses[i]);
-    // }
-
-    // totalCashOnHand -= expenses[e_index];
-    // console.log(expenses[e_index]);
+    totalCashOnHand -= new_exp;
 
     let indexBar = 0;
     for (let i = 0; i < 4; i++) {
       if (expenses[i] > 0) indexBar += 25;
     }
     qs(".index-bar").style.width = indexBar + "%";
-    updateCashFlow(); ///////
+    updateCashFlow();
   }
 
   /**
@@ -641,12 +619,8 @@
         } else {
           qmCoverage = 1;
         }
-        // console.log("payment: ", payment);
-        // console.log("qmCoverage: ", qmCoverage);
-        // console.log("claimedAmount: ", payment * qmCoverage);
         claimedAmount += payment * qmCoverage;
         payment *= (1 - qmCoverage);
-        // console.log("claimedAmount var: ", claimedAmount);
       }
       if (expenses[1] != 0 && payment > 0) { // Accident Protection
         payment -= coverages[expPlanNum[1]];
@@ -761,7 +735,11 @@
   function updateSaving(info) {
     if (!id(capName) && capName === "Saving") {
       spAsset += parseInt(info[stepCount - firstSave[planNum][firstSave[planNum].length-1]]["choice_" + (planNum+1)]);
-      expenses[4] += parseInt(info[0]["choice_" + (planNum+1)]);
+
+      expenses[4] += parseInt(info[0]["choice_" + (planNum+1)]); // instead change it to saving expense array[]
+      // spExpense[spCount] += parseInt(info[0]["choice_" + (planNum+1)]); // initialize spExpense
+      // spCount++;
+
       totalExpense += expenses[4];
       totalInsurance += expenses[4];
       totalSaving += expenses[4];
