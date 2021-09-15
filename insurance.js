@@ -319,6 +319,9 @@
     stepCount += step;
     unemployed -= step;
     fetchEvent();
+    for (let i = 0; i <= 4; i++) {
+      totalCashOnHand -= expenses[i];
+    }
     fetchPlayer();
     if (firstSave[0].length !== 0 || firstSave[1].length !== 0 ||
                            firstSave[2].length !== 0 || firstSave[3].length !== 0) {
