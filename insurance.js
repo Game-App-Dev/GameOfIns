@@ -16,6 +16,8 @@
   let firstSave = [[],[],[],[]];                             // first time buying saving plan
   let spAsset = 0;
   let planNum = 0;
+  let caraccidentExp = 0;
+  let legbrokeExp = 0;
   let totalExpense = 0;
   let totalCashOnHand = 0;
   let totalInsurance = 0;
@@ -366,36 +368,6 @@
     return [x, y];
   }
 
-  /**
-   * Clears Car Accident, Leg Broke, New Car, New House, Travel events from 'Other Exenpses'
-   */
-  function clearOneTimeEvent() {
-    if (id("ca")) { // Car Accident
-      totalExpense -= 90000;
-      id("other-exps").removeChild(id("ca"));
-    }
-    if (id("lb")) { // Leg Broke
-      totalExpense -= 120000;
-      id("other-exps").removeChild(id("lb"));
-    }
-    if (id("nc")) { // New Car
-      totalExpense -= 300000;
-      id("other-exps").removeChild(id("nc"));
-    }
-    if (id("nh")) { // New House
-      totalExpense -= 2000000;
-      id("other-exps").removeChild(id("nh"));
-    }
-    if (id("tra")) { // Travel
-      totalExpense -= 300000;
-      id("other-exps").removeChild(id("tra"));
-    }
-    if (id("tf")) { // Kid Tuition fee
-      totalExpense -= 1000000;
-      id("other-exps").removeChild(id("tf"));
-    }
-  }
-
   function fetchEvent() {
     fetch(BASEURL + "?mode=event")
       .then(checkStatus)
@@ -630,6 +602,7 @@
         payment -= coverages[expPlanNum[1]];
         claimedAmount += coverages[expPlanNum[1]];
       }
+      caraccidentExp = payment;
       if (payment === 90000) {
         id("roll-msg").innerText = "Unfortunately, you don't have any insurance coverage. You have to pay full amount...";
       } else if (payment > 0) {
@@ -645,14 +618,15 @@
       if (expenses[1] != 0) {
         payment -= coverages[expPlanNum[1]];
         claimedAmount += coverages[expPlanNum[1]];
-        if (payment > 0) {
-          id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment.toLocaleString('en-US') + "!";
-        } else {
-          id("roll-msg").innerText = "Yay! The insurance got full coverage for you! No payment needed!";
-          return;
-        }
-      } else {
+      }
+      legbrokeExp = payment;
+      if (payment === 120000) {
         id("roll-msg").innerText = "Unfortunately, you don't have any insurance coverage. You have to pay full amount...";
+      } else if (payment > 0) {
+        id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment.toLocaleString('en-US') + "!";
+      } else {
+        id("roll-msg").innerText = "Yay! The insurance got full coverage for you! No payment needed!";
+        return;
       }
     }
 
@@ -722,6 +696,46 @@
     div.appendChild(pa);
     id("other-exps").appendChild(div);
     updateCashFlow();
+  }
+
+  /**
+   * Clears Car Accident, Leg Broke, New Car, New House, Travel events from 'Other Exenpses'
+   */
+   function clearOneTimeEvent() {
+    if (id("ca")) { // Car Accident
+      if (caraccidentExp > 0) {
+        expenses[4] -= caraccidentExp;
+        totalExpense -= caraccidentExp;
+      }
+      id("other-exps").removeChild(id("ca"));
+    }
+    if (id("lb")) { // Leg Broke
+      if (legbrokeExp > 0) {
+        expenses[4] -= legbrokeExp;
+        totalExpense -= legbrokeExp;
+      }
+      id("other-exps").removeChild(id("lb"));
+    }
+    if (id("nc")) { // New Car
+      totalExpense -= 300000;
+      expenses[4] -= 300000;
+      id("other-exps").removeChild(id("nc"));
+    }
+    if (id("nh")) { // New House
+      totalExpense -= 2000000;
+      expenses[4] -= 2000000;
+      id("other-exps").removeChild(id("nh"));
+    }
+    if (id("tra")) { // Travel
+      totalExpense -= 300000;
+      expenses[4] -= 300000;
+      id("other-exps").removeChild(id("tra"));
+    }
+    if (id("tf")) { // Kid Tuition fee
+      totalExpense -= 1000000;
+      expenses[4] -= 1000000;
+      id("other-exps").removeChild(id("tf"));
+    }
   }
 
   // update saving amount for each choices.
