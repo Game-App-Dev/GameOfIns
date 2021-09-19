@@ -10,7 +10,6 @@
   let age = 0;
   let wage = 0;
   let step = 0;
-  let original_wage = 0;
   let totalWage = 0;
   let smokeRisk = 0;
   let unemployed = 0;
@@ -27,7 +26,7 @@
   let choices = new Array(20).fill(0);
 
   // expenses & expPlanNum & coverage could be combined into one array of objects {{exp, plan#, covrage}, {exp, plan#, coverage}, ...}
-  let expenses = new Array(5).fill(0);
+  let expenses = new Array(6).fill(0);
   let expPlanNum = new Array(5).fill(0);
   let coverages = [250000, 500000, 750000, 1000000];
   const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3];      // maximum steps can be made on each side (x / y).
@@ -164,7 +163,7 @@
     for (let i = 0; i < 20; i++) {
       choices[i] = 0;
     }
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
       expenses[i] = 0;
       expPlanNum[i] = 0;
     }
@@ -235,8 +234,7 @@
 
   function playerDetail(info) {
     age = info[stepCount].age;
-    wage = parseInt(info[stepCount].wage); // current wage
-    original_wage = wage;
+    wage = parseInt(info[stepCount].wage);
     if (unemployed > 1) {
       wage = 0;
     }
@@ -266,13 +264,6 @@
         }
       }
     }
-
-    id("age").innerText = age;
-    id("annual-wage").innerText = wage;
-    id("wage").innerText = wage; // used to be wage
-    id("exps-amount").innerText = totalExpense;
-    id("net-cash-flow").innerText = wage - totalExpense;
-    id("cash-on-hand").innerText = totalCashOnHand.toFixed(0);
   }
 
   /**
@@ -318,15 +309,28 @@
     id("man3").style.transform = "translate("+x+"px,"+y+"px)";
     stepCount += step;
     unemployed -= step;
+    fetchPlayer();
+    console.log("...");
+    console.log(totalCashOnHand);
     fetchEvent();
-    for (let i = 0; i <= 4; i++) {
+    for (let i = 0; i <= 5; i++) {
       totalCashOnHand -= expenses[i];
     }
-    fetchPlayer();
+    console.log(totalCashOnHand);
+    updatePlayer();
     if (firstSave[0].length !== 0 || firstSave[1].length !== 0 ||
                            firstSave[2].length !== 0 || firstSave[3].length !== 0) {
       fetchSaving("sp");
     }
+  }
+
+  function updatePlayer() {
+    id("age").innerText = age;
+    id("annual-wage").innerText = wage;
+    id("wage").innerText = wage; // used to be wage
+    id("exps-amount").innerText = totalExpense;
+    id("net-cash-flow").innerText = wage - totalExpense;
+    id("cash-on-hand").innerText = totalCashOnHand.toFixed(0);
   }
 
   /**
@@ -593,7 +597,7 @@
 
     let payment = 0;
     if (stepID === "nk") { // New Kid
-      payment = Math.ceil(original_wage * 0.1, 10);
+      payment = Math.ceil(wage * 0.1, 10);
     }
     if (stepID === "tf") { // Tuition Fee
       payment = 1000000;
@@ -607,10 +611,9 @@
     if (stepID === "tra") { // Travel
       payment = 300000;
     }
-    console.log("before ca");
+
     if (stepID === "ca") { // Car Accident
       payment = 90000;
-      console.log("car accident");
       if (expenses[0] != 0) { // Quality Medical
         let qmCoverage;
         if (expPlanNum[0] === 0) {
@@ -713,6 +716,7 @@
 
     pa.innerText = payment;
     totalExpense += payment;
+    expenses[4] += payment;
     totalCashOnHand -= payment;
     div.setAttribute('id', stepID);
     pa.setAttribute('id', capName);
@@ -739,20 +743,20 @@
     if (!id(capName) && capName === "Saving") {
       spAsset += parseInt(info[stepCount - firstSave[planNum][firstSave[planNum].length-1]]["choice_" + (planNum+1)]);
 
-      expenses[4] += parseInt(info[0]["choice_" + (planNum+1)]); // instead change it to saving expense array[]
+      expenses[5] += parseInt(info[0]["choice_" + (planNum+1)]); // instead change it to saving expense array[]
       // spExpense[spCount] += parseInt(info[0]["choice_" + (planNum+1)]); // initialize spExpense
       // spCount++;
 
-      totalExpense += expenses[4];
-      totalInsurance += expenses[4];
-      totalSaving += expenses[4];
+      totalExpense += expenses[5];
+      totalInsurance += expenses[5];
+      totalSaving += expenses[5];
       addAsset(spAsset);
     } else {
       spAsset = 0;
-      totalExpense -= expenses[4];
-      totalCashOnHand += expenses[4];
+      totalExpense -= expenses[5];
+      totalCashOnHand += expenses[5];
       totalInsurance -= totalSaving;
-      expenses[4] = 0;
+      expenses[5] = 0;
       totalSaving = 0;
       for (let i = 0; i < 4; i++) {
         for (let j = 0; j < firstSave[i].length; j++) {
@@ -773,16 +777,16 @@
             n = 0;
           }
           totalSaving += parseInt(info[0]["choice_" + (i + 1)]);
-          expenses[4] += parseInt(info[0]["choice_" + (i + 1)]) * n;
+          expenses[5] += parseInt(info[0]["choice_" + (i + 1)]) * n;
           spAsset += parseInt(info[spStep]["choice_" + (i + 1)]);
         }
       }
-      totalExpense += expenses[4];
+      totalExpense += expenses[5];
       totalInsurance += totalSaving;
     }
-    totalCashOnHand -= expenses[4];
+    totalCashOnHand -= expenses[5];
     id("Saving").innerText = spAsset;
-    id("sp-exps").innerText = expenses[4];
+    id("sp-exps").innerText = expenses[5];
     updateCashFlow();
   }
 
@@ -835,7 +839,7 @@
       } else if (stepID === 'li') {
         i = 3;
       } else if (stepID === 'sp') {
-        i = 4;
+        i = 5;
       }
     }
     return i;
