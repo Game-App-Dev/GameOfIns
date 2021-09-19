@@ -264,6 +264,16 @@
         }
       }
     }
+    updatePlayer();
+  }
+
+  function updatePlayer() {
+    id("age").innerText = age;
+    id("annual-wage").innerText = wage;
+    id("wage").innerText = wage; // used to be wage
+    id("exps-amount").innerText = totalExpense;
+    id("net-cash-flow").innerText = wage - totalExpense;
+    id("cash-on-hand").innerText = totalCashOnHand.toFixed(0);
   }
 
   /**
@@ -310,27 +320,15 @@
     stepCount += step;
     unemployed -= step;
     fetchPlayer();
-    console.log("...");
-    console.log(totalCashOnHand);
     fetchEvent();
     for (let i = 0; i <= 5; i++) {
       totalCashOnHand -= expenses[i];
     }
-    console.log(totalCashOnHand);
     updatePlayer();
     if (firstSave[0].length !== 0 || firstSave[1].length !== 0 ||
                            firstSave[2].length !== 0 || firstSave[3].length !== 0) {
       fetchSaving("sp");
     }
-  }
-
-  function updatePlayer() {
-    id("age").innerText = age;
-    id("annual-wage").innerText = wage;
-    id("wage").innerText = wage; // used to be wage
-    id("exps-amount").innerText = totalExpense;
-    id("net-cash-flow").innerText = wage - totalExpense;
-    id("cash-on-hand").innerText = totalCashOnHand.toFixed(0);
   }
 
   /**
