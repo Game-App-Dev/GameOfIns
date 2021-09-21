@@ -5,10 +5,11 @@
   let ended = false;
   let positive = true;
   let rolled = false;
-  let index = 0;                                              // index of array MAXSTEP
+  let index = 0;                                             // index of array MAXSTEP
   let stepCount = 0;
   let age = 0;
   let wage = 0;
+  let original_wage = 0;                                     // wage for new kid when there's unemployment; stores the wage before unemployment
   let step = 0;
   let totalWage = 0;
   let smokeRisk = 0;
@@ -237,7 +238,8 @@
   function playerDetail(info) {
     age = info[stepCount].age;
     wage = parseInt(info[stepCount].wage);
-    if (unemployed > 1) {
+    original_wage = wage;
+    if (unemployed > 0) {
       wage = 0;
     }
     totalWage += wage;
@@ -554,20 +556,25 @@
     }
     if (stepID === "ue") { // Unemployed
       unemployed = 6;
+      totalCashOnHand -= wage;
+      wage = 0;
+      updatePlayer();
       return;
     }
     if (stepID === "div") { // Divorce
       totalCashOnHand /= 2;
+      updatePlayer();
       return;
     }
     if (stepID === "sl") { // Stock Loss
       totalCashOnHand *= 0.8;
+      updatePlayer();
       return;
     }
 
     let payment = 0;
     if (stepID === "nk") { // New Kid
-      payment = Math.ceil(wage * 0.1, 10);
+      payment = Math.ceil(original_wage * 0.1, 10);
     }
     if (stepID === "tf") { // Tuition Fee
       payment = 1000000;
@@ -690,6 +697,11 @@
     totalExpense += payment;
     expenses[4] += payment;
     totalCashOnHand -= payment;
+    if (stepID === 'nh') {
+      console.log("payment: ", payment);
+      console.log("totalExpense: ", totalExpense);
+      console.log("totalCashOnHand: ", totalCashOnHand);
+    }
     div.setAttribute('id', stepID);
     pa.setAttribute('id', capName);
     div.appendChild(pn);
