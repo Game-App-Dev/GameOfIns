@@ -21,6 +21,7 @@
   let legbrokeExp = 0;
   let totalExpense = 0;
   let totalCashOnHand = 0;
+  let prevTCOH = 0;
   let totalInsurance = 0;
   let totalSaving = 0;
   let claimedAmount = 0;
@@ -323,6 +324,7 @@
     id("man3").style.transform = "translate("+x+"px,"+y+"px)";
     stepCount += step;
     unemployed -= step;
+    prevTCOH = totalCashOnHand;
     fetchPlayer();
     fetchEvent();
     for (let i = 0; i <= 5; i++) {
@@ -562,12 +564,14 @@
       return;
     }
     if (stepID === "div") { // Divorce
-      totalCashOnHand /= 2;
+      let divorce = prevTCOH / 2;
+      totalCashOnHand -= divorce;
       updatePlayer();
       return;
     }
     if (stepID === "sl") { // Stock Loss
-      totalCashOnHand *= 0.8;
+      let stockloss = prevTCOH * 0.2;
+      totalCashOnHand -= stockloss;
       updatePlayer();
       return;
     }
