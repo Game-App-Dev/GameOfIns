@@ -717,7 +717,8 @@
   }
 
   /**
-   * Clears Car Accident, Leg Broke, New Car, New House, Travel events from 'Other Exenpses'
+   * Clears Car Accident, Leg Broke, Cancer, New Car, New House, Travel, and
+   * Kid Tuition Fee events from 'Other Exenpses'
    */
    function clearOneTimeEvent() {
     if (id("ca")) { // Car Accident
@@ -733,6 +734,14 @@
         totalExpense -= legbrokeExp;
       }
       id("other-exps").removeChild(id("lb"));
+    }
+    if (id("cn")) { // Cancer
+      let cancerExp = id("cn").innerText;
+      if (cancerExp > 0) {
+        expenses[4] -= cancerExp;
+        totalExpense -= cancerExp;
+      }
+      id("other-exps").removeChild(id("cn"));
     }
     if (id("nc")) { // New Car
       totalExpense -= 300000;
