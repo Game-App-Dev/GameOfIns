@@ -13,6 +13,7 @@
   let step = 0;
   let totalWage = 0;
   let smokeRisk = 0;
+  let retired = 1;                                           // 1 is false (not retired); 0 is true (retired)
   let unemployed = 0;
   let firstSave = [[],[],[],[]];                             // first time buying saving plan
   let spAsset = 0;
@@ -238,7 +239,7 @@
 
   function playerDetail(info) {
     age = info[stepCount].age;
-    wage = parseInt(info[stepCount].wage);
+    wage = parseInt(info[stepCount].wage) * retired;
     original_wage = wage;
     if (unemployed > 0) {
       wage = 0;
@@ -415,9 +416,10 @@
       id("event-img").appendChild(img);
       qs("#roll-page h2").innerText = capName;
       id("roll-des").innerText = info[stepCount].reg_des;
-      if (stepID === "smk" || stepID === "ca" || stepID === "nk" || stepID === "lb" ||
-          stepID === "ue" || stepID === "tf" || stepID === "nc" || stepID === "nh" ||
-          stepID === "tra" || stepID === "div" || stepID === "sl") eventExpenses();
+      // if (stepID === "smk" || stepID === "ca" || stepID === "nk" || stepID === "lb" ||
+      //     stepID === "ue" || stepID === "tf" || stepID === "nc" || stepID === "nh" ||
+      //     stepID === "tra" || stepID === "div" || stepID === "sl")
+      eventExpenses();
     }
   }
 
@@ -554,6 +556,10 @@
 
     if (stepID === "smk") { // Smoking
       smokeRisk = 0.2;
+      return;
+    }
+    if (stepID === "ret") { // Retired
+      retired = 0;
       return;
     }
     if (stepID === "ue") { // Unemployed
@@ -701,11 +707,7 @@
     totalExpense += payment;
     expenses[4] += payment;
     totalCashOnHand -= payment;
-    if (stepID === 'nh') {
-      console.log("payment: ", payment);
-      console.log("totalExpense: ", totalExpense);
-      console.log("totalCashOnHand: ", totalCashOnHand);
-    }
+
     div.setAttribute('id', stepID);
     pa.setAttribute('id', capName);
     div.appendChild(pn);
