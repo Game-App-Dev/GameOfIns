@@ -307,12 +307,13 @@
 
     // Testing purpose only (delete randomDice if statement and save only the random step)
     if (randomDice) {
-      step = Math.floor(Math.random() * 3) + 1;
-      if (index === 10 && x === max_x && y === max_y + 2 * 67) {
-        step = Math.floor(Math.random() * 2) + 1;
-      } else if (index === 10 && y === max_y + 67) {
-        step = 1;
-      }
+      // step = Math.floor(Math.random() * 3) + 1;
+      // if (index === 10 && x === max_x && y === max_y + 2 * 67) {
+      //   step = Math.floor(Math.random() * 2) + 1;
+      // } else if (index === 10 && y === max_y + 67) {
+      //   step = 1;
+      // }
+      step = 2;
     } else {
       step = 1;
     }
@@ -558,10 +559,6 @@
       smokeRisk = 0.2;
       return;
     }
-    if (stepID === "ret") { // Retired
-      retired = 0;
-      return;
-    }
     if (stepID === "ue") { // Unemployed
       unemployed = 6;
       totalCashOnHand -= wage;
@@ -578,6 +575,17 @@
     if (stepID === "sl") { // Stock Loss
       let stockloss = prevTCOH * 0.2;
       totalCashOnHand -= stockloss;
+      updatePlayer();
+      return;
+    }
+    if (stepID === "ret") { // Retired
+      console.log(totalCashOnHand);
+      totalCashOnHand -= wage;
+      console.log(totalCashOnHand);
+      console.log(wage);
+      wage = 0;
+      console.log(wage);
+      console.log(totalExpense);
       updatePlayer();
       return;
     }
