@@ -327,6 +327,7 @@
     stepCount += step;
     unemployed -= step;
     prevTCOH = totalCashOnHand;
+    if (stepID === "ret") retired = 0;
     fetchPlayer();
     fetchEvent();
     for (let i = 0; i <= 5; i++) {
@@ -579,13 +580,8 @@
       return;
     }
     if (stepID === "ret") { // Retired
-      console.log(totalCashOnHand);
       totalCashOnHand -= wage;
-      console.log(totalCashOnHand);
-      console.log(wage);
       wage = 0;
-      console.log(wage);
-      console.log(totalExpense);
       updatePlayer();
       return;
     }
@@ -744,8 +740,9 @@
       id("other-exps").removeChild(id("lb"));
     }
     if (id("cn")) { // Cancer
-      let cancerExp = id("cn").innerText;
+      let cancerExp = parseInt(id("Cancer").innerText);
       if (cancerExp > 0) {
+        console.log("clearing cancer: ", cancerExp);
         expenses[4] -= cancerExp;
         totalExpense -= cancerExp;
       }
