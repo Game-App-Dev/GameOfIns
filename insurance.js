@@ -327,7 +327,9 @@
     stepCount += step;
     unemployed -= step;
     prevTCOH = totalCashOnHand;
-    if (stepID === "ret") retired = 0;
+    if (stepID === "ret") {
+      retired = 0;
+    }
     fetchPlayer();
     fetchEvent();
     for (let i = 0; i <= 5; i++) {
@@ -418,9 +420,6 @@
       id("event-img").appendChild(img);
       qs("#roll-page h2").innerText = capName;
       id("roll-des").innerText = info[stepCount].reg_des;
-      // if (stepID === "smk" || stepID === "ca" || stepID === "nk" || stepID === "lb" ||
-      //     stepID === "ue" || stepID === "tf" || stepID === "nc" || stepID === "nh" ||
-      //     stepID === "tra" || stepID === "div" || stepID === "sl")
       eventExpenses();
     }
   }
@@ -654,6 +653,8 @@
     if (stepID === "mt") { // Medical Treatment
       payment = wage * 0.05;
       if (expenses[0] != 0) { // Quality Medical
+        console.log("payment: ", payment);
+        console.log("planNum: ", expPlanNum[0]);
         let qmCoverage;
         if (expPlanNum[0] === 0) {
           qmCoverage = 0.4;
@@ -666,6 +667,9 @@
         }
         claimedAmount += payment * qmCoverage;
         payment *= (1 - qmCoverage);
+        console.log("qmCoverage: ", qmCoverage);
+        console.log("claimedAmound: ", claimedAmount);
+        console.log("payment: ", payment);
         if (payment > 0) {
           id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment.toLocaleString('en-US') + "!";
         } else {
@@ -742,7 +746,6 @@
     if (id("cn")) { // Cancer
       let cancerExp = parseInt(id("Cancer").innerText);
       if (cancerExp > 0) {
-        console.log("clearing cancer: ", cancerExp);
         expenses[4] -= cancerExp;
         totalExpense -= cancerExp;
       }
