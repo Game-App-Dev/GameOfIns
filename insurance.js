@@ -239,8 +239,8 @@
 
   function playerDetail(info) {
     age = info[stepCount].age;
-    wage = parseInt(info[stepCount].wage) * retired;
-    original_wage = wage;
+    original_wage = parseInt(info[stepCount].wage);
+    wage = original_wage * retired;
     if (unemployed > 0) {
       wage = 0;
     }
@@ -580,7 +580,7 @@
     }
     if (stepID === "ret") { // Retired
       totalCashOnHand -= wage;
-      wage = 0;
+      retired = 0;
       updatePlayer();
       return;
     }
@@ -651,10 +651,8 @@
     }
 
     if (stepID === "mt") { // Medical Treatment
-      payment = wage * 0.05;
+      payment = original_wage * 0.05;
       if (expenses[0] != 0) { // Quality Medical
-        console.log("payment: ", payment);
-        console.log("planNum: ", expPlanNum[0]);
         let qmCoverage;
         if (expPlanNum[0] === 0) {
           qmCoverage = 0.4;
@@ -667,9 +665,6 @@
         }
         claimedAmount += payment * qmCoverage;
         payment *= (1 - qmCoverage);
-        console.log("qmCoverage: ", qmCoverage);
-        console.log("claimedAmound: ", claimedAmount);
-        console.log("payment: ", payment);
         if (payment > 0) {
           id("roll-msg").innerText = "Yay! You have insurance coverage for a portion of the payment. You only need to pay $" + payment.toLocaleString('en-US') + "!";
         } else {
