@@ -18,8 +18,6 @@
   let firstSave = [[],[],[],[]];                             // first time buying saving plan
   let spAsset = 0;
   let planNum = 0;
-  let caraccidentExp = 0;
-  let legbrokeExp = 0;
   let totalExpense = 0;
   let totalCashOnHand = 0;
   let prevTCOH = 0;
@@ -128,6 +126,9 @@
     totalWage = 0;
     totalInsurance = 0;
     claimedAmount = 0;
+    smokeRisk = 0;
+    retired = 1;
+    unemployed = 0;
     id("man3").style.transform = "translate(100px, 50px)";
     id("start-view").classList.remove("hidden");
     id("game-view").classList.add("hidden");
@@ -622,7 +623,6 @@
         payment -= coverages[expPlanNum[1]];
         claimedAmount += coverages[expPlanNum[1]];
       }
-      caraccidentExp = payment;
       if (payment === 90000) {
         id("roll-msg").innerText = "Unfortunately, you don't have any insurance coverage. You have to pay full amount...";
       } else if (payment > 0) {
@@ -639,7 +639,6 @@
         payment -= coverages[expPlanNum[1]];
         claimedAmount += coverages[expPlanNum[1]];
       }
-      legbrokeExp = payment;
       if (payment === 120000) {
         id("roll-msg").innerText = "Unfortunately, you don't have any insurance coverage. You have to pay full amount...";
       } else if (payment > 0) {
@@ -725,6 +724,7 @@
    */
    function clearOneTimeEvent() {
     if (id("ca")) { // Car Accident
+      let caraccidentExp = parseInt(id("Car Accident").innerText);
       if (caraccidentExp > 0) {
         expenses[4] -= caraccidentExp;
         totalExpense -= caraccidentExp;
@@ -732,6 +732,7 @@
       id("other-exps").removeChild(id("ca"));
     }
     if (id("lb")) { // Leg Broke
+      let legbrokeExp = parseInt(id("Leg Broke").innerText);
       if (legbrokeExp > 0) {
         expenses[4] -= legbrokeExp;
         totalExpense -= legbrokeExp;
@@ -784,11 +785,7 @@
   function updateSaving(info) {
     if (!id(capName) && capName === "Saving") {
       spAsset += parseInt(info[stepCount - firstSave[planNum][firstSave[planNum].length-1]]["choice_" + (planNum+1)]);
-
       expenses[5] += parseInt(info[0]["choice_" + (planNum+1)]); // instead change it to saving expense array[]
-      // spExpense[spCount] += parseInt(info[0]["choice_" + (planNum+1)]); // initialize spExpense
-      // spCount++;
-
       totalExpense += expenses[5];
       totalInsurance += expenses[5];
       totalSaving += expenses[5];
