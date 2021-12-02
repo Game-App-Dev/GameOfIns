@@ -114,6 +114,9 @@
     });
   }
 
+  /**
+   * Ends the game and restore variables to initial values
+   */
   function endGame() {
     ended = true;
     positive = true;
@@ -185,23 +188,33 @@
     id("end_total").innerText = "0";
   }
 
+  /**
+   * Display home page rule pop up page/window
+   */
   function startRule() {
     id("strtRules").style.display = "block";
     document.getElementsByClassName("close")[0].addEventListener("click", closePop);
   }
 
-  // Display information page/window
+  /**
+   * Display information page/window
+   */
   function showInfo() {
     id("myInfo").style.display = "block";
     document.getElementsByClassName("close")[1].addEventListener("click", closePop);
   }
 
+  /**
+   * Display rule page/window in game view
+   */
   function showRule() {
     id("myRules").style.display = "block";
     document.getElementsByClassName("close")[2].addEventListener("click", closePop);
   }
 
-  // When the user clicks on <span> (x), close the popup
+  /**
+   * When the user clicks on <span> (x), close the popup
+   */
   function closePop() {
     id("myInfo").style.display = "none";
     id("myRules").style.display = "none";
@@ -209,27 +222,36 @@
     id("endResult").style.display = "none";
   }
 
-  // When the user clicks anywhere outside of the modal, close srtRules page
+  /**
+   * When the user clicks anywhere outside of the modal, close srtRules page
+   */
   window.addEventListener("click", function(event) {
     if (event.target == id("strtRules")) {
       id("strtRules").style.display = "none";
     }
   });
 
-  // When the user clicks anywhere outside of the modal, close myInfo page
+  /**
+   * When the user clicks anywhere outside of the modal, close myInfo page
+   */
   window.addEventListener("click", function(event) {
     if (event.target == id("myInfo")) {
       id("myInfo").style.display = "none";
     }
   });
 
-  // When the user clicks anywhere outside of the modal, close myRules page
+  /**
+   * When the user clicks anywhere outside of the modal, close myRules page
+   */
   window.addEventListener("click", function(event) {
     if (event.target == id("myRules")) {
       id("myRules").style.display = "none";
     }
   });
 
+  /**
+   * Requests player's information
+   */
   function fetchPlayer() {
     fetch(BASEURL + "?mode=player")
       .then(checkStatus)
@@ -238,6 +260,10 @@
       .catch();
   }
 
+  /**
+   * Updates players information (i.e. age, wage, total cash on hand, and etc)
+   * @param {JSON} info
+   */
   function playerDetail(info) {
     age = info[stepCount].age;
     original_wage = parseInt(info[stepCount].wage);
@@ -274,6 +300,9 @@
     updatePlayer();
   }
 
+  /**
+   * Update player information on the information page/window
+   */
   function updatePlayer() {
     id("age").innerText = age;
     id("annual-wage").innerText = wage;
@@ -284,10 +313,12 @@
   }
 
   /**
-   * Move the player randomly from 1 to 3 grid.
+   * Moves the player randomly from 1 to 3 tile and updates the player according
+   * to the events encountered
    */
   function rollDice() {
     clearOneTimeEvent();
+
     rolled = true;
     id("roll-msg").innerText = "";
     let eimg = qs("#event-img img");
@@ -337,21 +368,23 @@
       totalCashOnHand -= expenses[i];
     }
     updatePlayer();
-    if (firstSave[0].length !== 0 || firstSave[1].length !== 0 ||
-                           firstSave[2].length !== 0 || firstSave[3].length !== 0) {
+    if (firstSave[0].length !== 0 || firstSave[1].length !== 0
+                                  || firstSave[2].length !== 0
+                                  || firstSave[3].length !== 0) {
       fetchSaving("sp");
     }
   }
 
   /**
-   * helper function for rollDice()
-   * @param  {[type]} x     position x
-   * @param  {[type]} y     position y
-   * @param  {[type]} a     if not positive, then pass in -1; otherwise, 1
-   * @param  {[type]} step  dice number rolled
-   * @param  {[type]} max_x maximum x position the chess can go
-   * @param  {[type]} max_y maximum y position the chess can go
-   * @return {[type]}       returns new x and y coordinate.
+   * Rolls the dice and calculates the x, y coordinates the player is stepping
+   * on next
+   * @param  {int} x          position x
+   * @param  {int} y          position y
+   * @param  {boolean} a      if not positive, then pass in -1; otherwise, 1
+   * @param  {int} step       dice number rolled
+   * @param  {int} max_x      maximum x position the chess can go
+   * @param  {int} max_y      maximum y position the chess can go
+   * @return {int[]}          returns new x and y coordinate.
    */
   function helperRoll(x, y, a, step, max_x, max_y) {
     if (a*x < a*max_x) {
@@ -378,6 +411,9 @@
     return [x, y];
   }
 
+  /**
+   * Requests the event information
+   */
   function fetchEvent() {
     fetch(BASEURL + "?mode=event")
       .then(checkStatus)
@@ -386,6 +422,10 @@
       .catch();
   }
 
+  /**
+   * Displays the event details and image.
+   * @param {JSON} info
+   */
   function eventDetail(info) {
     qs("#roll-btn button").disabled = false;
     id("saving-plan").classList.add("hidden");
@@ -406,17 +446,20 @@
       id("ins-img").appendChild(img);
       qs("#insurance-type h2").innerText = capName + " Insurance";
       id("ins-des").innerText = info[stepCount].reg_des;
-    } else if (stepID === "sp") {
+    }
+    else if (stepID === "sp") {
       id("saving-plan").classList.remove("hidden");
       id("save-img").appendChild(img);
       id("save-des").innerText = info[stepCount].reg_des;
-    } else if (stepID === "die") {
+    }
+    else if (stepID === "die") {
       id("roll-page").classList.remove("hidden");
       qs("#roll-btn button").disabled = true;
       qs("#roll-page h2").innerText = "R.I.P.";
       id("roll-des").innerText = info[stepCount].reg_des;
       showResult();
-    } else {
+    }
+    else {
       id("roll-page").classList.remove("hidden");
       id("event-img").appendChild(img);
       qs("#roll-page h2").innerText = capName;
@@ -425,6 +468,10 @@
     }
   }
 
+  /**
+   * Displays insurance buying options and updates information page/window
+   * details.
+   */
   function buyYes() {
     if (!id("insurance-type").classList.contains("hidden")) {
       id("insurance-type").classList.add("hidden");
@@ -449,6 +496,10 @@
     fetchChoice(stepID);
   }
 
+  /**
+   * Displays saving options and updates saving information on information
+   * page/window.
+   */
   function saveYes() {
     if (!id("saving-plan").classList.contains("hidden")) {
       id("saving-plan").classList.add("hidden");
@@ -466,6 +517,9 @@
     fetchChoice(stepID);
   }
 
+  /**
+   * Player buys plan one and the expense will be updated.
+   */
   function planOne() {
     hideSelection();
     id("roll-page").classList.remove("hidden");
@@ -479,6 +533,9 @@
     removeImg();
   }
 
+  /**
+   * Player buys plan two and the expense will be updated.
+   */
   function planTwo() {
     hideSelection();
     id("roll-page").classList.remove("hidden");
@@ -492,6 +549,9 @@
     removeImg();
   }
 
+  /**
+   * Player buys plan three and the expense will be updated.
+   */
   function planThree() {
     hideSelection();
     id("roll-page").classList.remove("hidden");
@@ -505,6 +565,9 @@
     removeImg();
   }
 
+  /**
+   * Player buys plan four and the expense will be updated.
+   */
   function planFour() {
     hideSelection();
     id("roll-page").classList.remove("hidden");
@@ -722,7 +785,7 @@
    * Clears Car Accident, Leg Broke, Cancer, New Car, New House, Travel, and
    * Kid Tuition Fee events from 'Other Exenpses'
    */
-   function clearOneTimeEvent() {
+  function clearOneTimeEvent() {
     if (id("ca")) { // Car Accident
       let caraccidentExp = parseInt(id("Car Accident").innerText);
       if (caraccidentExp > 0) {
@@ -769,7 +832,10 @@
     }
   }
 
-  // update saving amount for each choices.
+  /**
+   * Updates saving amount for each choices.
+   * @param {String} id
+   */
   function fetchSaving(id) {
     fetch(BASEURL + "?mode=" + id)
     .then(checkStatus)
@@ -780,7 +846,7 @@
 
   /**
    * Updates the saving expense and asset. Expense would be subtracted when reached 25 steps.
-   * @param  {[type]} info Fetched information from csv file.
+   * @param  {JSON} info Fetched information from csv file.
    */
   function updateSaving(info) {
     if (!id(capName) && capName === "Saving") {
@@ -829,6 +895,10 @@
     updateCashFlow();
   }
 
+  /**
+   * Displays Expense Amount, Net Cash Flow, Cash on Hand on information page.
+   * Player dies if Total Cash on Hand is below 0 (continues otherwise)
+   */
   function updateCashFlow() {
     id("exps-amount").innerText = totalExpense;
     id("net-cash-flow").innerText = wage - totalExpense;
@@ -842,6 +912,9 @@
     }
   }
 
+  /**
+   * Display the game result when the player dies.
+   */
   function showResult() {
     id("result").classList.remove("hidden");
     qs(".prime-btn").style.marginLeft = "50px";
@@ -859,6 +932,13 @@
     id("end_total").innerText = parseInt(totalCashOnHand.toFixed(0)) + lifeInsurance;
   }
 
+  /**
+   * Sets the index number of the arrays saving insurance details for the
+   * according insurance plan
+   * @param {int} i
+   * @param {boolean} isChoices
+   * @returns {int} index number
+   */
   function setIndex(i, isChoices) {
     if (isChoices) {
       if (stepID === 'ap') {
@@ -884,6 +964,9 @@
     return i;
   }
 
+  /**
+   * Hides the saving or insurance plan selections.
+   */
   function hideSelection() {
     if (!id("save-selection").classList.contains("hidden")) {
       id("save-selection").classList.add("hidden");
@@ -895,7 +978,7 @@
 
   /**
    * Updates the asset section
-   * @param {INTEGER} amount amount of the asset
+   * @param {int} amount amount of the asset
    */
   function addAsset(amount) {
     let div = document.createElement("div");
@@ -912,6 +995,10 @@
     id("asset-list").appendChild(div);
   }
 
+  /**
+   * Requests information of the insurance
+   * @param {String} id event id
+   */
   function fetchChoice(id) {
     fetch(BASEURL + "?mode=" + id)
     .then(checkStatus)
@@ -920,6 +1007,10 @@
     .catch();
   }
 
+  /**
+   * Displays the insurance amount for each choice.
+   * @param {JSON} info
+   */
   function choiceDetail(info) {
     if (stepID != "sp") {
       if (rolled) {
@@ -955,16 +1046,26 @@
     }
   }
 
+  /**
+   * Hides selection page and shows insurance information when `Back` button clicked.
+   */
   function planBack() {
     id("insurance-type").classList.remove("hidden");
     id("plan-selection").classList.add("hidden");
   }
 
+  /**
+   * Hides selection page and shows saving information when `Back` button clicked.
+   */
   function saveBack() {
     id("saving-plan").classList.remove("hidden");
     id("save-selection").classList.add("hidden");
   }
 
+  /**
+   * Player decide not to purchase any insurance/saving plan, roll page shows up
+   * for player to roll for next step.
+   */
   function noButton() {
     qs("#roll-btn button").disabled = false;
     id("insurance-type").classList.add("hidden");
@@ -975,6 +1076,9 @@
     removeImg();
   }
 
+  /**
+   * Removes the image on the event window.
+   */
   function removeImg() {
     let iimg = qs("#ins-img img");
     let simg = qs("#save-img img");
@@ -1016,8 +1120,8 @@
 
   /**
    * Returns all the element that matches the given css selector.
-   * @param  {[type]} selector - CSS query selector.
-   * @return {[type]} All DOM object matching the query.
+   * @param  {string} selector - CSS query selector.
+   * @return {object} All DOM object matching the query.
    */
   function qsa(selector) {
     return document.querySelectorAll(selector);
