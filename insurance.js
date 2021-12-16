@@ -90,6 +90,7 @@
     id("insurance-type").classList.add("hidden");
     id("plan-selection").classList.add("hidden");
     id("save-selection").classList.add("hidden");
+    id("save-retrieve").classList.add("hidden");
     id("result").classList.add("hidden");
     id("saving-plan").classList.add("hidden");
     id("roll-page").classList.remove("hidden");
@@ -98,7 +99,9 @@
     id("buy-yes").addEventListener("click", buyYes);
     id("buy-no").addEventListener("click", noButton);
     id("save-yes").addEventListener("click", saveYes);
-    id("save-no").addEventListener("click", noButton)
+    id("save-no").addEventListener("click", noButton);
+    // id("retrieve-yes").addEventListener("click", retrieveYes);
+    // id("retrieve-no").addEventListener("click", noButton);
     fetchPlayer();
   }
 
@@ -220,6 +223,8 @@
     id("myRules").style.display = "none";
     id("strtRules").style.display = "none";
     id("endResult").style.display = "none";
+    id("save-retrieve").style.display = "none";
+    removeImg;
   }
 
   /**
@@ -868,7 +873,16 @@
           let spStep = stepCount - firstSave[i][j];
           let n = 1;
           if (spStep === 15) {
-
+            // id("save-retrieve").style.display = "block";
+            // document.getElementsByClassName("close")[0].addEventListener("click", closePop);
+            // id("retrieve-des").innerText = "You've reached 15 rounds of saving.";
+            // id("retrieve-yes").addEventListener("click", retrieveYes(info, i));
+            // id("retrieve-no").addEventListener("click", closePop);
+            // let img = document.createElement("img");
+            // img.src = "img/saving.jpg";
+            // img.alt = "Saving Plan";
+            // id("retrieve-img").appendChild(img);
+            // firstSave[i][j] = 0;
           }
           if (spStep === 20) {
 
@@ -877,7 +891,9 @@
             spStep = 24;
             n = 0;
             totalCashOnHand += parseInt(info[spStep]["choice_" + (i + 1)]);
-          } else if (spStep > 25) {
+            totalCashOnHand -= parseInt(info[0]["choice_" + (i + 1)]);
+          }
+          if (spStep > 25) {
             spStep = 24;
             n = 0;
           }
@@ -889,10 +905,16 @@
       totalExpense += expenses[5];
       totalInsurance += totalSaving;
     }
-    totalCashOnHand -= expenses[5];
+    for (let i = 0; i < step; i++) {
+      totalCashOnHand -= expenses[5];
+    }
     id("Saving").innerText = spAsset;
     id("sp-exps").innerText = expenses[5];
     updateCashFlow();
+  }
+
+  function retrieveYes(info, i) {
+    totalCashOnHand += parseInt(info[15]["choice_" + (i + 1)]);
   }
 
   /**
@@ -1083,6 +1105,7 @@
     let iimg = qs("#ins-img img");
     let simg = qs("#save-img img");
     let eimg = qs("#event-img img");
+    let rimg = qs("#retrieve-img img");
     if (iimg != null) {
       id("ins-img").removeChild(iimg);
     }
@@ -1091,6 +1114,9 @@
     }
     if (eimg != null) {
       id("event-img").removeChild(eimg);
+    }
+    if (rimg != null) {
+      id("retrieve-img").removeChild(rimg);
     }
   }
 
