@@ -882,18 +882,27 @@
             // img.src = "img/saving.jpg";
             // img.alt = "Saving Plan";
             // id("retrieve-img").appendChild(img);
-            // firstSave[i][j] = 0;
           }
           if (spStep === 20) {
 
           }
           if (spStep === 25) {
-            spStep = 24;
-            n = 0;
-            totalCashOnHand += parseInt(info[spStep]["choice_" + (i + 1)]);
-            totalCashOnHand -= parseInt(info[0]["choice_" + (i + 1)]);
+            totalCashOnHand += parseInt(info[24]["choice_" + (i + 1)]);
+            for (let k = 1; k < step; k++) {
+              totalCashOnHand -= parseInt(info[0]["choice_" + (i + 1)]);
+            }
           }
-          if (spStep > 25) {
+          if (spStep === 26 && (step === 2 || step === 3)) {
+            totalCashOnHand += parseInt(info[24]["choice_" + (i + 1)]);
+            if (step === 3) {
+              totalCashOnHand -= parseInt(info[0]["choice_" + (i + 1)]);
+            }
+          }
+          if (spStep === 27 && step === 3) {
+            totalCashOnHand += parseInt(info[24]["choice_" + (i + 1)]);
+            totalCashOnHand += parseInt(info[0]["choice_" + (i + 1)]);
+          }
+          if (spStep >= 25) {
             spStep = 24;
             n = 0;
           }
@@ -915,6 +924,7 @@
 
   function retrieveYes(info, i) {
     totalCashOnHand += parseInt(info[15]["choice_" + (i + 1)]);
+    firstSave[i][j] = 0;
   }
 
   /**
