@@ -100,8 +100,6 @@
     id("buy-no").addEventListener("click", noButton);
     id("save-yes").addEventListener("click", saveYes);
     id("save-no").addEventListener("click", noButton);
-    // id("retrieve-yes").addEventListener("click", retrieveYes);
-    // id("retrieve-no").addEventListener("click", noButton);
     fetchPlayer();
   }
 
@@ -872,36 +870,75 @@
         for (let j = 0; j < firstSave[i].length; j++) {
           let spStep = stepCount - firstSave[i][j];
           let n = 1;
-          if (spStep === 15) {
-            // id("save-retrieve").style.display = "block";
-            // document.getElementsByClassName("close")[0].addEventListener("click", closePop);
-            // id("retrieve-des").innerText = "You've reached 15 rounds of saving.";
-            // id("retrieve-yes").addEventListener("click", retrieveYes(info, i));
-            // id("retrieve-no").addEventListener("click", closePop);
-            // let img = document.createElement("img");
-            // img.src = "img/saving.jpg";
-            // img.alt = "Saving Plan";
-            // id("retrieve-img").appendChild(img);
-          }
-          if (spStep === 20) {
 
-          }
+          // if (spStep === 15 || spStep === 20) {
+          //   let img = document.createElement("img");
+          //   img.src = "img/saving.jpg";
+          //   img.alt = "Saving Plan";
+          //   id("retrieve-img").appendChild(img);
+          //   id("save-retrieve").style.display = "block";
+          //   id("retrieve-des").innerText = "You've reached " + spStep + " rounds of saving.";
+          //   document.getElementsByClassName("close")[0].addEventListener("click", closePop);
+
+          //   let retrieveYes = function() {
+          //     totalCashOnHand += parseInt(info[spStep - 1]["choice_" + (i + 1)]);
+          //     totalCashOnHand += parseInt(info[0]["choice_" + (i + 1)]);
+          //     firstSave[i].splice(j, 1);
+          //     // firstSave[i][j] = -10;
+          //     expenses[5] = 0;
+          //     id("Saving").innerText = parseInt(info[spStep - 1]["choice_" + (i + 1)]);
+          //     id("sp-exps").innerText = expenses[5];
+          //     spStep = 30; // random number set to bigger than 27
+          //     updateCashFlow();
+          //     closePop();
+          //   };
+          //   id("retrieve-yes").addEventListener("click", retrieveYes.bind(info, i));
+          //   id("retrieve-no").addEventListener("click", closePop);
+          // }
+
+          // if (spStep === 20) {
+          //   let img = document.createElement("img");
+          //   img.src = "img/saving.jpg";
+          //   img.alt = "Saving Plan";
+          //   id("retrieve-img").appendChild(img);
+          //   id("save-retrieve").style.display = "block";
+          //   id("retrieve-des").innerText = "You've reached 20 rounds of saving.";
+          //   document.getElementsByClassName("close")[0].addEventListener("click", closePop);
+
+          //   let retrieveYes = function() {
+          //     totalCashOnHand += parseInt(info[19]["choice_" + (i + 1)]);
+          //     totalCashOnHand += parseInt(info[0]["choice_" + (i + 1)]);
+          //     firstSave[i].splice(j, 1);
+          //     spStep = 30; // random number set to bigger than 27
+          //     expenses[5] = 0;
+          //     id("Saving").innerText = parseInt(info[19]["choice_" + (i + 1)]);
+          //     id("sp-exps").innerText = expenses[5];
+          //     updateCashFlow();
+          //     closePop();
+          //   };
+          //   id("retrieve-yes").addEventListener("click", retrieveYes.bind(info, i));
+          //   id("retrieve-no").addEventListener("click", closePop);
+          // }
+
           if (spStep === 25) {
             totalCashOnHand += parseInt(info[24]["choice_" + (i + 1)]);
             for (let k = 1; k < step; k++) {
               totalCashOnHand -= parseInt(info[0]["choice_" + (i + 1)]);
             }
           }
+
           if (spStep === 26 && (step === 2 || step === 3)) {
             totalCashOnHand += parseInt(info[24]["choice_" + (i + 1)]);
             if (step === 3) {
               totalCashOnHand -= parseInt(info[0]["choice_" + (i + 1)]);
             }
           }
+
           if (spStep === 27 && step === 3) {
             totalCashOnHand += parseInt(info[24]["choice_" + (i + 1)]);
             totalCashOnHand += parseInt(info[0]["choice_" + (i + 1)]);
           }
+
           if (spStep >= 25) {
             spStep = 24;
             n = 0;
@@ -920,11 +957,6 @@
     id("Saving").innerText = spAsset;
     id("sp-exps").innerText = expenses[5];
     updateCashFlow();
-  }
-
-  function retrieveYes(info, i) {
-    totalCashOnHand += parseInt(info[15]["choice_" + (i + 1)]);
-    firstSave[i][j] = 0;
   }
 
   /**
