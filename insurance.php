@@ -6,33 +6,33 @@
       display_error("Error: Please provide a valid mode (event, player, qm/ap/ci/li/sp).");
     } else if ($mode === "event") {
       // Set your CSV events
-      $events = "data/step_event.csv";
+      $events = "https://game-app-dev.github.io/GameOfIns/data/step_event.csv";
       // Do it
       $data = csvJSON($events);
       // Print it out as JSON
       echo json_encode($data);
     } else if ($mode === "player") {
-      $player = "data/player_wage_age/p1.csv";
+      $player = "https://game-app-dev.github.io/GameOfIns/data/player_wage_age/p1.csv";
       $data = csvJSON($player);
       echo json_encode($data);
     } else if ($mode === "qm") {
-      $insurance = "data/fee_data/quality_medical.csv";
+      $insurance = "https://game-app-dev.github.io/GameOfIns/data/fee_data/quality_medical.csv";
       $data = csvJSON($insurance);
       echo json_encode($data);
     } else if ($mode === "ap") {
-      $insurance = "data/fee_data/accident_protection.csv";
+      $insurance = "https://game-app-dev.github.io/GameOfIns/data/fee_data/accident_protection.csv";
       $data = csvJSON($insurance);
       echo json_encode($data);
     } else if ($mode === "ci") {
-      $insurance = "data/fee_data/critical_illness.csv";
+      $insurance = "https://game-app-dev.github.io/GameOfIns/data/fee_data/critical_illness.csv";
       $data = csvJSON($insurance);
       echo json_encode($data);
     } else if ($mode === "li") {
-      $insurance = "data/fee_data/life.csv";
+      $insurance = "https://game-app-dev.github.io/GameOfIns/data/fee_data/life.csv";
       $data = csvJSON($insurance);
       echo json_encode($data);
     } else if ($mode === "sp") {
-      $insurance = "data/fee_data/saving.csv";
+      $insurance = "https://game-app-dev.github.io/GameOfIns/data/fee_data/saving.csv";
       $data = csvJSON($insurance);
       echo json_encode($data);
     }
