@@ -235,7 +235,6 @@
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         }
-
       })
       .then(checkStatus)
       .then(JSON.parse)

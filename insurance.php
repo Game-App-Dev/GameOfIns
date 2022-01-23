@@ -2,6 +2,7 @@
 
   if (isset($_GET["mode"])) {
     $mode = $_GET["mode"];
+    header("Content-type: application/json");
     if ($mode !== "event" && $mode !== "player" && $mode !== "qm" && $mode !== "ap" && $mode !== "ci" && $mode !== "li" && $mode !== "sp") {
       display_error("Error: Please provide a valid mode (event, player, qm/ap/ci/li/sp).");
     } else if ($mode === "event") {
