@@ -230,7 +230,13 @@
    * Requests player's information
    */
   function fetchPlayer() {
-    fetch(BASEURL + "?mode=player")
+    fetch(BASEURL + "?mode=player", {
+        headers : {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+
+      })
       .then(checkStatus)
       .then(JSON.parse)
       .then(playerDetail)
