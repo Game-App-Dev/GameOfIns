@@ -35,11 +35,6 @@
   const MAXSTEP = [7, 7, 0, 1, 6, 6, 1, 2, 5, 5, 2, 3];      // maximum steps can be made on each side (x / y).
   const BASEURL = "insurance.php";
 
-  //////////////////////////
-  // Testing purpose only //
-  //////////////////////////
-  let randomDice = true;
-
 
   /**
    * Add a function that will be called when the window is loaded.
@@ -56,27 +51,6 @@
     id("info").addEventListener("click", showInfo);
     id("rules").addEventListener("click", showRule);
     id("result").addEventListener("click", showResult);
-
-    //////////////////////////
-    // Testing purpose only //
-    //////////////////////////
-    id("diceNumber").addEventListener("click", changeDice);
-    id("diceNumber2").addEventListener("click", changeDice);
-  }
-
-  //////////////////////////
-  // Testing purpose only //
-  //////////////////////////
-  function changeDice() {
-    if (randomDice) {
-      randomDice = false;
-      id("diceNumber").innerText = "Single";
-      id("diceNumber2").innerText = "Single";
-    } else {
-      randomDice = true;
-      id("diceNumber").innerText = "Random";
-      id("diceNumber2").innerText = "Random";
-    }
   }
 
   /**
@@ -221,7 +195,6 @@
     id("myRules").style.display = "none";
     id("strtRules").style.display = "none";
     id("endResult").style.display = "none";
-    // id("save-retrieve").style.display = "none";
     removeImg;
   }
 
@@ -345,16 +318,10 @@
     let max_x = 113 * x_step + 100;
     let max_y = 67 * y_step + 50;
 
-    // Testing purpose only (delete randomDice if statement and save only the random step)
-    if (randomDice) {
-      // step = Math.floor(Math.random() * 3) + 1;
-      // if (index === 10 && x === max_x && y === max_y + 2 * 67) {
-      //   step = Math.floor(Math.random() * 2) + 1;
-      // } else if (index === 10 && y === max_y + 67) {
-      //   step = 1;
-      // }
-      step = 2;
-    } else {
+    step = Math.floor(Math.random() * 3) + 1;
+    if (index === 10 && x === max_x && y === max_y + 2 * 67) {
+      step = Math.floor(Math.random() * 2) + 1;
+    } else if (index === 10 && y === max_y + 67) {
       step = 1;
     }
 
