@@ -195,7 +195,7 @@
     id("myRules").style.display = "none";
     id("strtRules").style.display = "none";
     id("endResult").style.display = "none";
-    id("save-retrieve").style.display = "none";
+    // id("save-retrieve").style.display = "none";
     removeImg;
   }
 
