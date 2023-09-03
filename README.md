@@ -2,4 +2,4 @@
 insurance board game
 
 Below is the link to the game:
-insurancegame.azurewebsites.net
+https://insurancegame.azurewebsites.net/
